@@ -54,7 +54,7 @@ export default class extends Plugin {
         HeadingComponent,
         configSchema,
         stateModel,
-        LazyReactComponent: lazy(async () => ReactComponent),
+        LazyReactComponent: ReactComponent,
       })
     })
 
@@ -68,7 +68,7 @@ export default class extends Plugin {
         heading: 'Feature Details',
         configSchema,
         stateModel,
-        LazyReactComponent: lazy(async () => ReactComponent),
+        LazyReactComponent: ReactComponent,
       })
     })
   }
