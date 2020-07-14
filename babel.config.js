@@ -5,12 +5,12 @@ module.exports = api => {
     comments: true,
     presets: [
       '@babel/preset-typescript',
-      'react-app',
+      '@babel/preset-react',
       [
         '@babel/preset-env',
         {
           targets: {
-            node: 8,
+            node: 'current',
             browsers: ['> 0.5%', 'last 2 versions'],
           },
         },
@@ -27,23 +27,6 @@ module.exports = api => {
           regenerator: true,
         },
       ],
-    ],
-    overrides: [
-      {
-        test: /generator-jbrowse/,
-        presets: [
-          '@babel/preset-typescript',
-          'react-app',
-          [
-            '@babel/preset-env',
-            {
-              targets: {
-                node: 'current',
-              },
-            },
-          ],
-        ],
-      },
     ],
   }
 }
