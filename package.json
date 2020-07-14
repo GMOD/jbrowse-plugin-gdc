@@ -18,6 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/icons": "^4.9.1",
+    "@gmod/jbrowse-core": "^0.0.1-beta.1",
     "uuid": "^7.0.1"
   },
   "devDependencies": {
