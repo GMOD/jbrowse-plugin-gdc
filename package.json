@@ -1,0 +1,42 @@
+{
+  "name": "@gmod/jbrowse-plugin-gdc",
+  "version": "2.0.0",
+  "description": "JBrowse 2 GDC plugin",
+  "jbrowse-plugin": {
+    "name": "GDC"
+  },
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "cd ../..; jest packages/gdc",
+    "build": "cross-env NODE_ENV=production webpack",
+    "develop": "cross-env NODE_ENV=development webpack-dev-server"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Andrew Duncan",
+  "license": "MIT",
+  "dependencies": {
+    "@material-ui/icons": "^4.9.1",
+    "uuid": "^7.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@gmod/jbrowse-core": "^0.0.1-beta.1",
+    "@gmod/jbrowse-development-tools": "^0.0.1",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^9.1.2",
+    "cross-env": "^7.0.2",
+    "file-loader": "^6.0.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
