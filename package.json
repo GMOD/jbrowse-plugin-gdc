@@ -38,7 +38,7 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
-    "@gmod/jbrowse-development-tools": "^0.0.1-beta.17",
+    "@gmod/jbrowse-development-tools": "^0.0.1-beta.18",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "cross-env": "^7.0.2",
