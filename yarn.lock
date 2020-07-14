@@ -1157,10 +1157,10 @@
     util.promisify "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-"@gmod/jbrowse-core@^0.0.1-beta.16":
-  version "0.0.1-beta.16"
-  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-core/-/jbrowse-core-0.0.1-beta.16.tgz#b49aaf82d7d5841d0064a5741723aed6602d28eb"
-  integrity sha512-zpx6XAmxZkUx2h9e15+6rQCzmqRuAWEBQ3F+CLdNisDcQMvbDUpollKOIYXr0mzeh+E+orPA5soLPUsq3/4FPg==
+"@gmod/jbrowse-core@^0.0.1-beta.17":
+  version "0.0.1-beta.17"
+  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-core/-/jbrowse-core-0.0.1-beta.17.tgz#072f5dc043f8ee8c3a8086ba29d42ba263a1b6ad"
+  integrity sha512-z/tk0tCn6o5xM5RX3HJruEYQTmfhncgkVUgEysPjhEQvCnEU/mb59h53LEZRgTXl4gg6i7Mcha/IkgprzAMxdg==
   dependencies:
     "@librpc/web" rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0
     "@material-ui/icons" "^4.0.0"
@@ -1189,10 +1189,10 @@
     util.promisify "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-"@gmod/jbrowse-development-tools@^0.0.1-beta.16":
-  version "0.0.1-beta.16"
-  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-development-tools/-/jbrowse-development-tools-0.0.1-beta.16.tgz#2aa94282acbd47706e36bed74d5ff34c72feb349"
-  integrity sha512-mN+SFV2LpzmD0U5jNG6lwNGbbn9VUy/EaG/3/ru2Fdx/pGszqxpzckIojZ/JsbfCNkKxhNXBldORExHnI+8x/A==
+"@gmod/jbrowse-development-tools@^0.0.1-beta.17":
+  version "0.0.1-beta.17"
+  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-development-tools/-/jbrowse-development-tools-0.0.1-beta.17.tgz#f465d8977b51c236949b2a5c0a4140bcf15b0feb"
+  integrity sha512-kROtuxQadpAVO6IdhUNpxR6oneBjTtb2x1ixjCsrUTfXvtJZuwZ+rw/TsRdseZs7Mbc3sOYZCBaxVC4jRuN7qQ==
   dependencies:
     "@gmod/jbrowse-core" "^0.0.1-beta.14"
     "@types/webpack" "^4.41.18"
