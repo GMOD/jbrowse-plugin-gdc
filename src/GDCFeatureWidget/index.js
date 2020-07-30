@@ -3,11 +3,11 @@ import { ElementId } from '@gmod/jbrowse-core/util/types/mst'
 
 export default jbrowse => {
   const { types } = jbrowse.jbrequire('mobx-state-tree')
-  const configSchema = ConfigurationSchema('GDCFeatureDrawerWidget', {})
+  const configSchema = ConfigurationSchema('GDCFeatureWidget', {})
   const stateModel = types
-    .model('GDCFeatureDrawerWidget', {
+    .model('GDCFeatureWidget', {
       id: ElementId,
-      type: types.literal('GDCFeatureDrawerWidget'),
+      type: types.literal('GDCFeatureWidget'),
       featureData: types.frozen({}),
     })
     .actions(self => ({
@@ -19,7 +19,7 @@ export default jbrowse => {
       },
     }))
 
-  const ReactComponent = jbrowse.jbrequire(require('./GDCFeatureDrawerWidget'))
+  const ReactComponent = jbrowse.jbrequire(require('./GDCFeatureWidget'))
 
   return { configSchema, stateModel, ReactComponent }
 }

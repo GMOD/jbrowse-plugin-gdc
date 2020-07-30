@@ -1,8 +1,8 @@
 import type PluginManager from '@gmod/jbrowse-core/PluginManager'
 import Plugin from '@gmod/jbrowse-core/Plugin'
 
-import GDCFilterDrawerWidget from './GDCFilterDrawerWidget'
-import GDCFeatureDrawerWidgetF from './GDCFeatureDrawerWidget'
+import GDCFilterWidget from './GDCFilterWidget'
+import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCTrack from './GDCTrack'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
@@ -16,12 +16,11 @@ export default class extends Plugin {
       pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/AdapterType']
     const TrackType =
       pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/TrackType']
-    const DrawerWidgetType =
+    const WidgetType =
       pluginManager.lib[
-        '@gmod/jbrowse-core/pluggableElementTypes/DrawerWidgetType'
+        '@gmod/jbrowse-core/pluggableElementTypes/WidgetType'
       ]
 
-    const { lazy } = pluginManager.lib.react
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
@@ -41,34 +40,34 @@ export default class extends Plugin {
       })
     })
 
-    pluginManager.addDrawerWidgetType(() => {
+    pluginManager.addWidgetType(() => {
       const {
         configSchema,
         HeadingComponent,
         ReactComponent,
         stateModel,
-      } = pluginManager.load(GDCFilterDrawerWidget)
+      } = pluginManager.load(GDCFilterWidget)
 
-      return new DrawerWidgetType({
-        name: 'GDCFilterDrawerWidget',
+      return new WidgetType({
+        name: 'GDCFilterWidget',
         HeadingComponent,
         configSchema,
         stateModel,
-        LazyReactComponent: ReactComponent,
+        ReactComponent,
       })
     })
 
-    pluginManager.addDrawerWidgetType(() => {
+    pluginManager.addWidgetType(() => {
       const { configSchema, stateModel, ReactComponent } = pluginManager.load(
-        GDCFeatureDrawerWidgetF,
+        GDCFeatureWidgetF,
       )
 
-      return new DrawerWidgetType({
-        name: 'GDCFeatureDrawerWidget',
+      return new WidgetType({
+        name: 'GDCFeatureWidget',
         heading: 'Feature Details',
         configSchema,
         stateModel,
-        LazyReactComponent: ReactComponent,
+        ReactComponent,
       })
     })
   }

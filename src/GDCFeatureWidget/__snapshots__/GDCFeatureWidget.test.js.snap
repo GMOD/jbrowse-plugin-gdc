@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GDCTrack drawer widget renders gene with just the required model elements 1`] = `
+exports[`GDCTrack widget renders gene with just the required model elements 1`] = `
 <div
   class="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
-  data-testid="variant-side-drawer"
+  data-testid="variant-widget"
 >
   <div
     class="MuiPaper-root makeStyles-paperRoot MuiPaper-elevation1 MuiPaper-rounded"
@@ -25,7 +25,7 @@ exports[`GDCTrack drawer widget renders gene with just the required model elemen
           <span
             class="MuiTypography-root MuiTypography-button"
           >
-             
+
             Primary data
           </span>
         </div>
@@ -81,7 +81,7 @@ exports[`GDCTrack drawer widget renders gene with just the required model elemen
                     class="makeStyles-fieldValue"
                   >
                     <div>
-                      3:196596..409417 
+                      3:196596..409417
                     </div>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ exports[`GDCTrack drawer widget renders gene with just the required model elemen
           <span
             class="MuiTypography-root MuiTypography-button"
           >
-             
+
             Attributes
           </span>
         </div>
@@ -419,10 +419,10 @@ exports[`GDCTrack drawer widget renders gene with just the required model elemen
 </div>
 `;
 
-exports[`GDCTrack drawer widget renders mutation with just the required model elements 1`] = `
+exports[`GDCTrack widget renders mutation with just the required model elements 1`] = `
 <div
   class="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
-  data-testid="variant-side-drawer"
+  data-testid="variant-widget"
 >
   <div
     class="MuiPaper-root makeStyles-paperRoot MuiPaper-elevation1 MuiPaper-rounded"
@@ -444,7 +444,7 @@ exports[`GDCTrack drawer widget renders mutation with just the required model el
           <span
             class="MuiTypography-root MuiTypography-button"
           >
-             
+
             Primary data
           </span>
         </div>
@@ -500,7 +500,7 @@ exports[`GDCTrack drawer widget renders mutation with just the required model el
                     class="makeStyles-fieldValue"
                   >
                     <div>
-                      chr3:377918..377918 
+                      chr3:377918..377918
                     </div>
                   </div>
                 </div>
@@ -562,7 +562,7 @@ exports[`GDCTrack drawer widget renders mutation with just the required model el
           <span
             class="MuiTypography-root MuiTypography-button"
           >
-             
+
             Attributes
           </span>
         </div>
