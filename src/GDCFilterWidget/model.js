@@ -26,9 +26,9 @@ export default jbrowse => {
   })
 
   return types
-    .model('GDCFilterDrawerWidget', {
+    .model('GDCFilterWidget', {
       id: ElementId,
-      type: types.literal('GDCFilterDrawerWidget'),
+      type: types.literal('GDCFilterWidget'),
       target: types.safeReference(jbrowse.pluggableConfigSchemaType('track')),
       filters: types.array(Filter),
       colourBy: types.map(ColourBy),

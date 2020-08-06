@@ -13,7 +13,7 @@ export default (jbrowse: PluginManager) => {
   const { observer } = jbrowse.lib['mobx-react']
 
   return {
-    configSchema: ConfigurationSchema('GDCFilterDrawerWidget', {}),
+    configSchema: ConfigurationSchema('GDCFilterWidget', {}),
     ReactComponent,
     stateModel: jbrowse.load(stateModel),
     HeadingComponent: observer(() => {

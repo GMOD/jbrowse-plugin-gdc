@@ -3,12 +3,12 @@ import { render } from '@testing-library/react'
 import { observable } from 'mobx'
 
 import PluginManager from '@gmod/jbrowse-core/PluginManager'
-import GDCFeatureDetailsF from './GDCFeatureDrawerWidget'
+import GDCFeatureDetailsF from './GDCFeatureWidget'
 
 const pm = new PluginManager([])
 const GDCFeatureDetails = pm.load(GDCFeatureDetailsF)
 
-describe('GDCTrack drawer widget', () => {
+describe('GDCTrack widget', () => {
   it('renders mutation with just the required model elements', () => {
     const f = observable({
       featureData: {

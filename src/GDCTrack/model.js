@@ -26,22 +26,22 @@ export default jbrowse => {
     .actions(self => ({
       openFilterConfig() {
         const session = getSession(self)
-        const editor = session.addDrawerWidget(
-          'GDCFilterDrawerWidget',
+        const editor = session.addWidget(
+          'GDCFilterWidget',
           'gdcFilter',
           { target: self.configuration },
         )
-        session.showDrawerWidget(editor)
+        session.showWidget(editor)
       },
 
       selectFeature(feature) {
         const session = getSession(self)
-        const featureWidget = session.addDrawerWidget(
-          'GDCFeatureDrawerWidget',
+        const featureWidget = session.addWidget(
+          'GDCFeatureWidget',
           'gdcFeature',
           { featureData: feature.toJSON() },
         )
-        session.showDrawerWidget(featureWidget)
+        session.showWidget(featureWidget)
         session.setSelection(feature)
       },
     }))
