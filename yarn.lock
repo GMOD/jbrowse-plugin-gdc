@@ -1201,7 +1201,7 @@
     util.promisify "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-"@gmod/jbrowse-development-tools@^0.0.1-beta.18":
+"@gmod/jbrowse-development-tools@^0.0.1-beta.24":
   version "0.0.1-beta.24"
   resolved "https://registry.yarnpkg.com/@gmod/jbrowse-development-tools/-/jbrowse-development-tools-0.0.1-beta.24.tgz#83957ba60f321a4e83837a678345af0a23e3c2b3"
   integrity sha512-dMlWcJ3n1QXkrcnedB2Pbk7yS4OdlmDShH7lePbmDcmI9MuVOkTHOhe3p351cbINQOntBmR9v7ctHVH9eUkTdQ==
@@ -1224,9 +1224,8 @@
   resolved "https://registry.yarnpkg.com/@librpc/ee/-/ee-1.0.4.tgz#ce73a36279dc4cf93efa43f7e3564ec165947522"
   integrity sha512-vhPlbRwAKQC80h0k74tsOkMKIidZtqlFSOHRzCvC8n7Va9rzMDwpG26Pm84dAt0ZuGK0g1UEfPzxDiYo9ZQBrg==
 
-"@librpc/web@github:rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0", "@librpc/web@rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0":
+"@librpc/web@rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0":
   version "1.1.0"
-  uid "737bb9706762a52a87169a12c9b59fb241febab0"
   resolved "https://codeload.github.com/rbuels/librpc-web/tar.gz/737bb9706762a52a87169a12c9b59fb241febab0"
   dependencies:
     "@librpc/ee" "1.0.4"

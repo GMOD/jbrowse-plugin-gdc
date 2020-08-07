@@ -24,7 +24,7 @@ export default jbrowse => {
   const { useState, useEffect } = React
 
   const { BaseFeatureDetails, BaseCard } = jbrowse.jbrequire(
-    '@gmod/jbrowse-core/BaseFeatureDrawerWidget/BaseFeatureDetail',
+    '@gmod/jbrowse-core/BaseFeatureWidget/BaseFeatureDetail',
   )
 
   const useStyles = makeStyles(() => ({
@@ -574,7 +574,7 @@ export default jbrowse => {
   }
 
   /**
-   * Extended feature detail drawer for GDC features
+   * Extended feature detail widget for GDC features
    * @param {*} props
    */
   function GDCFeatureDetails(props) {
@@ -593,7 +593,7 @@ export default jbrowse => {
       ...rest
     } = feat
     return (
-      <Paper className={classes.root} data-testid="variant-side-drawer">
+      <Paper className={classes.root} data-testid="variant-widget">
         <BaseFeatureDetails feature={rest} {...props} />
         <Divider />
         {feat.geneId && <GeneExternalLinks feature={feat} />}
