@@ -2,7 +2,7 @@ import React from 'react'
 import { render } from '@testing-library/react'
 import { observable } from 'mobx'
 
-import PluginManager from '@gmod/jbrowse-core/PluginManager'
+import PluginManager from '@jbrowse/core/PluginManager'
 import GDCFeatureDetailsF from './GDCFeatureWidget'
 
 const pm = new PluginManager([])

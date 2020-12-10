@@ -1,7 +1,7 @@
 import {
   SimpleFeatureSerialized,
   Feature,
-} from '@gmod/jbrowse-core/util/simpleFeature'
+} from '@jbrowse/core/util/simpleFeature'
 
 interface FeatureData {
   [key: string]: unknown

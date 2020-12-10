@@ -1,5 +1,5 @@
-import type PluginManager from '@gmod/jbrowse-core/PluginManager'
-import Plugin from '@gmod/jbrowse-core/Plugin'
+import type PluginManager from '@jbrowse/core/PluginManager'
+import Plugin from '@jbrowse/core/Plugin'
 
 import GDCFilterWidget from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
@@ -13,12 +13,12 @@ export default class extends Plugin {
 
   install(pluginManager: PluginManager) {
     const AdapterType =
-      pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/AdapterType']
+      pluginManager.lib['@jbrowse/core/pluggableElementTypes/AdapterType']
     const TrackType =
-      pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/TrackType']
+      pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib[
-        '@gmod/jbrowse-core/pluggableElementTypes/WidgetType'
+        '@jbrowse/core/pluggableElementTypes/WidgetType'
       ]
 
     pluginManager.addAdapterType(

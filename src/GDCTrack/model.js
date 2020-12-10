@@ -1,6 +1,6 @@
-import { ConfigurationReference } from '@gmod/jbrowse-core/configuration'
-import { getParentRenderProps } from '@gmod/jbrowse-core/util/tracks'
-import { getSession } from '@gmod/jbrowse-core/util'
+import { ConfigurationReference } from '@jbrowse/core/configuration'
+import { getParentRenderProps } from '@jbrowse/core/util/tracks'
+import { getSession } from '@jbrowse/core/util'
 import FilterListIcon from '@material-ui/icons/FilterList'
 
 export default jbrowse => {

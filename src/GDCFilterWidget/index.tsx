@@ -1,4 +1,4 @@
-import PluginManager from '@gmod/jbrowse-core/PluginManager'
+import PluginManager from '@jbrowse/core/PluginManager'
 import stateModel from './model'
 import GDCFilterComponentF from './components/GDCFilterComponent'
 
@@ -7,7 +7,7 @@ export default (jbrowse: PluginManager) => {
 
   const ReactComponent = jbrowse.load(GDCFilterComponentF)
   const { ConfigurationSchema } = jbrowse.lib[
-    '@gmod/jbrowse-core/configuration'
+    '@jbrowse/core/configuration'
   ]
 
   const { observer } = jbrowse.lib['mobx-react']

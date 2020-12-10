@@ -1,4 +1,4 @@
-import { ConfigurationSchema } from '@gmod/jbrowse-core/configuration'
+import { ConfigurationSchema } from '@jbrowse/core/configuration'
 
 export default pluginManager => {
     const { BaseTrackConfig: LinearGenomeTrackConfig }  = pluginManager.getPlugin('LinearGenomeViewPlugin').exports

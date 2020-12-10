@@ -18,7 +18,7 @@
   "author": "Andrew Duncan",
   "license": "MIT",
   "dependencies": {
-    "@gmod/jbrowse-core": "^0.0.1-beta.17",
+    "@jbrowse/core": "^1.0.2",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "rxjs": "^6.6.0",
@@ -38,7 +38,7 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
-    "@gmod/jbrowse-development-tools": "^0.0.1-beta.24",
+    "@jbrowse/development-tools": "^1.0.2",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "cross-env": "^7.0.2",
