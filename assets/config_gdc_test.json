@@ -104,46 +104,41 @@
     }
   ],
   "defaultSession": {
-    "name": "New Session"
-  },
-  "savedSessions": [
-    {
-      "name": "Human Example (hg38)",
-      "width": 1850,
-      "drawerWidth": 384,
-      "views": [
-        {
-          "id": "MiDMyyWpp",
-          "type": "LinearGenomeView",
-          "width": 800,
-          "displayName": "GDC demo",
-          "trackSelectorType": "hierarchical",
-          "offsetPx": 0,
-          "bpPerPx": 100,
-          "displayedRegions": [
-            {
-              "refName": "3",
-              "start": 0,
-              "end": 186700647,
-              "assemblyName": "hg38"
-            }
-          ],
-          "tracks": [
-            {
-              "type": "BasicTrack",
-              "configuration": "gencode_nclist_hg38",
-              "height": 100
-            },
-            {
-              "type": "GDCTrack",
-              "configuration": "gdc_plugin_track",
-              "height": 100
-            }
-          ],
-          "controlsWidth": 120,
-          "minimumBlockWidth": 20
-        }
-      ]
-    }
-  ]
+    "name": "Human Example (hg38)",
+    "width": 1850,
+    "drawerWidth": 384,
+    "views": [
+      {
+        "id": "MiDMyyWpp",
+        "type": "LinearGenomeView",
+        "width": 800,
+        "displayName": "GDC demo",
+        "trackSelectorType": "hierarchical",
+        "offsetPx": 0,
+        "bpPerPx": 100,
+        "displayedRegions": [
+          {
+            "refName": "3",
+            "start": 0,
+            "end": 186700647,
+            "assemblyName": "hg38"
+          }
+        ],
+        "tracks": [
+          {
+            "type": "BasicTrack",
+            "configuration": "gencode_nclist_hg38",
+            "height": 100
+          },
+          {
+            "type": "GDCTrack",
+            "configuration": "gdc_plugin_track",
+            "height": 100
+          }
+        ],
+        "controlsWidth": 120,
+        "minimumBlockWidth": 20
+      }
+    ]
+  }
 }
