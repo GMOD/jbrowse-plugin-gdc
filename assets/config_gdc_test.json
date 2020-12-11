@@ -127,8 +127,8 @@
         "width": 800,
         "displayName": "GDC demo",
         "trackSelectorType": "hierarchical",
-        "offsetPx": 0,
-        "bpPerPx": 100,
+        "offsetPx": 12490000,
+        "bpPerPx": 10,
         "displayedRegions": [
           {
             "refName": "3",
@@ -145,7 +145,7 @@
               {
                 "type":"LinearBasicDisplay",
                 "configuration":"gencode_nclist_hg38_linear",
-                "height":100
+                "height":150
               }
             ]
           },
