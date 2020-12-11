@@ -87,6 +87,7 @@ export async function getGeneProjectsAsync(featureId) {
     {
       method: 'POST',
       body: JSON.stringify(query),
+      headers: { 'Content-Type': 'application/json' },
     },
   )
   const result = await response.json()
@@ -135,6 +136,7 @@ export async function getMutationProjectsAsync(featureId) {
     {
       method: 'POST',
       body: JSON.stringify(query),
+      headers: { 'Content-Type': 'application/json' },
     },
   )
   const result = await response.json()
