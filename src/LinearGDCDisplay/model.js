@@ -8,18 +8,17 @@ export default jbrowse => {
 
   const configSchema = jbrowse.jbrequire(require('./configSchema'))
 
-  const { blockBasedTrackModel, BlockBasedTrack } = jbrowse.getPlugin(
+  const { BaseLinearDisplay } = jbrowse.getPlugin(
     'LinearGenomeViewPlugin',
   ).exports
 
   return types
     .compose(
-      'GDCTrack',
-      blockBasedTrackModel,
+      'LinearGDCDisplay',
+      BaseLinearDisplay,
       types.model({
-        type: types.literal('GDCTrack'),
+        type: types.literal('LinearGDCDisplay'),
         configuration: ConfigurationReference(configSchema),
-        height: 100,
       }),
     )
 
@@ -29,7 +28,7 @@ export default jbrowse => {
         const editor = session.addWidget(
           'GDCFilterWidget',
           'gdcFilter',
-          { target: self.configuration },
+          { target: self.parentTrack.configuration },
         )
         session.showWidget(editor)
       },
@@ -59,7 +58,7 @@ export default jbrowse => {
         return self.configuration.renderer.type
       },
 
-      get menuOptions() {
+      get trackMenuItems() {
         return [
           {
             label: 'Filter',
@@ -68,8 +67,5 @@ export default jbrowse => {
           },
         ]
       },
-    }))
-    .volatile(() => ({
-      ReactComponent: BlockBasedTrack,
     }))
 }

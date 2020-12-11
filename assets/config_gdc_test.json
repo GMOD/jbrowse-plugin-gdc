@@ -26,9 +26,6 @@
           "gziLocation": {
             "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi"
           }
-        },
-        "rendering": {
-          "type": "DivSequenceRenderer"
         }
       },
       "refNameAliases": {
@@ -51,21 +48,31 @@
       "adapter": {
         "type": "GDCAdapter"
       },
-      "renderer": {
-        "color": "function(feature) { const filteredConsequences = feature.get('consequence').hits.edges.filter(cons => cons.node.transcript.is_canonical); const impact = filteredConsequences[0].node.transcript.annotation.vep_impact; switch(impact) {case 'LOW': return 'blue'; break;case 'MODIFIER': return 'goldenrod'; break;case 'MODERATE': return 'orange'; break;case 'HIGH': return 'red'; break;case '': return 'lightgrey'; break;}}",
-        "label": "function(feature) { return feature.get('genomicDnaChange') }",
-        "type": "SvgFeatureRenderer"
-      }
+      "displays": [
+        {
+          "type": "LinearGDCDisplay",
+          "displayId": "gdc_plugin_track_linear",
+          "renderer": {
+            "color1": "function(feature) { const filteredConsequences = feature.get('consequence').hits.edges.filter(cons => cons.node.transcript.is_canonical); const impact = filteredConsequences[0].node.transcript.annotation.vep_impact; switch(impact) {case 'LOW': return 'blue'; break;case 'MODIFIER': return 'goldenrod'; break;case 'MODERATE': return 'orange'; break;case 'HIGH': return 'red'; break;case '': return 'lightgrey'; break;}}",
+            "labels": {
+              "name": "function(feature) { return feature.get('genomicDnaChange') }"
+            },
+            "type": "SvgFeatureRenderer"
+          }
+        }
+      ]
     },
     {
-      "type": "BasicTrack",
+      "type": "FeatureTrack",
       "trackId": "gencode_nclist_hg38",
       "name": "Gencode v32",
       "assemblyNames": ["hg38"],
       "category": ["Annotation"],
       "adapter": {
         "type": "NCListAdapter",
-        "rootUrlTemplate": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/gencode/{refseq}/trackData.jsonz",
+        "rootUrlTemplate": {
+          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/gencode/{refseq}/trackData.jsonz"
+        },
         "refNames": [
           "chr1",
           "chr2",
@@ -95,12 +102,18 @@
           "chrMT"
         ]
       },
-      "renderer": {
-        "type": "SvgFeatureRenderer",
-        "labels": {
-          "description": "function(feature) { return feature.get('gene_name') }"
+      "displays": [
+        {
+          "type": "LinearBasicDisplay",
+          "displayId": "gencode_nclist_hg38_linear",
+          "renderer": {
+            "type": "SvgFeatureRenderer",
+            "labels": {
+              "description": "function(feature) { return feature.get('gene_name') }"
+            }
+          }
         }
-      }
+      ]
     }
   ],
   "defaultSession": {
@@ -126,14 +139,25 @@
         ],
         "tracks": [
           {
-            "type": "BasicTrack",
-            "configuration": "gencode_nclist_hg38",
-            "height": 100
+            "type":"FeatureTrack",
+            "configuration":"gencode_nclist_hg38",
+            "displays":[
+              {
+                "type":"LinearBasicDisplay",
+                "configuration":"gencode_nclist_hg38_linear",
+                "height":100
+              }
+            ]
           },
           {
-            "type": "GDCTrack",
-            "configuration": "gdc_plugin_track",
-            "height": 100
+            "type":"GDCTrack",
+            "configuration":"gdc_plugin_track",
+            "displays":[
+              {
+                "type":"LinearGDCDisplay",
+                "configuration":"gdc_plugin_track_linear"
+              }
+            ]
           }
         ],
         "controlsWidth": 120,
