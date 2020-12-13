@@ -1,11 +1,8 @@
 {
-  "configuration": {
-    "useUrlSession": true
-  },
   "plugins": [
     {
-        "name": "GDC",
-        "url": "http://localhost:9000/plugin.js"
+      "name": "GDC",
+      "url": "http://localhost:9000/plugin.js"
     }
   ],
   "assemblies": [
@@ -139,23 +136,23 @@
         ],
         "tracks": [
           {
-            "type":"FeatureTrack",
-            "configuration":"gencode_nclist_hg38",
-            "displays":[
+            "type": "FeatureTrack",
+            "configuration": "gencode_nclist_hg38",
+            "displays": [
               {
-                "type":"LinearBasicDisplay",
-                "configuration":"gencode_nclist_hg38_linear",
-                "height":150
+                "type": "LinearBasicDisplay",
+                "configuration": "gencode_nclist_hg38_linear",
+                "height": 150
               }
             ]
           },
           {
-            "type":"GDCTrack",
-            "configuration":"gdc_plugin_track",
-            "displays":[
+            "type": "GDCTrack",
+            "configuration": "gdc_plugin_track",
+            "displays": [
               {
-                "type":"LinearGDCDisplay",
-                "configuration":"gdc_plugin_track_linear"
+                "type": "LinearGDCDisplay",
+                "configuration": "gdc_plugin_track_linear"
               }
             ]
           }
