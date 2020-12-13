@@ -4,12 +4,14 @@ export default pluginManager => {
   const { makeStyles } = pluginManager.lib['@material-ui/core/styles']
   const { observer } = pluginManager.lib['mobx-react']
   const React = pluginManager.lib.react
-  const Typography = pluginManager.lib['@material-ui/core/Typography']
-  const MenuItem = pluginManager.lib['@material-ui/core/MenuItem']
-  const FormControl = pluginManager.lib['@material-ui/core/FormControl']
-  const Select = pluginManager.lib['@material-ui/core/Select']
-  const List = pluginManager.lib['@material-ui/core/List']
-  const ListItem = pluginManager.lib['@material-ui/core/ListItem']
+  const {
+    Typography,
+    MenuItem,
+    FormControl,
+    Select,
+    List,
+    ListItem,
+  } = pluginManager.lib['@material-ui/core']
   const Tooltip = pluginManager.lib['@material-ui/core/Tooltip']
 
   const useStyles = makeStyles(theme => ({

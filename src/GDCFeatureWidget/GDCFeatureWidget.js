@@ -24,7 +24,7 @@ export default jbrowse => {
   const { useState, useEffect } = React
 
   const { BaseFeatureDetails, BaseCard } = jbrowse.jbrequire(
-    '@gmod/jbrowse-core/BaseFeatureWidget/BaseFeatureDetail',
+    '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail',
   )
 
   const useStyles = makeStyles(() => ({

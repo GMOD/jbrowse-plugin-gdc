@@ -1,9 +1,12 @@
-import type PluginManager from '@gmod/jbrowse-core/PluginManager'
-import Plugin from '@gmod/jbrowse-core/Plugin'
+import { ConfigurationSchema } from '@jbrowse/core/configuration'
+import type PluginManager from '@jbrowse/core/PluginManager'
+import Plugin from '@jbrowse/core/Plugin'
+import DisplayType from '@jbrowse/core/pluggableElementTypes/DisplayType'
+import { createBaseTrackConfig, createBaseTrackModel } from '@jbrowse/core/pluggableElementTypes/models'
 
 import GDCFilterWidget from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
-import GDCTrack from './GDCTrack'
+import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
@@ -13,13 +16,14 @@ export default class extends Plugin {
 
   install(pluginManager: PluginManager) {
     const AdapterType =
-      pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/AdapterType']
+      pluginManager.lib['@jbrowse/core/pluggableElementTypes/AdapterType']
     const TrackType =
-      pluginManager.lib['@gmod/jbrowse-core/pluggableElementTypes/TrackType']
+      pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib[
-        '@gmod/jbrowse-core/pluggableElementTypes/WidgetType'
+        '@jbrowse/core/pluggableElementTypes/WidgetType'
       ]
+    const { BaseLinearDisplayComponent }  = pluginManager.getPlugin('LinearGenomeViewPlugin').exports
 
     pluginManager.addAdapterType(
       () =>
@@ -31,12 +35,34 @@ export default class extends Plugin {
     )
 
     pluginManager.addTrackType(() => {
-      const { configSchema, stateModel } = pluginManager.load(GDCTrack)
+      const configSchema = ConfigurationSchema(
+        'GDCTrack',
+        {},
+        {
+          baseConfiguration: createBaseTrackConfig(pluginManager),
+          explicitIdentifier: 'trackId',
+        },
+      )
       return new TrackType({
         name: 'GDCTrack',
-        compatibleView: 'LinearGenomeView',
+        configSchema,
+        stateModel: createBaseTrackModel(
+          pluginManager,
+          'GDCTrack',
+          configSchema,
+        ),
+      })
+    })
+
+    pluginManager.addDisplayType(() => {
+      const { configSchema, stateModel } = pluginManager.load(LinearGDCDisplay)
+      return new DisplayType({
+        name: 'LinearGDCDisplay',
         configSchema,
         stateModel,
+        trackType: 'GDCTrack',
+        viewType: 'LinearGenomeView',
+        ReactComponent: BaseLinearDisplayComponent,
       })
     })
 

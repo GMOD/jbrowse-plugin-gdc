@@ -1137,10 +1137,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
-"@gmod/jbrowse-core@^0.0.1-beta.17":
-  version "0.0.1-beta.17"
-  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-core/-/jbrowse-core-0.0.1-beta.17.tgz#072f5dc043f8ee8c3a8086ba29d42ba263a1b6ad"
-  integrity sha512-z/tk0tCn6o5xM5RX3HJruEYQTmfhncgkVUgEysPjhEQvCnEU/mb59h53LEZRgTXl4gg6i7Mcha/IkgprzAMxdg==
+"@jbrowse/core@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@jbrowse/core/-/core-1.0.2.tgz#439a52ecdc5c3968c222e0e67a3813ed6c470eea"
+  integrity sha512-4xtosbn4Bh6JZgU5U3VOtwLbsAKkMVwqlVEx0To5Az/u+zLttlV3Ct7Xj6ugv0wsi+GQQbmRCS7Xsot9060epw==
   dependencies:
     "@librpc/web" rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0
     "@material-ui/icons" "^4.0.0"
@@ -1148,6 +1148,7 @@
     base64-js "^1.3.0"
     canvas "^2.5.0"
     clsx "^1.0.4"
+    copy-to-clipboard "^3.3.1"
     deep-equal "^1.1.0"
     deepmerge "^4.2.2"
     dompurify "^2.0.11"
@@ -1163,50 +1164,17 @@
     pako "^1.0.10"
     react-error-boundary "^1.2.5"
     react-measure "^2.3.0"
-    react-use-event-listener "^1.1.1"
     shortid "^2.2.13"
     tenacious-fetch "^2.1.0"
     util.promisify "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-"@gmod/jbrowse-core@^0.0.1-beta.19":
-  version "0.0.1-beta.19"
-  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-core/-/jbrowse-core-0.0.1-beta.19.tgz#48e7ed0890e509259b97ed8b08b0d9ad988972a1"
-  integrity sha512-uq+skQOTnZNXKlWo+FvSaNdTprzSNVVd1yQW9PbBl2HVT8w2pjde7slJ3YOegXZ3P5zuMw/LBQN+w+mdoTTkDQ==
+"@jbrowse/development-tools@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@jbrowse/development-tools/-/development-tools-1.0.2.tgz#c14681c430153331a0a758b5e1714f7043bc8b51"
+  integrity sha512-MbsW57oxnkQUz4vXiIH77hUIIYxrrKD0gN+1ywH+fllHA4ikxVyxE8joh5+duM1sD0NNQUNjLLUHyCMkhuy7xQ==
   dependencies:
-    "@librpc/web" rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0
-    "@material-ui/icons" "^4.0.0"
-    abortable-promise-cache "^1.1.3"
-    base64-js "^1.3.0"
-    canvas "^2.5.0"
-    clsx "^1.0.4"
-    deep-equal "^1.1.0"
-    deepmerge "^4.2.2"
-    dompurify "^2.0.11"
-    escape-html "^1.0.3"
-    file-uri-to-path "^1.0.0"
-    generic-filehandle "^2.0.1"
-    http-range-fetcher "^1.2.2"
-    is-object "^1.0.1"
-    json-stable-stringify "^1.0.1"
-    load-script2 "^2.0.5"
-    object-hash "^1.3.1"
-    object.fromentries "^2.0.0"
-    pako "^1.0.10"
-    react-error-boundary "^1.2.5"
-    react-measure "^2.3.0"
-    react-use-event-listener "^1.1.1"
-    shortid "^2.2.13"
-    tenacious-fetch "^2.1.0"
-    util.promisify "^1.0.0"
-    whatwg-fetch "^3.0.0"
-
-"@gmod/jbrowse-development-tools@^0.0.1-beta.24":
-  version "0.0.1-beta.24"
-  resolved "https://registry.yarnpkg.com/@gmod/jbrowse-development-tools/-/jbrowse-development-tools-0.0.1-beta.24.tgz#83957ba60f321a4e83837a678345af0a23e3c2b3"
-  integrity sha512-dMlWcJ3n1QXkrcnedB2Pbk7yS4OdlmDShH7lePbmDcmI9MuVOkTHOhe3p351cbINQOntBmR9v7ctHVH9eUkTdQ==
-  dependencies:
-    "@gmod/jbrowse-core" "^0.0.1-beta.19"
+    "@jbrowse/core" "^1.0.2"
     "@types/copy-webpack-plugin" "^6.0.0"
     "@types/webpack" "^4.41.18"
     change-case "^4.1.1"
@@ -2652,6 +2620,13 @@ copy-descriptor@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
+
+copy-to-clipboard@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
+  integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
+  dependencies:
+    toggle-selection "^1.0.6"
 
 copy-webpack-plugin@^6.0.3:
   version "6.0.3"
@@ -6427,11 +6402,6 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-use-event-listener@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-use-event-listener/-/react-use-event-listener-1.1.1.tgz#d15d5f834f3135a439cbd8648b569a970b4a3e70"
-  integrity sha512-BD9i2B4FzAP9jYYPgLsjw8BwIrVHlA8jdMsbuwcHmaO81LOTVhM3XIAwwkPoHubI/gCL5o6ykjon53+ENnpNPg==
-
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -7515,6 +7485,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
+
+toggle-selection@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/toggle-selection/-/toggle-selection-1.0.6.tgz#6e45b1263f2017fa0acc7d89d78b15b8bf77da32"
+  integrity sha1-bkWxJj8gF/oKzH2J14sVuL932jI=
 
 toidentifier@1.0.0:
   version "1.0.0"

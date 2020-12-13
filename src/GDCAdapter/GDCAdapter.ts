@@ -1,16 +1,16 @@
-import { ObservableCreate } from '@gmod/jbrowse-core/util/rxjs'
-import { Region } from '@gmod/jbrowse-core/util/types'
-import { Feature } from '@gmod/jbrowse-core/util/simpleFeature'
+import { ObservableCreate } from '@jbrowse/core/util/rxjs'
+import { Region } from '@jbrowse/core/util/types'
+import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { Instance } from 'mobx-state-tree'
-import { readConfObject } from '@gmod/jbrowse-core/configuration'
-import PluginManager from '@gmod/jbrowse-core/PluginManager'
-import { BaseOptions } from '@gmod/jbrowse-core/data_adapters/BaseAdapter'
+import { readConfObject } from '@jbrowse/core/configuration'
+import PluginManager from '@jbrowse/core/PluginManager'
+import { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
 import GDCFeature from './GDCFeature'
 import MyConfigSchema from './configSchema'
 
 export default (pluginManager: PluginManager) => {
   const { BaseFeatureDataAdapter } = pluginManager.lib[
-    '@gmod/jbrowse-core/data_adapters/BaseAdapter'
+    '@jbrowse/core/data_adapters/BaseAdapter'
   ]
 
   class GDCAdapter extends BaseFeatureDataAdapter {

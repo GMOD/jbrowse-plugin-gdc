@@ -2,9 +2,9 @@
 const webpack = require('webpack')
 const {
   baseJBrowsePluginWebpackConfig,
-} = require('@gmod/jbrowse-development-tools')
+} = require('@jbrowse/development-tools')
 
 const package = require('./package.json')
 
-const config = baseJBrowsePluginWebpackConfig(webpack, __dirname, package)
+const config = baseJBrowsePluginWebpackConfig(__dirname, package)
 module.exports = config
