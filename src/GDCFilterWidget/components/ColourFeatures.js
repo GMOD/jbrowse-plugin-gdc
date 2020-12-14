@@ -81,7 +81,7 @@ export default jbrowse => {
         colourFunction = `function(feature) { return 'goldenrod' }`
       }
       // Set to function
-      schema.target.renderer.color1.set(colourFunction)
+      schema.target.displays[0].renderer.color1.set(colourFunction)
 
       // Set to colour array element
       schema.setColourBy(JSON.stringify(hlBy))

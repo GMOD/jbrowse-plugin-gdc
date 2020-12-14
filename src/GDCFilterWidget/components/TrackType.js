@@ -44,7 +44,7 @@ export default pluginManager => {
       schema.schema.target.adapter.featureType.set(event.target.value)
 
       // Set to function
-      schema.schema.target.renderer.color1.set(
+      schema.schema.target.displays[0].renderer.color1.set(
         `function(feature) { return 'goldenrod' }`,
       )
 
