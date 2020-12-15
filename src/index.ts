@@ -14,7 +14,7 @@ import LinearGDCDisplay from './LinearGDCDisplay'
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
 
-export default class extends Plugin {
+export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
 
   install(pluginManager: PluginManager) {
@@ -24,9 +24,10 @@ export default class extends Plugin {
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
-    const { BaseLinearDisplayComponent } = pluginManager.getPlugin(
+    const LGVPlugin = pluginManager.getPlugin(
       'LinearGenomeViewPlugin',
-    ).exports
+    ) as import('@jbrowse/plugin-linear-genome-view').default
+    const { BaseLinearDisplayComponent } = LGVPlugin.exports
 
     pluginManager.addAdapterType(
       () =>
