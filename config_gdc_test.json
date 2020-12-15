@@ -4,8 +4,8 @@
   },
   "plugins": [
     {
-        "name": "GDC",
-        "url": "http://localhost:9000/plugin.js"
+      "name": "GDC",
+      "url": "http://localhost:9000/dist/jbrowseplugingdc.umd.development.js"
     }
   ],
   "assemblies": [
@@ -32,7 +32,7 @@
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "GRCh38_RefSeq2UCSC.txt"
+            "uri": "assets/GRCh38_RefSeq2UCSC.txt"
           }
         }
       }
@@ -139,23 +139,23 @@
         ],
         "tracks": [
           {
-            "type":"FeatureTrack",
-            "configuration":"gencode_nclist_hg38",
-            "displays":[
+            "type": "FeatureTrack",
+            "configuration": "gencode_nclist_hg38",
+            "displays": [
               {
-                "type":"LinearBasicDisplay",
-                "configuration":"gencode_nclist_hg38_linear",
-                "height":150
+                "type": "LinearBasicDisplay",
+                "configuration": "gencode_nclist_hg38_linear",
+                "height": 150
               }
             ]
           },
           {
-            "type":"GDCTrack",
-            "configuration":"gdc_plugin_track",
-            "displays":[
+            "type": "GDCTrack",
+            "configuration": "gdc_plugin_track",
+            "displays": [
               {
-                "type":"LinearGDCDisplay",
-                "configuration":"gdc_plugin_track_linear"
+                "type": "LinearGDCDisplay",
+                "configuration": "gdc_plugin_track_linear"
               }
             ]
           }
