@@ -1,5 +1,8 @@
 import { v4 as uuidv4 } from 'uuid'
 import HelpIcon from '@material-ui/icons/Help'
+import FiltersF from './Filters'
+import ColourFeaturesF from './ColourFeatures'
+import TrackTypeF from './TrackType'
 
 import { ssmFacets, geneFacets, caseFacets } from './Utility'
 
@@ -11,9 +14,9 @@ export default jbrowse => {
   const React = jbrowse.lib.react
   const { useState, useEffect } = React
   const { Alert } = jbrowse.jbrequire('@material-ui/lab')
-  const { FilterList } = jbrowse.jbrequire(require('./Filters'))
-  const { HighlightFeature } = jbrowse.jbrequire(require('./ColourFeatures'))
-  const TrackType = jbrowse.jbrequire(require('./TrackType'))
+  const { FilterList } = jbrowse.jbrequire(FiltersF)
+  const { HighlightFeature } = jbrowse.jbrequire(ColourFeaturesF)
+  const TrackType = jbrowse.jbrequire(TrackTypeF)
 
   const useStyles = makeStyles(theme => ({
     root: {
