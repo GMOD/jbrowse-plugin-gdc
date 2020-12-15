@@ -33,7 +33,7 @@ export default class extends Plugin {
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
-          AdapterClass: pluginManager.load(GDCAdapterClass),
+          AdapterClass: GDCAdapterClass,
         }),
     )
 
