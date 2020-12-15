@@ -1,8 +1,11 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
-import type PluginManager from '@jbrowse/core/PluginManager'
+import PluginManager from '@jbrowse/core/PluginManager'
 import Plugin from '@jbrowse/core/Plugin'
 import DisplayType from '@jbrowse/core/pluggableElementTypes/DisplayType'
-import { createBaseTrackConfig, createBaseTrackModel } from '@jbrowse/core/pluggableElementTypes/models'
+import {
+  createBaseTrackConfig,
+  createBaseTrackModel,
+} from '@jbrowse/core/pluggableElementTypes/models'
 
 import GDCFilterWidget from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
@@ -20,10 +23,10 @@ export default class extends Plugin {
     const TrackType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
-      pluginManager.lib[
-        '@jbrowse/core/pluggableElementTypes/WidgetType'
-      ]
-    const { BaseLinearDisplayComponent }  = pluginManager.getPlugin('LinearGenomeViewPlugin').exports
+      pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
+    const { BaseLinearDisplayComponent } = pluginManager.getPlugin(
+      'LinearGenomeViewPlugin',
+    ).exports
 
     pluginManager.addAdapterType(
       () =>

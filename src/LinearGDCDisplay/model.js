@@ -25,11 +25,9 @@ export default jbrowse => {
     .actions(self => ({
       openFilterConfig() {
         const session = getSession(self)
-        const editor = session.addWidget(
-          'GDCFilterWidget',
-          'gdcFilter',
-          { target: self.parentTrack.configuration },
-        )
+        const editor = session.addWidget('GDCFilterWidget', 'gdcFilter', {
+          target: self.parentTrack.configuration,
+        })
         session.showWidget(editor)
       },
 
