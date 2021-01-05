@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "GDC",
-      "url": "http://localhost:9000/dist/jbrowseplugingdc.umd.development.js"
+      "url": "http://localhost:9000/dist/jbrowse-plugin-gdc.umd.development.js"
     }
   ],
   "assemblies": [

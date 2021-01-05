@@ -1,3 +1,8 @@
-**/coverage/**
-**/node_modules/**
-**/dist/**
+# Coverage directory used by tools like istanbul
+coverage
+
+# Dependency directories
+node_modules/
+
+# TSDX build / generate output
+dist
