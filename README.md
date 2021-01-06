@@ -40,7 +40,7 @@ Add to the "plugins" of your JBrowse Web config:
   "plugins": [
     {
       "name": "GDC",
-      "url": "https://unpkg.com/browse/@gmod/jbrowse-plugin-gdc/dist/jbrowse-plugin-gdc.umd.production.min.js"
+      "url": "https://unpkg.com/@gmod/jbrowse-plugin-gdc/dist/jbrowse-plugin-gdc.umd.production.min.js"
     }
   ]
 }
