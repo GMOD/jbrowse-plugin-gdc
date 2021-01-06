@@ -1,8 +1,11 @@
 {
+  "configuration": {
+    "useUrlSession": true
+  },
   "plugins": [
     {
       "name": "GDC",
-      "url": "http://localhost:9000/plugin.js"
+      "url": "http://localhost:9000/dist/jbrowse-plugin-gdc.umd.development.js"
     }
   ],
   "assemblies": [
@@ -29,7 +32,7 @@
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "GRCh38_RefSeq2UCSC.txt"
+            "uri": "assets/GRCh38_RefSeq2UCSC.txt"
           }
         }
       }

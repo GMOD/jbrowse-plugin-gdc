@@ -2,49 +2,65 @@
   "name": "@gmod/jbrowse-plugin-gdc",
   "version": "0.0.1-beta.1",
   "description": "JBrowse 2 GDC plugin",
+  "keywords": [
+    "jbrowse",
+    "jbrowse2",
+    "GDC"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/GMOD/jbrowse-plugin-gdc#readme",
+  "bugs": "https://github.com/GMOD/jbrowse-plugin-gdc/issues",
+  "repository": "github:GMOD/jbrowse-plugin-gdc",
+  "author": "Andrew Duncan",
+  "main": "dist/index.js",
+  "module": "dist/jbrowse-plugin-gdc.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "start": "tsdx watch --verbose --noClean --format umd --name JBrowsePluginGDC --onFirstSuccess \"yarn serve --cors --listen 9000 .\"",
+    "build": "tsdx build --format cjs,esm,umd --name JBrowsePluginGDC",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublishOnly": "yarn test",
+    "postinstall": "jbrowse-plugin-postinstall"
+  },
   "jbrowse-plugin": {
     "name": "GDC"
   },
-  "main": "src/index.ts",
-  "scripts": {
-    "test": "cd ../..; jest packages/gdc",
-    "build": "cross-env NODE_ENV=production webpack",
-    "build:dev": "cross-env NODE_ENV=development webpack",
-    "develop": "cross-env NODE_ENV=development webpack-dev-server"
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all"
   },
-  "files": [
-    "dist"
-  ],
-  "author": "Andrew Duncan",
-  "license": "MIT",
   "dependencies": {
-    "@jbrowse/core": "^1.0.2",
-    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "rxjs": "^6.6.0",
     "uuid": "^7.0.1"
   },
   "peerDependencies": {
-    "mobx": "^5.15.4",
-    "mobx-react": "^6.2.2",
-    "mobx-state-tree": "^3.17.2"
+    "@jbrowse/core": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-proposal-export-default-from": "^7.10.4",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
-    "@babel/preset-typescript": "^7.10.4",
-    "@jbrowse/development-tools": "^1.0.2",
-    "babel-loader": "^8.1.0",
-    "babel-preset-react-app": "^9.1.2",
-    "cross-env": "^7.0.2",
-    "file-loader": "^6.0.0",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
-  }
+    "@jbrowse/core": "^1.0.3",
+    "@jbrowse/development-tools": "^1.0.3",
+    "@jbrowse/plugin-linear-genome-view": "^1.0.0",
+    "@material-ui/core": "^4.9.13",
+    "@material-ui/lab": "^4.0.0-alpha.45",
+    "@types/react": "^17.0.0",
+    "mobx": "^5.0.0",
+    "mobx-react": "^6.0.0",
+    "mobx-state-tree": "3.14.1",
+    "prop-types": "^15.0.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "rxjs": "^6.0.0",
+    "serve": "^11.3.2",
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.2"
+  },
+  "private": true
 }

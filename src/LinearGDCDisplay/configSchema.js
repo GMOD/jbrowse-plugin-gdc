@@ -1,7 +1,9 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 
 export default pluginManager => {
-  const { baseLinearDisplayConfigSchema }  = pluginManager.getPlugin('LinearGenomeViewPlugin').exports
+  const { baseLinearDisplayConfigSchema } = pluginManager.getPlugin(
+    'LinearGenomeViewPlugin',
+  ).exports
   return ConfigurationSchema(
     'LinearGDCDisplay',
     { renderer: pluginManager.pluggableConfigSchemaType('renderer') },

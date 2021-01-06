@@ -1,5 +1,6 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import { ElementId } from '@jbrowse/core/util/types/mst'
+import GDCFeatureWidgetF from './GDCFeatureWidget'
 
 export default jbrowse => {
   const { types } = jbrowse.jbrequire('mobx-state-tree')
@@ -19,7 +20,7 @@ export default jbrowse => {
       },
     }))
 
-  const ReactComponent = jbrowse.jbrequire(require('./GDCFeatureWidget'))
+  const ReactComponent = jbrowse.jbrequire(GDCFeatureWidgetF)
 
   return { configSchema, stateModel, ReactComponent }
 }

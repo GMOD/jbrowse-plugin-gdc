@@ -2,11 +2,12 @@ import { ConfigurationReference } from '@jbrowse/core/configuration'
 import { getParentRenderProps } from '@jbrowse/core/util/tracks'
 import { getSession } from '@jbrowse/core/util'
 import FilterListIcon from '@material-ui/icons/FilterList'
+import configSchemaF from './configSchema'
 
 export default jbrowse => {
   const { types } = jbrowse.jbrequire('mobx-state-tree')
 
-  const configSchema = jbrowse.jbrequire(require('./configSchema'))
+  const configSchema = jbrowse.jbrequire(configSchemaF)
 
   const { BaseLinearDisplay } = jbrowse.getPlugin(
     'LinearGenomeViewPlugin',
@@ -25,11 +26,9 @@ export default jbrowse => {
     .actions(self => ({
       openFilterConfig() {
         const session = getSession(self)
-        const editor = session.addWidget(
-          'GDCFilterWidget',
-          'gdcFilter',
-          { target: self.parentTrack.configuration },
-        )
+        const editor = session.addWidget('GDCFilterWidget', 'gdcFilter', {
+          target: self.parentTrack.configuration,
+        })
         session.showWidget(editor)
       },
 
