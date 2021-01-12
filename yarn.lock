@@ -1100,9 +1100,10 @@
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.2.tgz#26520bf09abe4a5644cd5414e37125a8954241dd"
   integrity sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
 
-"@jbrowse/core@file:../../tmp/jbrowse-core-v1.0.5.tgz":
-  version "1.0.2"
-  resolved "file:../../tmp/jbrowse-core-v1.0.5.tgz#b3242103e37317cb96421228daee7875b6fbae8b"
+"@jbrowse/core@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@jbrowse/core/-/core-1.0.3.tgz#b4b023e58d41fcf061d60f4c52f995144f6d7571"
+  integrity sha512-Xl/3Wqi6wJkDgfK89oKCVJ01BRWbs3o5oYDfygH2aDy9A/AqDFMRpBCezXGdhUxiPte8KzTx/moXChFTtWNXOw==
   dependencies:
     "@librpc/web" rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0
     "@material-ui/icons" "^4.0.0"
@@ -1131,9 +1132,10 @@
     util.promisify "^1.0.0"
     whatwg-fetch "^3.0.0"
 
-"@jbrowse/development-tools@file:../../tmp/jbrowse-development-tools-v1.0.6.tgz":
-  version "1.0.2"
-  resolved "file:../../tmp/jbrowse-development-tools-v1.0.6.tgz#76a26d69477d8a7495f4991f46f2b1c589c3f379"
+"@jbrowse/development-tools@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@jbrowse/development-tools/-/development-tools-1.0.3.tgz#ee6100ab83b6ab4794829c3563bfd3d788479d27"
+  integrity sha512-krcf4PA0pC3uzbunjpAsjzqJ0h+j+akjJFM1i9AXcvJgktMKdbaxu6a70rJCcyNdpmPkLYj4FjbGNoq2mZkksA==
   dependencies:
     cross-spawn "^7.0.3"
     patch-package "^6.2.2"
@@ -1327,7 +1329,7 @@
   resolved "https://registry.yarnpkg.com/@librpc/ee/-/ee-1.0.4.tgz#ce73a36279dc4cf93efa43f7e3564ec165947522"
   integrity sha512-vhPlbRwAKQC80h0k74tsOkMKIidZtqlFSOHRzCvC8n7Va9rzMDwpG26Pm84dAt0ZuGK0g1UEfPzxDiYo9ZQBrg==
 
-"@librpc/web@rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0":
+"@librpc/web@github:rbuels/librpc-web#737bb9706762a52a87169a12c9b59fb241febab0":
   version "1.1.0"
   resolved "https://codeload.github.com/rbuels/librpc-web/tar.gz/737bb9706762a52a87169a12c9b59fb241febab0"
   dependencies:
