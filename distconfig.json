@@ -1,11 +1,8 @@
 {
-  "configuration": {
-    "useUrlSession": true
-  },
   "plugins": [
     {
       "name": "GDC",
-      "url": "http://localhost:9000/dist/jbrowse-plugin-gdc.umd.development.js"
+      "url": "https://unpkg.com/jbrowse-plugin-gdc/dist/jbrowse-plugin-gdc.umd.production.min.js"
     }
   ],
   "assemblies": [

@@ -1,4 +1,4 @@
-# `@gmod/jbrowse-plugin-gdc`
+# `jbrowse-plugin-gdc`
 
 > JBrowse 2 plugin for the NCI Genomic Data Commons ([GDC](https://gdc.cancer.gov/))
 
@@ -11,7 +11,7 @@ No installation required
 ### For use in [`@jbrowse/react-linear-view`](https://www.npmjs.com/package/@jbrowse/react-linear-genome-view)
 
 ```
-yarn add @gmod/jbrowse-plugin-gdc
+yarn add jbrowse-plugin-gdc
 ```
 
 ## Usage
@@ -29,7 +29,7 @@ yarn start
 
 Then open JBrowse Web to (assuming it is running on port 3000):
 
-http://localhost:3000/?config=http://localhost:9000/config_gdc_test.json
+http://localhost:3000/?config=http://localhost:9000/config.json
 
 #### Production
 
@@ -40,7 +40,7 @@ Add to the "plugins" of your JBrowse Web config:
   "plugins": [
     {
       "name": "GDC",
-      "url": "https://unpkg.com/@gmod/jbrowse-plugin-gdc/dist/jbrowse-plugin-gdc.umd.production.min.js"
+      "url": "https://unpkg.com/jbrowse-plugin-gdc/dist/jbrowse-plugin-gdc.umd.production.min.js"
     }
   ]
 }
@@ -57,7 +57,7 @@ import {
   JBrowseLinearGenomeView,
   ThemeProvider,
 } from '@jbrowse/react-linear-view'
-import GDC from '@gmod/jbrowse-plugin-gdc'
+import GDC from 'jbrowse-plugin-gdc'
 
 const theme = createJBrowseTheme()
 
