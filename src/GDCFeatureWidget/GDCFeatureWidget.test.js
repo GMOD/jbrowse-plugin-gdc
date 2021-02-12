@@ -1,4 +1,6 @@
 import React from 'react'
+//eslint-disable-next-line no-unused-vars
+import regeneratorRuntime from 'regenerator-runtime'
 import { render } from '@testing-library/react'
 import { observable } from 'mobx'
 
