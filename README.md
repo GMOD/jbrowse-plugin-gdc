@@ -31,6 +31,10 @@ Then open JBrowse Web to (assuming it is running on port 3000):
 
 http://localhost:3000/?config=http://localhost:9000/config.json
 
+#### Demo
+
+https://s3.amazonaws.com/jbrowse.org/code/jb2/master/index.html?config=https%3A%2F%2Funpkg.com%2Fjbrowse-plugin-gdc%2Fdist%2Fconfig.json
+
 #### Production
 
 Add to the "plugins" of your JBrowse Web config:
