@@ -7,6 +7,8 @@ import { readConfObject } from '@jbrowse/core/configuration'
 import { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
 import GDCFeature from './GDCFeature'
 import MyConfigSchema from './configSchema'
+import AbortablePromiseCache from 'abortable-promise-cache'
+import LRU from '@jbrowse/core/util/QuickLRU'
 
 export default class GDCAdapter extends BaseFeatureDataAdapter {
   private filters: string
@@ -18,6 +20,28 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
   private featureType: string
 
   public static capabilities = ['getFeatures', 'getRefNames']
+
+  private featureCache = new AbortablePromiseCache({
+    cache: new LRU({ maxSize: 200 }),
+    fill: async (query: any, abortSignal?: AbortSignal) => {
+      return this.fetchFeatures(query, abortSignal)
+    },
+  })
+
+  async fetchFeatures(query: any, signal?: AbortSignal) {
+    const response = await fetch('https://api.gdc.cancer.gov/v0/graphql', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(query),
+      signal,
+    })
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch ${response.status} ${response.statusText}`,
+      )
+    }
+    return response.json()
+  }
 
   public constructor(config: Instance<typeof MyConfigSchema>) {
     super(config)
@@ -86,13 +110,12 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
             observer.error(`Not a valid type: ${this.featureType}`)
           }
         }
-        const response = await fetch('https://api.gdc.cancer.gov/v0/graphql', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify(query),
-          signal: opts.signal,
-        })
-        const result = await response.json()
+        const result = await this.featureCache.get(
+          JSON.stringify(query),
+          query,
+          opts.signal,
+        )
+
         const queryResults = result.data.viewer.explore.features.hits.edges
         if (this.featureType === 'mutation') {
           const cohortCount =

@@ -1,3 +1,5 @@
+- Add abortable-promise-cache layer for the graphql API
+
 # v1.0.2
 
 - Fix asset loading from config demo
