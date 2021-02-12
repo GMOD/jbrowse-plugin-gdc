@@ -1,3 +1,7 @@
+# v1.0.2
+
+- Fix asset loading from config demo
+
 # v1.0.1
 
 - Release to npm for use with unpkg cdn and custom installations in embedded viewer

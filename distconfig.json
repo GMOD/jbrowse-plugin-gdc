@@ -29,7 +29,7 @@
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "assets/GRCh38_RefSeq2UCSC.txt"
+            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/hg38_aliases.txt"
           }
         }
       }
