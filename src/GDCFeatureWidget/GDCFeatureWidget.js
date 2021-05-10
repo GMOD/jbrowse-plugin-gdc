@@ -23,7 +23,7 @@ export default jbrowse => {
   const React = jbrowse.jbrequire('react')
   const { useState, useEffect } = React
 
-  const { BaseFeatureDetails, BaseCard } = jbrowse.jbrequire(
+  const { FeatureDetails, BaseCard } = jbrowse.jbrequire(
     '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail',
   )
 
@@ -594,7 +594,7 @@ export default jbrowse => {
     } = feat
     return (
       <Paper className={classes.root} data-testid="variant-widget">
-        <BaseFeatureDetails feature={rest} {...props} />
+        <FeatureDetails feature={rest} {...props} />
         <Divider />
         {feat.geneId && <GeneExternalLinks feature={feat} />}
         {feat.ssmId && <SSMExternalLinks feature={feat} />}
