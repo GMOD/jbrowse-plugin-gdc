@@ -1,3 +1,10 @@
+# v1.0.4
+
+- Fix import for feature details in sidepanel
+- Update to use jexl callback style
+
+# v1.0.3
+
 - Add abortable-promise-cache layer for the graphql API
 
 # v1.0.2
