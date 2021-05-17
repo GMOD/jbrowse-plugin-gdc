@@ -12,11 +12,13 @@ import { AnyConfigurationModel } from '@jbrowse/core/configuration/configuration
 export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
+  private setupP?: Promise<Feature[]>
+
   public constructor(config: AnyConfigurationModel) {
     super(config)
   }
 
-  public async setup() {
+  public async getLines() {
     const segLocation = readConfObject(
       this.config,
       'segLocation',
@@ -39,6 +41,13 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
           score: +mean,
         })
       })
+  }
+
+  public async setup() {
+    if (!this.setupP) {
+      this.setupP = this.getLines()
+    }
+    return this.setupP
   }
 
   public async getRefNames(_: BaseOptions = {}) {

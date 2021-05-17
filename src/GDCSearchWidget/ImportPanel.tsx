@@ -34,7 +34,7 @@ const Panel = ({ model }: { model: any }) => {
               const reader = new FileReader()
               reader.addEventListener('load', event => {
                 const res = JSON.parse(event.target?.result as string)
-                const t = res.slice(0, 3)
+                const t = res.slice(0, 40)
                 t.map((file: { file_id: string; file_name: string }) => {
                   //@ts-ignore
                   session.addTrackConf({
@@ -49,7 +49,16 @@ const Panel = ({ model }: { model: any }) => {
                       },
                     },
                   })
-                  // session.showTrack(file.file_id)
+                  //@ts-ignore
+                  session.views[0].showTrack(
+                    file.file_id,
+                    {},
+                    {
+                      height: 20,
+                      constraints: { max: 2, min: -2 },
+                      rendererTypeNameState: 'density',
+                    },
+                  )
                 })
               })
               reader.readAsText(file)
