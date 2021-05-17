@@ -15,6 +15,10 @@ import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
+import {
+  configSchema as segmentCnvConfigSchema,
+  AdapterClass as SegmentCNVAdapter,
+} from './SegmentCNVAdapter'
 
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
@@ -94,6 +98,15 @@ export default class GDCPlugin extends Plugin {
         ...GDCSearchWidgetF(pluginManager),
       })
     })
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'SegmentCNVAdapter',
+          configSchema: segmentCnvConfigSchema,
+          AdapterClass: SegmentCNVAdapter,
+        }),
+    )
   }
 
   configure(pluginManager: PluginManager) {

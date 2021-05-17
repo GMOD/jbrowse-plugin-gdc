@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { observer } from 'mobx-react'
+import { getSession } from '@jbrowse/core/util'
 import { Button, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
@@ -13,6 +14,7 @@ const useStyles = makeStyles(theme => ({
 const Panel = ({ model }: { model: any }) => {
   const classes = useStyles()
   const ref = useRef<HTMLInputElement>(null)
+  const session = getSession(model)
   return (
     <div className={classes.container}>
       <div className={classes.fileInput}>
@@ -31,10 +33,24 @@ const Panel = ({ model }: { model: any }) => {
             if (file) {
               const reader = new FileReader()
               reader.addEventListener('load', event => {
-                const res = event.target?.result
-                //@ts-ignore
-                const r = JSON.parse(res)
-                console.log({ r })
+                const res = JSON.parse(event.target?.result as string)
+                const t = res.slice(0, 3)
+                t.map((file: { file_id: string; file_name: string }) => {
+                  //@ts-ignore
+                  session.addTrackConf({
+                    type: 'QuantitativeTrack',
+                    trackId: file.file_id,
+                    name: file.file_name,
+                    assemblyNames: ['hg38'],
+                    adapter: {
+                      type: 'SegmentCNVAdapter',
+                      segLocation: {
+                        uri: 'https://api.gdc.cancer.gov/data/' + file.file_id,
+                      },
+                    },
+                  })
+                  // session.showTrack(file.file_id)
+                })
               })
               reader.readAsText(file)
             }
