@@ -6,9 +6,11 @@ import {
   createBaseTrackConfig,
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
+import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
+import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
@@ -84,5 +86,26 @@ export default class GDCPlugin extends Plugin {
         ...GDCFeatureWidgetF(pluginManager),
       })
     })
+
+    pluginManager.addWidgetType(() => {
+      return new WidgetType({
+        name: 'GDCSearchWidget',
+        heading: 'Search GDC',
+        ...GDCSearchWidgetF(pluginManager),
+      })
+    })
+  }
+
+  configure(pluginManager: PluginManager) {
+    if (isAbstractMenuManager(pluginManager.rootModel)) {
+      pluginManager.rootModel.appendToMenu('File', {
+        label: 'Add GDC data',
+        onClick: (session: SessionWithWidgets) => {
+          session.showWidget(
+            session.addWidget('GDCSearchWidget', 'gdcSearchWidget'),
+          )
+        },
+      })
+    }
   }
 }
