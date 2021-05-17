@@ -7,7 +7,7 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 
-import GDCFilterWidget from './GDCFilterWidget'
+import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
@@ -71,33 +71,17 @@ export default class GDCPlugin extends Plugin {
     })
 
     pluginManager.addWidgetType(() => {
-      const {
-        configSchema,
-        HeadingComponent,
-        ReactComponent,
-        stateModel,
-      } = pluginManager.load(GDCFilterWidget)
-
       return new WidgetType({
         name: 'GDCFilterWidget',
-        HeadingComponent,
-        configSchema,
-        stateModel,
-        ReactComponent,
+        ...GDCFilterWidgetF(pluginManager),
       })
     })
 
     pluginManager.addWidgetType(() => {
-      const { configSchema, stateModel, ReactComponent } = pluginManager.load(
-        GDCFeatureWidgetF,
-      )
-
       return new WidgetType({
         name: 'GDCFeatureWidget',
         heading: 'Feature Details',
-        configSchema,
-        stateModel,
-        ReactComponent,
+        ...GDCFeatureWidgetF(pluginManager),
       })
     })
   }

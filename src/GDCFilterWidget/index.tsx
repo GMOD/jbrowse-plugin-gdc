@@ -1,21 +1,14 @@
+import React from 'react'
 import PluginManager from '@jbrowse/core/PluginManager'
+import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import stateModel from './model'
-import GDCFilterComponentF from './components/GDCFilterComponent'
+import ReactComponent from './components/GDCFilterComponent'
 
 export default (jbrowse: PluginManager) => {
-  const React = jbrowse.lib.react
-
-  const ReactComponent = jbrowse.load(GDCFilterComponentF)
-  const { ConfigurationSchema } = jbrowse.lib['@jbrowse/core/configuration']
-
-  const { observer } = jbrowse.lib['mobx-react']
-
   return {
     configSchema: ConfigurationSchema('GDCFilterWidget', {}),
     ReactComponent,
     stateModel: jbrowse.load(stateModel),
-    HeadingComponent: observer(() => {
-      return <>GDC Filters</>
-    }),
+    HeadingComponent: () => <>GDC Filters</>,
   }
 }
