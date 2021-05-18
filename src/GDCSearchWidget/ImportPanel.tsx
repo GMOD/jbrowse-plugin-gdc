@@ -1,7 +1,7 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { getSession } from '@jbrowse/core/util'
-import { Button, makeStyles } from '@material-ui/core'
+import { Button, Typography, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
 const Panel = ({ model }: { model: any }) => {
   const classes = useStyles()
   const ref = useRef<HTMLInputElement>(null)
+  const [error, setError] = useState<Error>()
   const session = getSession(model)
   return (
     <div className={classes.container}>
@@ -26,15 +27,22 @@ const Panel = ({ model }: { model: any }) => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => {
+        onClick={async () => {
           if (ref.current) {
             const file = ref.current.files?.[0]
 
             if (file) {
-              const reader = new FileReader()
-              reader.addEventListener('load', event => {
-                const res = JSON.parse(event.target?.result as string)
-                const t = res.slice(0, 40)
+              try {
+                const res = await new Promise(resolve => {
+                  const reader = new FileReader()
+                  reader.addEventListener('load', event =>
+                    resolve(JSON.parse(event.target?.result as string)),
+                  )
+                  reader.readAsText(file)
+                })
+
+                //@ts-ignore
+                const t = res.slice(0, 50)
                 t.map((file: { file_id: string; file_name: string }) => {
                   //@ts-ignore
                   session.addTrackConf({
@@ -54,20 +62,28 @@ const Panel = ({ model }: { model: any }) => {
                     file.file_id,
                     {},
                     {
-                      height: 20,
+                      height: 12,
                       constraints: { max: 2, min: -2 },
                       rendererTypeNameState: 'density',
                     },
                   )
                 })
-              })
-              reader.readAsText(file)
+              } catch (e) {
+                console.error(e)
+                setError(e)
+              }
             }
           }
         }}
       >
         Submit
       </Button>
+      {error ? (
+        <Typography color="error">{`${error.message.slice(
+          0,
+          200,
+        )}`}</Typography>
+      ) : null}
     </div>
   )
 }
