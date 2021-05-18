@@ -42,7 +42,7 @@ const Panel = ({ model }: { model: any }) => {
                 })
 
                 //@ts-ignore
-                const t = res.slice(0, 50)
+                const t = res.slice(0, 5)
                 t.map((file: { file_id: string; file_name: string }) => {
                   //@ts-ignore
                   session.addTrackConf({
