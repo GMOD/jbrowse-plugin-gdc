@@ -6,14 +6,20 @@ import {
   createBaseTrackConfig,
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
+import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 
-import GDCFilterWidget from './GDCFilterWidget'
+import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCUploadWidgetF from './GDCUploadWidget'
+import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
+import {
+  configSchema as segmentCnvConfigSchema,
+  AdapterClass as SegmentCNVAdapter,
+} from './SegmentCNVAdapter'
 
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
@@ -72,33 +78,17 @@ export default class GDCPlugin extends Plugin {
     })
 
     pluginManager.addWidgetType(() => {
-      const {
-        configSchema,
-        HeadingComponent,
-        ReactComponent,
-        stateModel,
-      } = pluginManager.load(GDCFilterWidget)
-
       return new WidgetType({
         name: 'GDCFilterWidget',
-        HeadingComponent,
-        configSchema,
-        stateModel,
-        ReactComponent,
+        ...GDCFilterWidgetF(pluginManager),
       })
     })
 
     pluginManager.addWidgetType(() => {
-      const { configSchema, stateModel, ReactComponent } = pluginManager.load(
-        GDCFeatureWidgetF,
-      )
-
       return new WidgetType({
         name: 'GDCFeatureWidget',
         heading: 'Feature Details',
-        configSchema,
-        stateModel,
-        ReactComponent,
+        ...GDCFeatureWidgetF(pluginManager),
       })
     })
 
@@ -115,5 +105,35 @@ export default class GDCPlugin extends Plugin {
         ReactComponent,
       })
     })
+
+    pluginManager.addWidgetType(() => {
+      return new WidgetType({
+        name: 'GDCSearchWidget',
+        heading: 'Search GDC',
+        ...GDCSearchWidgetF(pluginManager),
+      })
+    })
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'SegmentCNVAdapter',
+          configSchema: segmentCnvConfigSchema,
+          AdapterClass: SegmentCNVAdapter,
+        }),
+    )
+  }
+
+  configure(pluginManager: PluginManager) {
+    if (isAbstractMenuManager(pluginManager.rootModel)) {
+      pluginManager.rootModel.appendToMenu('File', {
+        label: 'Add GDC data',
+        onClick: (session: SessionWithWidgets) => {
+          session.showWidget(
+            session.addWidget('GDCSearchWidget', 'gdcSearchWidget'),
+          )
+        },
+      })
+    }
   }
 }

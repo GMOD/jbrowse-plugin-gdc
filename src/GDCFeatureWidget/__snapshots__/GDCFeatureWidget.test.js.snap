@@ -6,397 +6,315 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
   data-testid="variant-widget"
 >
   <div
-    class="MuiPaper-root makeStyles-paperRoot-15 MuiPaper-elevation1 MuiPaper-rounded"
+    class="MuiPaper-root MuiAccordion-root makeStyles-accordionBorder-22 Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      class="MuiPaper-root MuiAccordion-root Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
-      style="margin-top: 4px;"
+      aria-disabled="false"
+      aria-expanded="true"
+      class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
+      role="button"
+      tabindex="0"
     >
       <div
-        aria-disabled="false"
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
-        role="button"
-        tabindex="0"
+        class="MuiAccordionSummary-content Mui-expanded"
       >
-        <div
-          class="MuiAccordionSummary-content Mui-expanded"
+        <span
+          class="MuiTypography-root MuiTypography-button"
         >
-          <span
-            class="MuiTypography-root MuiTypography-button"
-          >
-             
-            Primary data
-          </span>
-        </div>
-        <div
-          aria-disabled="false"
-          aria-hidden="true"
-          class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
-        >
-          <span
-            class="MuiIconButton-label"
-          >
-            <svg
-              aria-hidden="true"
-              class="MuiSvgIcon-root makeStyles-expandIcon-14"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
-              />
-            </svg>
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </div>
+           
+          cell adhesion molecule L1-like... - protein_coding
+        </span>
       </div>
       <div
-        class="MuiCollapse-container MuiCollapse-entered"
-        style="min-height: 0px;"
+        aria-disabled="false"
+        aria-hidden="true"
+        class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root makeStyles-expandIcon-15"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </div>
+    </div>
+    <div
+      class="MuiCollapse-container MuiCollapse-entered"
+      style="min-height: 0px;"
+    >
+      <div
+        class="MuiCollapse-wrapper"
       >
         <div
-          class="MuiCollapse-wrapper"
+          class="MuiCollapse-wrapperInner"
         >
           <div
-            class="MuiCollapse-wrapperInner"
+            role="region"
           >
             <div
-              role="region"
+              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-14"
             >
+              <div>
+                Core details
+              </div>
               <div
-                class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-13"
+                class="makeStyles-field-17"
               >
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldName-19"
                 >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    Position
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      3:196,596..409,417 
-                    </div>
-                  </div>
+                  Position
                 </div>
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldValue-20"
                 >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    Description
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    Name
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      cell adhesion molecule L1-like
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    Length
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      212822
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    Type
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      protein_coding
-                    </div>
+                  <div>
+                    3:196,596..409,417 
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr
-      class="MuiDivider-root"
-    />
-    <div
-      class="MuiPaper-root MuiAccordion-root Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
-      style="margin-top: 4px;"
-    >
-      <div
-        aria-disabled="false"
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
-        role="button"
-        tabindex="0"
-      >
-        <div
-          class="MuiAccordionSummary-content Mui-expanded"
-        >
-          <span
-            class="MuiTypography-root MuiTypography-button"
-          >
-             
-            Attributes
-          </span>
-        </div>
-        <div
-          aria-disabled="false"
-          aria-hidden="true"
-          class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
-        >
-          <span
-            class="MuiIconButton-label"
-          >
-            <svg
-              aria-hidden="true"
-              class="MuiSvgIcon-root makeStyles-expandIcon-14"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
-              />
-            </svg>
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </div>
-      </div>
-      <div
-        class="MuiCollapse-container MuiCollapse-entered"
-        style="min-height: 0px;"
-      >
-        <div
-          class="MuiCollapse-wrapper"
-        >
-          <div
-            class="MuiCollapse-wrapperInner"
-          >
-            <div
-              role="region"
-            >
               <div
-                class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-13"
+                class="makeStyles-field-17"
               >
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldName-19"
+                >
+                  Description
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  Name
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    cell adhesion molecule L1-like
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  Length
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    212,822
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  Type
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    protein_coding
+                  </div>
+                </div>
+              </div>
+              <hr
+                class="MuiDivider-root"
+              />
+              <div>
+                Attributes
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  biotype
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    protein_coding
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  geneChromosome
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    3
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  geneEnd
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    409417
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  geneStart
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    196596
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  geneStrand
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    1
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  id
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  symbol
+                </div>
+                <div
+                  class="makeStyles-fieldValue-20"
+                >
+                  <div>
+                    CHL1
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-17"
+              >
+                <div
+                  class="makeStyles-fieldName-19"
+                >
+                  synonyms
+                </div>
+                <div
+                  class="makeStyles-fieldSubvalue-21"
                 >
                   <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    biotype
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
+                    class="makeStyles-fieldValue-20"
                   >
                     <div>
-                      protein_coding
+                      CALL
                     </div>
                   </div>
                 </div>
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldSubvalue-21"
                 >
                   <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    description
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
+                    class="makeStyles-fieldValue-20"
                   >
                     <div>
-                      The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
+                      FLJ44930
                     </div>
                   </div>
                 </div>
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldSubvalue-21"
                 >
                   <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    geneChromosome
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
+                    class="makeStyles-fieldValue-20"
                   >
                     <div>
-                      3
+                      L1CAM2
                     </div>
                   </div>
                 </div>
                 <div
-                  class="makeStyles-field-16"
+                  class="makeStyles-fieldSubvalue-21"
                 >
                   <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    geneEnd
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
+                    class="makeStyles-fieldValue-20"
                   >
                     <div>
-                      409417
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    geneStart
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      196596
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    geneStrand
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    id
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    symbol
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-19"
-                  >
-                    <div>
-                      CHL1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-16"
-                >
-                  <div
-                    class="makeStyles-fieldName-18"
-                  >
-                    synonyms
-                  </div>
-                  <div
-                    class="makeStyles-fieldSubvalue-20"
-                  >
-                    <div
-                      class="makeStyles-fieldValue-19"
-                    >
-                      <div>
-                        CALL
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="makeStyles-fieldSubvalue-20"
-                  >
-                    <div
-                      class="makeStyles-fieldValue-19"
-                    >
-                      <div>
-                        FLJ44930
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="makeStyles-fieldSubvalue-20"
-                  >
-                    <div
-                      class="makeStyles-fieldValue-19"
-                    >
-                      <div>
-                        L1CAM2
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="makeStyles-fieldSubvalue-20"
-                  >
-                    <div
-                      class="makeStyles-fieldValue-19"
-                    >
-                      <div>
-                        MGC132578
-                      </div>
+                      MGC132578
                     </div>
                   </div>
                 </div>
@@ -425,329 +343,263 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
   data-testid="variant-widget"
 >
   <div
-    class="MuiPaper-root makeStyles-paperRoot-5 MuiPaper-elevation1 MuiPaper-rounded"
+    class="MuiPaper-root MuiAccordion-root makeStyles-accordionBorder-11 Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
   >
     <div
-      class="MuiPaper-root MuiAccordion-root Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
-      style="margin-top: 4px;"
+      aria-disabled="false"
+      aria-expanded="true"
+      class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
+      role="button"
+      tabindex="0"
     >
       <div
-        aria-disabled="false"
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
-        role="button"
-        tabindex="0"
+        class="MuiAccordionSummary-content Mui-expanded"
       >
-        <div
-          class="MuiAccordionSummary-content Mui-expanded"
+        <span
+          class="MuiTypography-root MuiTypography-button"
         >
-          <span
-            class="MuiTypography-root MuiTypography-button"
-          >
-             
-            Primary data
-          </span>
-        </div>
-        <div
-          aria-disabled="false"
-          aria-hidden="true"
-          class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
-        >
-          <span
-            class="MuiIconButton-label"
-          >
-            <svg
-              aria-hidden="true"
-              class="MuiSvgIcon-root makeStyles-expandIcon-4"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
-              />
-            </svg>
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </div>
+           
+           - Simple Somatic Mutation
+        </span>
       </div>
       <div
-        class="MuiCollapse-container MuiCollapse-entered"
-        style="min-height: 0px;"
+        aria-disabled="false"
+        aria-hidden="true"
+        class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
+      >
+        <span
+          class="MuiIconButton-label"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root makeStyles-expandIcon-4"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            />
+          </svg>
+        </span>
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </div>
+    </div>
+    <div
+      class="MuiCollapse-container MuiCollapse-entered"
+      style="min-height: 0px;"
+    >
+      <div
+        class="MuiCollapse-wrapper"
       >
         <div
-          class="MuiCollapse-wrapper"
+          class="MuiCollapse-wrapperInner"
         >
           <div
-            class="MuiCollapse-wrapperInner"
+            role="region"
           >
             <div
-              role="region"
+              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-3"
             >
+              <div>
+                Core details
+              </div>
               <div
-                class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-3"
+                class="makeStyles-field-6"
               >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    Position
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      chr3:377,918..377,918 
-                    </div>
-                  </div>
+                  Position
                 </div>
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldValue-9"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    Length
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      1
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="makeStyles-field-6"
-                >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    Type
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      Simple Somatic Mutation
-                    </div>
+                  <div>
+                    chr3:377,918..377,918 
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr
-      class="MuiDivider-root"
-    />
-    <div
-      class="MuiPaper-root MuiAccordion-root Mui-expanded MuiAccordion-rounded MuiPaper-elevation1 MuiPaper-rounded"
-      style="margin-top: 4px;"
-    >
-      <div
-        aria-disabled="false"
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded"
-        role="button"
-        tabindex="0"
-      >
-        <div
-          class="MuiAccordionSummary-content Mui-expanded"
-        >
-          <span
-            class="MuiTypography-root MuiTypography-button"
-          >
-             
-            Attributes
-          </span>
-        </div>
-        <div
-          aria-disabled="false"
-          aria-hidden="true"
-          class="MuiButtonBase-root MuiIconButton-root MuiAccordionSummary-expandIcon Mui-expanded MuiIconButton-edgeEnd"
-        >
-          <span
-            class="MuiIconButton-label"
-          >
-            <svg
-              aria-hidden="true"
-              class="MuiSvgIcon-root makeStyles-expandIcon-4"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
-              />
-            </svg>
-          </span>
-          <span
-            class="MuiTouchRipple-root"
-          />
-        </div>
-      </div>
-      <div
-        class="MuiCollapse-container MuiCollapse-entered"
-        style="min-height: 0px;"
-      >
-        <div
-          class="MuiCollapse-wrapper"
-        >
-          <div
-            class="MuiCollapse-wrapperInner"
-          >
-            <div
-              role="region"
-            >
               <div
-                class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-3"
+                class="makeStyles-field-6"
               >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    chromosome
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      chr3
-                    </div>
-                  </div>
+                  Length
                 </div>
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldValue-9"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    endPosition
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      377918
-                    </div>
+                  <div>
+                    1
                   </div>
                 </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    genomicDnaChange
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      chr3:g.377918G&gt;A
-                    </div>
-                  </div>
+                  Type
                 </div>
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldValue-9"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    mutationSubtype
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      Single base substitution
-                    </div>
+                  <div>
+                    Simple Somatic Mutation
                   </div>
                 </div>
+              </div>
+              <hr
+                class="MuiDivider-root"
+              />
+              <div>
+                Attributes
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    mutationType
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      Simple Somatic Mutation
-                    </div>
-                  </div>
+                  chromosome
                 </div>
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldValue-9"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    ncbiBuild
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      GRCh38
-                    </div>
+                  <div>
+                    chr3
                   </div>
                 </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    referenceAllele
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      G
-                    </div>
-                  </div>
+                  endPosition
                 </div>
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldValue-9"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    score
-                  </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      3
-                    </div>
+                  <div>
+                    377918
                   </div>
                 </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
                 <div
-                  class="makeStyles-field-6"
+                  class="makeStyles-fieldName-8"
                 >
-                  <div
-                    class="makeStyles-fieldName-8"
-                  >
-                    startPosition
+                  genomicDnaChange
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    chr3:g.377918G&gt;A
                   </div>
-                  <div
-                    class="makeStyles-fieldValue-9"
-                  >
-                    <div>
-                      377918
-                    </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  mutationSubtype
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    Single base substitution
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  mutationType
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    Simple Somatic Mutation
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  ncbiBuild
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    GRCh38
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  referenceAllele
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    G
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  score
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    3
+                  </div>
+                </div>
+              </div>
+              <div
+                class="makeStyles-field-6"
+              >
+                <div
+                  class="makeStyles-fieldName-8"
+                >
+                  startPosition
+                </div>
+                <div
+                  class="makeStyles-fieldValue-9"
+                >
+                  <div>
+                    377918
                   </div>
                 </div>
               </div>

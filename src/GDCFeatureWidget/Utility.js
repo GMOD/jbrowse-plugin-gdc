@@ -90,8 +90,10 @@ export async function getGeneProjectsAsync(featureId) {
       headers: { 'Content-Type': 'application/json' },
     },
   )
-  const result = await response.json()
-  return result
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
+  }
+  return response.json()
 }
 
 /**
@@ -139,6 +141,8 @@ export async function getMutationProjectsAsync(featureId) {
       headers: { 'Content-Type': 'application/json' },
     },
   )
-  const result = await response.json()
-  return result
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
+  }
+  return response.json()
 }

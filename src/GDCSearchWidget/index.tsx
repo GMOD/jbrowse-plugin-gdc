@@ -2,13 +2,13 @@ import React from 'react'
 import PluginManager from '@jbrowse/core/PluginManager'
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import stateModel from './model'
-import ReactComponent from './components/GDCFilterComponent'
+import ReactComponent from './ImportPanel'
 
 export default (jbrowse: PluginManager) => {
   return {
-    configSchema: ConfigurationSchema('GDCFilterWidget', {}),
+    configSchema: ConfigurationSchema('GDCSearchWidget', {}),
     ReactComponent,
     stateModel: jbrowse.load(stateModel),
-    HeadingComponent: () => <>GDC Filters</>,
+    HeadingComponent: () => <>GDC Data import</>,
   }
 }

@@ -4,10 +4,9 @@ import { getSession } from '@jbrowse/core/util'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import configSchemaF from './configSchema'
+import { types } from 'mobx-state-tree'
 
 export default jbrowse => {
-  const { types } = jbrowse.jbrequire('mobx-state-tree')
-
   const configSchema = jbrowse.jbrequire(configSchemaF)
 
   const { BaseLinearDisplay } = jbrowse.getPlugin(
