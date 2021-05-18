@@ -2,6 +2,7 @@ import { ConfigurationReference } from '@jbrowse/core/configuration'
 import { getParentRenderProps } from '@jbrowse/core/util/tracks'
 import { getSession } from '@jbrowse/core/util'
 import FilterListIcon from '@material-ui/icons/FilterList'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import configSchemaF from './configSchema'
 
 export default jbrowse => {
@@ -30,6 +31,16 @@ export default jbrowse => {
           target: self.parentTrack.configuration,
         })
         session.showWidget(editor)
+      },
+
+      openUploadWidget() {
+        const session = getSession(self)
+        const uploadWidget = session.addWidget(
+          'GDCUploadWidget', 
+          'gdcUpload',
+          { target: self.parentTrack.configuration, }
+        )
+        session.showWidget(uploadWidget)
       },
 
       selectFeature(feature) {
@@ -63,8 +74,18 @@ export default jbrowse => {
             label: 'Filter',
             onClick: self.openFilterConfig,
             icon: FilterListIcon,
-          },
+          }
         ]
       },
+
+      get viewMenuActions() {
+        return [
+          {
+            label: 'Upload GDC Track via JSON',
+            onClick: self.openUploadWidget,
+            icon: CloudUploadIcon,
+          }
+        ]
+      }
     }))
 }

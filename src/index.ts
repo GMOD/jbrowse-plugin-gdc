@@ -9,6 +9,7 @@ import {
 
 import GDCFilterWidget from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
+import GDCUploadWidgetF from './GDCUploadWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
@@ -95,6 +96,20 @@ export default class GDCPlugin extends Plugin {
       return new WidgetType({
         name: 'GDCFeatureWidget',
         heading: 'Feature Details',
+        configSchema,
+        stateModel,
+        ReactComponent,
+      })
+    })
+
+    pluginManager.addWidgetType(() => {
+      const { configSchema, stateModel, ReactComponent } = pluginManager.load(
+        GDCUploadWidgetF,
+      )
+
+      return new WidgetType({
+        name: 'GDCUploadWidget',
+        heading: 'GDC JSON',
         configSchema,
         stateModel,
         ReactComponent,
