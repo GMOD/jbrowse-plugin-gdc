@@ -13,11 +13,9 @@ import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
-import { version } from '../package.json'
 
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
-  version = version
 
   install(pluginManager: PluginManager) {
     const AdapterType =
