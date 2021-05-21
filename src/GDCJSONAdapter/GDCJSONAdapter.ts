@@ -27,10 +27,27 @@ import { isArray } from '@material-ui/data-grid'
       this.data = data
     }
 
-    public constructFeature(obj: any, idField: string) {
-      console.log(obj)
+    private convertPropertyCaseToCamel(src: any) {
+      const tgt = src
+      Object.keys(src).forEach((k) => {
+        const toCamel = (str:any) => {
+          return str.replace(/([-_][a-z])/ig, ($1:any) => {
+            return $1.toUpperCase()
+              .replace('_', '');
+          });
+        };
+
+        if (!isArray(src[k])) {
+          tgt[toCamel(k)] = src[k]
+          delete tgt[k]
+        }
+      })
+
+      return tgt
+    }
+
+    private constructMutation(obj: any) {
       const consequence = obj.consequence
-      const gdcObject = obj
 
       let edges = []
       for (const transcript of consequence) {
@@ -41,20 +58,7 @@ import { isArray } from '@material-ui/data-grid'
         })
       }
 
-      Object.keys(obj).forEach((k) => {
-        const toCamel = (str:any) => {
-          console.log(str)
-          return str.replace(/([-_][a-z])/ig, ($1:any) => {
-            return $1.toUpperCase()
-              .replace('_', '');
-          });
-        };
-
-        if (!isArray(obj[k])) {
-          gdcObject[toCamel(k)] = obj[k]
-          delete gdcObject[k]
-        }
-      })
+      const gdcObject = this.convertPropertyCaseToCamel(obj)
 
       const genomicDnaChange = gdcObject.genomicDnaChange
       gdcObject.chromosome = genomicDnaChange.split(":")[0]
@@ -73,6 +77,17 @@ import { isArray } from '@material-ui/data-grid'
       gdcObject.percentage = 100
       gdcObject.referenceAllele = genomicDnaChange.split(".")[1].split(">")[0].slice(-1)
       gdcObject.score = 0
+
+      return gdcObject
+    }
+
+    private constructGene(obj: any) {
+      const gdcObject = this.convertPropertyCaseToCamel(obj)
+      return gdcObject
+    }
+
+    private constructFeature(obj: any, idField: string) {
+      const gdcObject = idField === 'ssmId' ? this.constructMutation(obj) : this.constructGene(obj)
 
       return new GDCFeature({
         gdcObject,
