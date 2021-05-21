@@ -7,15 +7,19 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
-import GDCUploadWidgetF from './GDCUploadWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
+import {
+  configSchema as GDCJSONConfigSchema,
+  AdapterClass as GDCJSONAdapter
+} from './GDCJSONAdapter'
 import {
   configSchema as segmentCnvConfigSchema,
   AdapterClass as SegmentCNVAdapter,
@@ -93,20 +97,6 @@ export default class GDCPlugin extends Plugin {
     })
 
     pluginManager.addWidgetType(() => {
-      const { configSchema, stateModel, ReactComponent } = pluginManager.load(
-        GDCUploadWidgetF,
-      )
-
-      return new WidgetType({
-        name: 'GDCUploadWidget',
-        heading: 'GDC JSON',
-        configSchema,
-        stateModel,
-        ReactComponent,
-      })
-    })
-
-    pluginManager.addWidgetType(() => {
       return new WidgetType({
         name: 'GDCSearchWidget',
         heading: 'Search GDC',
@@ -122,12 +112,22 @@ export default class GDCPlugin extends Plugin {
           AdapterClass: SegmentCNVAdapter,
         }),
     )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'GDCJSONAdapter',
+          configSchema: GDCJSONConfigSchema,
+          AdapterClass: GDCJSONAdapter,
+        })
+    )
   }
 
   configure(pluginManager: PluginManager) {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
       pluginManager.rootModel.appendToMenu('File', {
         label: 'Add GDC data',
+        icon: CloudUploadIcon,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(
             session.addWidget('GDCSearchWidget', 'gdcSearchWidget'),

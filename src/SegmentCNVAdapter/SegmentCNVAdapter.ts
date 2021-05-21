@@ -12,6 +12,8 @@ import { AnyConfigurationModel } from '@jbrowse/core/configuration/configuration
 export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
+  public config: any
+
   private setupP?: Promise<Feature[]>
 
   public constructor(config: AnyConfigurationModel) {

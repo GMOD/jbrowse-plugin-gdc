@@ -8,7 +8,7 @@ import TrackType from './TrackType'
 import { ssmFacets, geneFacets, caseFacets } from './Utility'
 
 import { makeStyles, Typography, Tooltip } from '@material-ui/core'
-import { observer, PropTypes as MobxPropTypes } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
