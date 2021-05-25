@@ -127,7 +127,7 @@ const Panel = ({ model }: { model: any }) => {
             const featureType = file.name.includes('mutations') ? 'mutation' : 'gene'
   
             const datenow = Date.now()
-            const trackId = `gdc_plugin_track-14402`
+            const trackId = `gdc_plugin_track-${datenow}`
             const config = {
               adapter: {
                 type: 'GDCJSONAdapter',
