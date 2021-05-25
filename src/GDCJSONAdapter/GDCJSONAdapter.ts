@@ -10,14 +10,16 @@ import {
   import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
   import GDCFeature from '../GDCAdapter/GDCFeature'
 import { isArray } from '@material-ui/data-grid'
-  
+
   export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
     public static capabilities = ['getFeatures', 'getRefNames']
-  
+
     private featureType: string
 
     private data: string
-  
+
+    private totalData: number
+
     public constructor(config: AnyConfigurationModel) {
       super(config)
       const featureType = readConfObject(config, 'featureType') as string
@@ -25,6 +27,7 @@ import { isArray } from '@material-ui/data-grid'
 
       this.featureType = featureType
       this.data = data
+      this.totalData = 0
     }
 
     private convertPropertyCaseToCamel(src: any) {
@@ -61,22 +64,28 @@ import { isArray } from '@material-ui/data-grid'
       const gdcObject = this.convertPropertyCaseToCamel(obj)
 
       const genomicDnaChange = gdcObject.genomicDnaChange
+
+      // properties derived from genomic dna change
       gdcObject.chromosome = genomicDnaChange.split(":")[0]
-      gdcObject.mutationType = "Simple Somatic Mutation"
+      gdcObject.referenceAllele = genomicDnaChange.split(".")[1].split(">")[0].slice(-1)
       gdcObject.startPosition = parseInt(genomicDnaChange.split(".")[1].split(">")[0].slice(0, -1))
       gdcObject.endPosition = gdcObject.startPosition
+      // constant properties for mutations
+      gdcObject.mutationType = "Simple Somatic Mutation"
+      gdcObject.nciBuild = "GRCh38"
       gdcObject.consequence = {
         hits: {
           edges
         }
       }
+      // cohort, score and percentage properties
+      const cohortCount = this.totalData
+      gdcObject.score = 1 // TODO: shouldn't be hardcoded, need to devise a way to get the proper score
 
-      gdcObject.nciBuild = "GRCh38"
-      gdcObject.numOfCasesInCohort = 1
-      gdcObject.occuranceInCohort = 1
-      gdcObject.percentage = 100
-      gdcObject.referenceAllele = genomicDnaChange.split(".")[1].split(">")[0].slice(-1)
-      gdcObject.score = 0
+      const denom = Math.ceil(Math.log10(cohortCount))
+      gdcObject.numOfCasesInCohort = cohortCount
+      gdcObject.percentage = (100 * Math.log10(gdcObject.score)) / denom + 100
+      gdcObject.occurrenceInCohort = `${gdcObject.score} / ${cohortCount}`
 
       return gdcObject
     }
@@ -131,10 +140,10 @@ import { isArray } from '@material-ui/data-grid'
         try {
           const idField = this.featureType === 'mutation' ? 'ssmId' : 'geneId'
           const parsedData = JSON.parse(this.data)
+          this.totalData = Object.keys(parsedData).length
           var features = parsedData.map((value:any) => {
             return this.constructFeature(value, idField)
           })
-
           features.forEach((feature:GDCFeature) => {
             if (
               feature.get('refName') === refName &&
