@@ -76,13 +76,33 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Panel = ({ model }: { model: any }) => {
-  const [error, setError] = useState<Error>()
+  const [ error, setError ] = useState<Error>()
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
     maxSize: MAX_FILE_SIZE,
     multiple: false,
     onDrop: async (acceptedFiles, rejectedFiles) => {
+      if (rejectedFiles.length) {
+        if (acceptedFiles.length || rejectedFiles.length > 1) {
+          console.error('Only one session at a time may be imported')
+        //@ts-ignore
+        } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
+          console.error(
+            `File size is too large (${Math.round(
+              //@ts-ignore
+              rejectedFiles[0].file.size / 1024 ** 2,
+            )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`,
+          )
+        //@ts-ignore
+        } else if (rejectedFiles[0].file.type !== 'application/json') {
+          console.error('File does not appear to be JSON')
+        } else {
+          console.error('Unknown file import error')
+        }
+        return
+      }
+
       const [file] = acceptedFiles
       if (file) {
         try {
@@ -157,7 +177,6 @@ const Panel = ({ model }: { model: any }) => {
             session.addTrackConf({
               ...config,
             })
-  
             //@ts-ignore
             session.views[0].showTrack(trackId)
           }
