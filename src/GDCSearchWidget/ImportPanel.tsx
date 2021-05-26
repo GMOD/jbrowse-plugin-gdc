@@ -85,20 +85,27 @@ const Panel = ({ model }: { model: any }) => {
     onDrop: async (acceptedFiles, rejectedFiles) => {
       if (rejectedFiles.length) {
         if (acceptedFiles.length || rejectedFiles.length > 1) {
-          console.error('Only one session at a time may be imported')
+          const message = 'Only one session at a time may be imported'
+          console.error(message)
+          setError(new Error(message))
         //@ts-ignore
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
-          console.error(
+          const message =
             `File size is too large (${Math.round(
               //@ts-ignore
               rejectedFiles[0].file.size / 1024 ** 2,
-            )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`,
-          )
+            )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
+          console.error(message)
+          setError(new Error(message))
         //@ts-ignore
         } else if (rejectedFiles[0].file.type !== 'application/json') {
-          console.error('File does not appear to be JSON')
+          const message = 'File does not appear to be JSON'
+          console.error(message)
+          setError(new Error(message))
         } else {
-          console.error('Unknown file import error')
+          const message = 'Unknown file import error'
+          console.error(message)
+          setError(new Error(message))
         }
         return
       }
