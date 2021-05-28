@@ -3,10 +3,9 @@ import { getParentRenderProps } from '@jbrowse/core/util/tracks'
 import { getSession } from '@jbrowse/core/util'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import configSchemaF from './configSchema'
+import { types } from 'mobx-state-tree'
 
 export default jbrowse => {
-  const { types } = jbrowse.jbrequire('mobx-state-tree')
-
   const configSchema = jbrowse.jbrequire(configSchemaF)
 
   const { BaseLinearDisplay } = jbrowse.getPlugin(
@@ -63,8 +62,8 @@ export default jbrowse => {
             label: 'Filter',
             onClick: self.openFilterConfig,
             icon: FilterListIcon,
-          },
+          }
         ]
-      },
+      }
     }))
 }

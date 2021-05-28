@@ -1,9 +1,10 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
+import PluginManager from '@jbrowse/core/PluginManager'
 import { ElementId } from '@jbrowse/core/util/types/mst'
-import GDCFeatureWidgetF from './GDCFeatureWidget'
+import { types } from 'mobx-state-tree'
+import ReactComponent from './GDCFeatureWidget'
 
-export default jbrowse => {
-  const { types } = jbrowse.jbrequire('mobx-state-tree')
+export default (_: PluginManager) => {
   const configSchema = ConfigurationSchema('GDCFeatureWidget', {})
   const stateModel = types
     .model('GDCFeatureWidget', {
@@ -12,15 +13,13 @@ export default jbrowse => {
       featureData: types.frozen({}),
     })
     .actions(self => ({
-      setFeatureData(data) {
+      setFeatureData(data: any) {
         self.featureData = data
       },
       clearFeatureData() {
         self.featureData = {}
       },
     }))
-
-  const ReactComponent = jbrowse.jbrequire(GDCFeatureWidgetF)
 
   return { configSchema, stateModel, ReactComponent }
 }

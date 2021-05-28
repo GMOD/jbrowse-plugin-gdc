@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@material-ui/icons": "^4.9.1",
+    "react-dropzone": "^11.3.2",
     "uuid": "^7.0.1"
   },
   "peerDependencies": {
@@ -63,6 +64,7 @@
     "prop-types": "^15.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
+    "react-dropzone": "^11.3.2",
     "regenerator-runtime": "^0.13.7",
     "rimraf": "^3.0.2",
     "rxjs": "^6.0.0",

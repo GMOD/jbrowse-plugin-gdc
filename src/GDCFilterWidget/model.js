@@ -1,8 +1,7 @@
 import { ElementId } from '@jbrowse/core/util/types/mst'
+import { types } from 'mobx-state-tree'
 
 export default jbrowse => {
-  const { types } = jbrowse.jbrequire('mobx-state-tree')
-
   const Filter = types
     .model({
       id: types.identifier,
