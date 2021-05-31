@@ -8,8 +8,7 @@ import {
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-//@ts-ignore
-import { version } from "../package.json";
+import { version } from '../package.json';
 
 import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
