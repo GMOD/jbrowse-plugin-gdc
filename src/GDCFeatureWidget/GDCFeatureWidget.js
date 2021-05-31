@@ -452,11 +452,11 @@ function GeneProject(props) {
         </TableCell>
         <TableCell>
           {cnvGainCaseCount ? cnvGainCaseCount.docCount : '0'} /{' '}
-          {cnvTotalCaseCount.docCount}
+          {cnvTotalCaseCount ? cnvTotalCaseCount.docCount : '0'}
         </TableCell>
         <TableCell>
           {cnvLossCaseCount ? cnvLossCaseCount.docCount : '0'} /{' '}
-          {cnvTotalCaseCount.docCount}
+          {cnvTotalCaseCount ? cnvTotalCaseCount.docCount: '0'}
         </TableCell>
       </TableRow>
     </>
