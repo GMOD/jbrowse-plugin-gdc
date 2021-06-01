@@ -32,14 +32,16 @@ export default jbrowse => {
       },
 
       selectFeature(feature) {
-        const session = getSession(self)
-        const featureWidget = session.addWidget(
-          'GDCFeatureWidget',
-          'gdcFeature',
-          { featureData: feature.toJSON() },
-        )
-        session.showWidget(featureWidget)
-        session.setSelection(feature)
+        if (feature) {
+          const session = getSession(self)
+          const featureWidget = session.addWidget(
+            'GDCFeatureWidget',
+            'gdcFeature',
+            { featureData: feature.toJSON() },
+          )
+          session.showWidget(featureWidget)
+          session.setSelection(feature)
+        }
       },
     }))
 
