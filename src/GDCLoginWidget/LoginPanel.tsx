@@ -2,9 +2,7 @@ import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { getSession } from '@jbrowse/core/util'
 import { Paper, Button, TextField, Typography, makeStyles } from '@material-ui/core'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import ErrorIcon from '@material-ui/icons/Error'
-import { containerSizesSelector } from '@material-ui/data-grid'
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,23 +31,52 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column'
   },
-  loginSubmissionContainer: {
+  buttonContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    justifyContent: 'flex-end'
   },
-  errorContainer: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-    paddingRight: theme.spacing(2)
+  alertContainer: {
+    paddingBottom: theme.spacing(2)
   }
 }))
 
+async function fetchFeatures(token: any, signal?: AbortSignal) {
+  const tempQuery = '31ae8522-dd6a-443e-af5f-2bd0bea9da4e'
+  const response = await fetch(`https://api.gdc.cancer.gov/data/${tempQuery}`, {
+    method: 'GET',
+    headers: { 'X-Auth-Token': `${token}` },
+    signal
+  })
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch ${response.status} ${response.statusText}`,
+    )
+  }
+  return response
+}
+
 const Panel = ({ model }: { model: any }) => {
   const [ error, setError ] = useState<Error>()
+  const [ success, setSuccess ] = useState(false)
+  const inputRef = useRef()
   const classes = useStyles()
   const session = getSession(model)
+
+  const handleLogin = async () => {
+    // const token = sessionStorage.getItem("token")
+    try {
+      //@ts-ignore
+      const token = inputRef ? inputRef.current.value : ''
+      const response = await fetchFeatures(token)
+
+      if (response.ok) {
+        setSuccess(true)
+      }
+    } catch (e) {
+      console.error(e)
+      setError(new Error())
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -69,16 +96,19 @@ const Panel = ({ model }: { model: any }) => {
           </Typography>
         </div>
         <div className={classes.submitTokenContainer}>
-          <TextField color="primary" variant="outlined" label="Enter token"/>
-          <div className={classes.loginSubmissionContainer}>
-            {/* { error ? ( */}
-              <div className={classes.errorContainer}>
-                <Typography variant="body2">
-                  An example of an error message
-                </Typography>
+            { error ? (
+              <div className={classes.alertContainer}>
+                <Alert severity="error">Authentication failed.<br/>Please verify your token and try again.</Alert>
               </div>
-            {/* ) : null } */}
-            <Button color="primary" variant="contained" size="large">
+            ) : null }
+            { success ? (
+              <div className={classes.alertContainer}>
+                <Alert severity="success">Authentication successful.<br/>You now have access to controlled data.</Alert>
+              </div>
+            ) : null }
+          <TextField color="primary" variant="outlined" label="Enter token" inputRef={inputRef}/>
+          <div className={classes.buttonContainer}>
+            <Button color="primary" variant="contained" size="large" onClick={handleLogin}>
               Login
             </Button>
           </div>
