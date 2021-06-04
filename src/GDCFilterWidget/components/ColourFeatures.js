@@ -46,7 +46,7 @@ const HighlightFeature = observer(({ schema, type }) => {
     setColourBy(hlBy)
     let colourFunction = ''
     if (hlBy.type === 'threshold') {
-      colourFunction = `function(feature) { if (feature.get('${hlBy.attributeName}') >= ${hlBy.values[0].threshold}) {return '${hlBy.values[0].colour1}'; } else {return '${hlBy.values[0].colour2}'; } }`
+      colourFunction = `jexl:get(feature,'${hlBy.attributeName}') >= ${hlBy.values[0].threshold}) ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}'`
     } else if (hlBy.type === 'category') {
       if (
         hlBy.name === 'VEP' ||
@@ -58,21 +58,21 @@ const HighlightFeature = observer(({ schema, type }) => {
           switchStatement += `case '${element.name}': return '${element.colour}'; break;`
         })
         switchStatement += '}'
-        colourFunction = `function(feature) { const filteredConsequences = feature.get('consequence').hits.edges.filter(cons => cons.node.transcript.is_canonical); const impact = filteredConsequences[0].node.transcript.annotation.${hlBy.attributeName}; ${switchStatement}}`
+        colourFunction = `jexl:get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.${hlBy.attributeName}] || ${switchStatement}`
       } else {
         let switchStatement = `switch(attrValue) {`
         hlBy.values.forEach(element => {
           switchStatement += `case '${element.name}': return '${element.colour}'; break;`
         })
         switchStatement += '}'
-        colourFunction = `function(feature) { const attrValue = feature.get('${hlBy.attributeName}'); ${switchStatement}}`
+        colourFunction = `jexl:get(feature,'${hlBy.attributeName}') || ${switchStatement}`
       }
     } else if (hlBy.type === 'boolean') {
-      colourFunction = `function(feature) { if (feature.get('${hlBy.attributeName}')) {return '${hlBy.values[0].colour1}'; } else {return '${hlBy.values[0].colour2}'; } }`
+      colourFunction = `jexl:get(feature,'${hlBy.attributeName}') ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}'`
     } else if (hlBy.type === 'percentage') {
-      colourFunction = `function(feature) { const logValue = feature.get('${hlBy.attributeName}'); return 'rgb(0,' + logValue + ',0)' }`
+      colourFunction = `jexl:cast(rgb(0,[get(feature,'${hlBy.attributeName}')],0))`
     } else {
-      colourFunction = `function(feature) { return 'goldenrod' }`
+      colourFunction = `jexl:cast('goldenrod')`
     }
     // Set to function
     schema.target.displays[0].renderer.color1.set(colourFunction)
@@ -116,7 +116,7 @@ const HighlightFeature = observer(({ schema, type }) => {
       {colourBy && colourBy.values && (
         <div>
           <Typography variant="subtitle2" className={classes.text}>
-            {colourBy.description}
+            {colourBy.symbol}
           </Typography>
           {colourBy.values && colourBy.type === 'category' && (
             <Table>
