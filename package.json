@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@material-ui/icons": "^4.9.1",
+    "local-cors-proxy": "^1.1.0",
     "react-dropzone": "^11.3.2",
     "uuid": "^7.0.1"
   },

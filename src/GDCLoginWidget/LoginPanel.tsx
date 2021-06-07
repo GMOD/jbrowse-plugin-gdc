@@ -42,9 +42,9 @@ const useStyles = makeStyles(theme => ({
 
 async function fetchFeatures(token: any, signal?: AbortSignal) {
   const tempQuery = '31ae8522-dd6a-443e-af5f-2bd0bea9da4e'
-  const response = await fetch(`https://api.gdc.cancer.gov/data/${tempQuery}`, {
+  const response = await fetch(`http://localhost:8010/proxy/data/${tempQuery}`, {
     method: 'GET',
-    headers: { 'X-Auth-Token': `${token}` },
+    headers: { 'Content-Type': 'application/octet-stream', 'X-Auth-Token': `${token}` },
     signal
   })
   if (!response.ok) {
