@@ -46,31 +46,13 @@ const HighlightFeature = observer(({ schema, type }) => {
     setColourBy(hlBy)
     let colourFunction = ''
     if (hlBy.type === 'threshold') {
-      colourFunction = `jexl:get(feature,'${hlBy.attributeName}') >= ${hlBy.values[0].threshold}) ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}'`
+      colourFunction = `jexl:get(feature,'${hlBy.attributeName}') >= ${hlBy.values[0].threshold} ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}'`
     } else if (hlBy.type === 'category') {
-      if (
-        hlBy.name === 'VEP' ||
-        hlBy.name === 'SIFT' ||
-        hlBy.name === 'PolyPhen'
-      ) {
-        let switchStatement = `switch(impact) {`
-        hlBy.values.forEach(element => {
-          switchStatement += `case '${element.name}': return '${element.colour}'; break;`
-        })
-        switchStatement += '}'
-        colourFunction = `jexl:get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.${hlBy.attributeName}] || ${switchStatement}`
-      } else {
-        let switchStatement = `switch(attrValue) {`
-        hlBy.values.forEach(element => {
-          switchStatement += `case '${element.name}': return '${element.colour}'; break;`
-        })
-        switchStatement += '}'
-        colourFunction = `jexl:get(feature,'${hlBy.attributeName}') || ${switchStatement}`
-      }
+      colourFunction = `jexl:switch(feature,'${JSON.stringify(hlBy)}')`
     } else if (hlBy.type === 'boolean') {
-      colourFunction = `jexl:get(feature,'${hlBy.attributeName}') ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}'`
+      colourFunction = `jexl:cast([get(feature,'${hlBy.attributeName}')] ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}')`
     } else if (hlBy.type === 'percentage') {
-      colourFunction = `jexl:cast(rgb(0,[get(feature,'${hlBy.attributeName}')],0))`
+      colourFunction = `jexl:rgb(feature,'${hlBy.attributeName}')`
     } else {
       colourFunction = `jexl:cast('goldenrod')`
     }

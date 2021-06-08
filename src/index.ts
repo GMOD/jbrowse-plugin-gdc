@@ -8,7 +8,7 @@ import {
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import { version } from '../package.json';
+import { version } from '../package.json'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
@@ -137,5 +137,24 @@ export default class GDCPlugin extends Plugin {
         },
       })
     }
+
+    pluginManager.jexl.addFunction('switch', (feature: any, hlBy:any) => {
+      hlBy = JSON.parse(hlBy)
+      const filteredConsequences = feature.get('consequence').hits.edges.filter((cons:any) => cons.node.transcript.is_canonical)
+      const impact = filteredConsequences[0].node.transcript.annotation[hlBy.attributeName]
+      const attrValue = feature.get(hlBy.attributeName)
+      const target = impact ? impact : attrValue
+      let colour = 'black'
+      hlBy.values.forEach((element:any) => {
+        if (target === element.name) {
+          colour = `${element.colour}`
+        }
+      })
+      return colour
+    })
+    pluginManager.jexl.addFunction('rgb', (feature: any, attributeName:string) => {
+      const percentage = feature.get(attributeName)
+      return `rgb(0,${percentage},0)`
+    })
   }
 }
