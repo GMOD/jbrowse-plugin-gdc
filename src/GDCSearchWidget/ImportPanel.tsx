@@ -155,6 +155,7 @@ const Panel = ({ model }: { model: any }) => {
   
             const datenow = Date.now()
             const trackId = `gdc_plugin_track-${datenow}`
+            const color1 = featureType == 'mutation' ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'" : "jexl:cast('goldenrod')"
             const config = {
               adapter: {
                 type: 'GDCJSONAdapter',
@@ -167,7 +168,7 @@ const Panel = ({ model }: { model: any }) => {
                 {
                   displayId: `gdc_plugin_track_linear-${datenow}`,
                   renderer: {
-                    color1: "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'",
+                    color1,
                     labels: {
                       name: "jexl:get(feature,'genomicDnaChange')",
                       type: "SvgFeatureRenderer"

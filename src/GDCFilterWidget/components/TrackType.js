@@ -43,7 +43,7 @@ export default observer(schema => {
 
     // Set to function
     schema.schema.target.displays[0].renderer.color1.set(
-      `function(feature) { return 'goldenrod' }`,
+      `jexl:cast('goldenrod')`,
     )
 
     // Set to colour array element
