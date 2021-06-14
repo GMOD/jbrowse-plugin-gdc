@@ -40,21 +40,6 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-async function fetchFeatures(token: any, signal?: AbortSignal) {
-  const tempQuery = '31ae8522-dd6a-443e-af5f-2bd0bea9da4e'
-  const response = await fetch(`http://localhost:8010/proxy/data/${tempQuery}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/octet-stream', 'X-Auth-Token': `${token}` },
-    signal
-  })
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch ${response.status} ${response.statusText}`,
-    )
-  }
-  return response
-}
-
 const Panel = ({ model }: { model: any }) => {
   const [ error, setError ] = useState<Error>()
   const [ success, setSuccess ] = useState(false)
@@ -62,20 +47,12 @@ const Panel = ({ model }: { model: any }) => {
   const classes = useStyles()
   const session = getSession(model)
 
-  const handleLogin = async () => {
-    // const token = sessionStorage.getItem("token")
-    try {
-      //@ts-ignore
-      const token = inputRef ? inputRef.current.value : ''
-      const response = await fetchFeatures(token)
+  const handleLogin = () => {
+    //@ts-ignore
+    const token = inputRef ? inputRef.current.value : ''
+    window.sessionStorage.setItem('GDCToken', token)
 
-      if (response.ok) {
-        setSuccess(true)
-      }
-    } catch (e) {
-      console.error(e)
-      setError(new Error())
-    }
+    setSuccess(true)
   }
 
   return (
@@ -103,7 +80,7 @@ const Panel = ({ model }: { model: any }) => {
             ) : null }
             { success ? (
               <div className={classes.alertContainer}>
-                <Alert severity="success">Authentication successful.<br/>You now have access to controlled data.</Alert>
+                <Alert severity="success">Your token has been stored.<br/>Verification of your token will be performed when you attempt to access controlled data.</Alert>
               </div>
             ) : null }
           <TextField color="primary" variant="outlined" label="Enter token" inputRef={inputRef}/>
