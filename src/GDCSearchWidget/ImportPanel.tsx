@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Panel = ({ model }: { model: any }) => {
-  const [ error, setError ] = useState<Error>()
+  const [error, setError] = useState<Error>()
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -88,16 +88,15 @@ const Panel = ({ model }: { model: any }) => {
           const message = 'Only one session at a time may be imported'
           console.error(message)
           setError(new Error(message))
-        //@ts-ignore
+          //@ts-ignore
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
-          const message =
-            `File size is too large (${Math.round(
-              //@ts-ignore
-              rejectedFiles[0].file.size / 1024 ** 2,
-            )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
+          const message = `File size is too large (${Math.round(
+            //@ts-ignore
+            rejectedFiles[0].file.size / 1024 ** 2,
+          )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
           setError(new Error(message))
-        //@ts-ignore
+          //@ts-ignore
         } else if (rejectedFiles[0].file.type !== 'application/json') {
           const message = 'File does not appear to be JSON'
           console.error(message)
@@ -144,23 +143,28 @@ const Panel = ({ model }: { model: any }) => {
                 file.file_id,
                 {},
                 {
-                  height: 12,
+                  height: 20,
                   constraints: { max: 2, min: -2 },
                   rendererTypeNameState: 'density',
                 },
               )
             })
           } else {
-            const featureType = file.name.includes('mutations') ? 'mutation' : 'gene'
-  
+            const featureType = file.name.includes('mutations')
+              ? 'mutation'
+              : 'gene'
+
             const datenow = Date.now()
             const trackId = `gdc_plugin_track-${datenow}`
-            const color1 = featureType == 'mutation' ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'" : "jexl:cast('goldenrod')"
+            const color1 =
+              featureType == 'mutation'
+                ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+                : "jexl:cast('goldenrod')"
             const config = {
               adapter: {
                 type: 'GDCJSONAdapter',
                 featureType,
-                data: JSON.stringify(res)
+                data: JSON.stringify(res),
               },
               assemblyNames: ['hg38'],
               category: undefined,
@@ -171,15 +175,15 @@ const Panel = ({ model }: { model: any }) => {
                     color1,
                     labels: {
                       name: "jexl:get(feature,'genomicDnaChange')",
-                      type: "SvgFeatureRenderer"
+                      type: 'SvgFeatureRenderer',
                     },
                   },
-                  type: "LinearGDCDisplay"
-                }
+                  type: 'LinearGDCDisplay',
+                },
               ],
               name: `GDC-${file.name}`,
               trackId,
-              type: 'GDCTrack'
+              type: 'GDCTrack',
             }
             //@ts-ignore
             session.addTrackConf({
@@ -195,7 +199,7 @@ const Panel = ({ model }: { model: any }) => {
       }
     },
   })
-  
+
   const classes = useStyles({ isDragActive })
   const session = getSession(model)
 
@@ -226,9 +230,7 @@ const Panel = ({ model }: { model: any }) => {
               </Typography>
             </div>
           </div>
-          <Typography className={classes.errorMessage}>
-            {error}
-          </Typography>
+          <Typography className={classes.errorMessage}>{error}</Typography>
         </Paper>
       ) : null}
     </div>
