@@ -146,15 +146,15 @@ export default class GDCPlugin extends Plugin {
           )
         },
       })
-      pluginManager.rootModel.appendToMenu('File', {
-        label: 'GDC Login',
-        icon: VerifiedUserIcon,
-        onClick: (session: SessionWithWidgets) => {
-          session.showWidget(
-            session.addWidget('GDCLoginWidget', 'gdcLoginWidget'),
-          )
-        }
-      })
+      // pluginManager.rootModel.appendToMenu('File', {
+      //   label: 'GDC Login',
+      //   icon: VerifiedUserIcon,
+      //   onClick: (session: SessionWithWidgets) => {
+      //     session.showWidget(
+      //       session.addWidget('GDCLoginWidget', 'gdcLoginWidget'),
+      //     )
+      //   }
+      // })
     }
   }
 }

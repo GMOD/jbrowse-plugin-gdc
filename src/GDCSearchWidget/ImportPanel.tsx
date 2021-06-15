@@ -6,7 +6,11 @@ import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import ErrorIcon from '@material-ui/icons/Error'
+import ExitToApp from '@material-ui/icons/ExitToApp'
 import { openLocation } from '@jbrowse/core/util/io'
+import LoginDialogue from './LoginDialogue'
+
+//const LoginDialogue = lazy(() => import('./LoginDialogue'))
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 
@@ -87,6 +91,14 @@ const useStyles = makeStyles(theme => ({
   },
   alertContainer: {
     padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`
+  },
+  loginPromptContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  typoContainer: {
+    width: '100%'
   }
 }))
 
@@ -104,9 +116,12 @@ async function fetchFeatures(token: any, query: any) {
 }
 
 const Panel = ({ model }: { model: any }) => {
-  const [ idError, setIdError ] = useState<Error>()
+  const [ idError, setIdError ] = useState(false)
   const [ dragError, setDragError ] = useState<Error>()
   const [ success, setSuccess ] = useState(false)
+  const [ tokenStored, setTokenStored ] = useState(false)
+
+  const [ open, setOpen ] = useState(false)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -228,6 +243,7 @@ const Panel = ({ model }: { model: any }) => {
   const handleSubmit = async () => {
     // reset for multiple attempts
     setSuccess(false)
+    setIdError(false)
     try {
       //@ts-ignore
       const query = inputRef ? inputRef.current.value : ''
@@ -248,7 +264,7 @@ const Panel = ({ model }: { model: any }) => {
       setSuccess(true)
     } catch (e) {
       console.error(e)
-      setIdError(new Error())
+      setIdError(true)
     }
   }
   
@@ -290,6 +306,25 @@ const Panel = ({ model }: { model: any }) => {
             </Typography>
           </Paper>
         ) : null }
+      </Paper>
+      <Paper className={classes.paper}>
+        { tokenStored ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="success">Your token has been stored.<br/>Verification of your token will be performed when you attempt to access controlled data.</Alert>
+          </div>
+        ) : null }
+        <div className={classes.loginPromptContainer}>
+          <div className={classes.typoContainer}>
+            <Typography variant="body1">
+              Login to access controlled data
+            </Typography>
+          </div>
+          <div className={classes.buttonContainer}>
+            <Button color="primary" variant="contained" size="small" startIcon={<ExitToApp />} onClick={() => {session.setDialogComponent(LoginDialogue, { setTokenStored })}}>
+              Login
+            </Button>
+          </div>
+        </div>
       </Paper>
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h1" align="center">
