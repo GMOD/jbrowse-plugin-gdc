@@ -258,57 +258,10 @@ const Panel = ({ model }: { model: any }) => {
       const isCompressed = response.data.file_name.endsWith('.gz') ? true : false
 
       /* TODO: at this point we know what kind of data we are handling, and we should hand off to another adapter
-      * the adapter would perform the query with openLocation to open the file...this works with authentication token
-      * and we need some more work done to make it work for .gz files...unpack with pako and parse them */
+      * the adapter would perform the query with openLocation or fetch to open the file 
+      * compression state needs to be considered */
 
-      //console.log(format, isCompressed)
-
-      const location = {uri: `http://localhost:8010/proxy/data/${query}`} as FileLocation
-      let data = (await openLocation(location).readFile({headers: {'X-Auth-Token': `${token}`}})) as string
-
-      if (isCompressed) {
-        data = new TextDecoder().decode(inflate(data))
-      }
-
-      const trackId = `${response.data.file_id}`
-
-      let conf = {
-        trackId,
-        type: '',
-        name: `${response.data.file_name}`,
-        assemblyNames: ['hg38'],
-        adapter: {
-        }
-      }
-
-      switch(format) {
-        case 'TXT':
-          conf.type = 'QuantitativeTrack'
-          conf.adapter = {
-            type: 'SegmentCNVAdapter',
-            segLocation: {
-              uri: 'https://api.gdc.cancer.gov/data/' + query,
-            },
-          }
-          break
-        default:
-          break
-      }
-
-      // @ts-ignore
-      session.addTrackConf({
-        ...conf
-      })
-      //@ts-ignore
-      session.views[0].showTrack(
-        trackId,
-        {},
-        {
-          height: 20,
-          constraints: { max: 2, min: -2 },
-          rendererTypeNameState: 'density',
-        },
-      )
+      console.log(format, isCompressed)
 
       setSuccess(true)
     } catch (e) {
