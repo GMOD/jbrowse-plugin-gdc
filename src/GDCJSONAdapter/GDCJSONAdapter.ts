@@ -142,8 +142,8 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
       )
       gdcObject = result.data.viewer.explore.features.hits.edges[0].node
       gdcObject.geneChromosome = `chr${gdcObject.geneChromosome}`
-      gdcObject.note = gdcObject.name
-      console.log('constructGene', gdcObject)
+      gdcObject.note = gdcObject.symbol
+      gdcObject.strand = gdcObject.geneStrand
     } catch (e) {
       console.error(e)
     }

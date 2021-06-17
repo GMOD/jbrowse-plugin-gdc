@@ -72,6 +72,7 @@ export default class GDCFeature implements Feature {
         featureData.end = gdcObject.geneEnd
         featureData.refName = gdcObject.geneChromosome
         featureData.type = gdcObject.biotype
+        featureData.note = gdcObject.symbol
         break
       }
       default:

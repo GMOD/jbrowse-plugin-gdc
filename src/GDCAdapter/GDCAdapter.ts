@@ -138,6 +138,8 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
         } else {
           for (const hit of queryResults) {
             const gdcObject = hit.node
+            gdcObject.strand = gdcObject.geneStrand
+            gdcObject.id = gdcObject[idField]
             const feature = new GDCFeature({
               gdcObject,
               id: gdcObject[idField],
