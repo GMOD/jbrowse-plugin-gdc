@@ -42,6 +42,7 @@
   "dependencies": {
     "@material-ui/icons": "^4.9.1",
     "local-cors-proxy": "^1.1.0",
+    "pako": "^2.0.3",
     "react-dropzone": "^11.3.2",
     "uuid": "^7.0.1"
   },
@@ -58,6 +59,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.19",
     "@material-ui/lab": "^4.0.0-alpha.45",
     "@testing-library/react": "^11.2.5",
+    "@types/pako": "^1.0.1",
     "@types/react": "^17.0.0",
     "mobx": "^5.0.0",
     "mobx-react": "^6.0.0",

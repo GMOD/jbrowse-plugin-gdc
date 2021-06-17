@@ -9,6 +9,7 @@ import ErrorIcon from '@material-ui/icons/Error'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import { openLocation } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
+import { inflate } from 'pako'
 
 //const LoginDialogue = lazy(() => import('./LoginDialogue'))
 
@@ -102,7 +103,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-async function fetchFeatures(token: any, query: any) {
+async function fetchFileInfo(token: any, query: any) {
   const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
     method: 'GET',
     headers: { 'X-Auth-Token': `${token}` }
@@ -120,8 +121,6 @@ const Panel = ({ model }: { model: any }) => {
   const [ dragError, setDragError ] = useState<Error>()
   const [ success, setSuccess ] = useState(false)
   const [ tokenStored, setTokenStored ] = useState(false)
-
-  const [ open, setOpen ] = useState(false)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -189,7 +188,7 @@ const Panel = ({ model }: { model: any }) => {
                 file.file_id,
                 {},
                 {
-                  height: 12,
+                  height: 20,
                   constraints: { max: 2, min: -2 },
                   rendererTypeNameState: 'density',
                 },
@@ -197,7 +196,7 @@ const Panel = ({ model }: { model: any }) => {
             })
           } else {
             const featureType = file.name.includes('mutations') ? 'mutation' : 'gene'
-  
+
             const datenow = Date.now()
             const trackId = `gdc_plugin_track-${datenow}`
             const config = {
@@ -248,7 +247,7 @@ const Panel = ({ model }: { model: any }) => {
       //@ts-ignore
       const query = inputRef ? inputRef.current.value : ''
       let token = window.sessionStorage.getItem('GDCToken')
-      const response = await fetchFeatures(token, query)
+      const response = await fetchFileInfo(token, query)
 
       const format = response.data.data_format
       const isCompressed = response.data.file_name.endsWith('.gz') ? true : false
@@ -257,10 +256,55 @@ const Panel = ({ model }: { model: any }) => {
       * the adapter would perform the query with openLocation to open the file...this works with authentication token
       * and we need some more work done to make it work for .gz files...unpack with pako and parse them */
 
-      console.log(format, isCompressed)
+      //console.log(format, isCompressed)
 
       const location = {uri: `http://localhost:8010/proxy/data/${query}`} as FileLocation
-      const lines = (await openLocation(location).readFile({headers: {'X-Auth-Token': `${token}`}, encoding: 'utf8'})) as string
+      let data = (await openLocation(location).readFile({headers: {'X-Auth-Token': `${token}`}})) as string
+
+      if (isCompressed) {
+        data = new TextDecoder().decode(inflate(data))
+      }
+
+      const trackId = `${response.data.file_id}`
+
+      let conf = {
+        trackId,
+        type: '',
+        name: `${response.data.file_name}`,
+        assemblyNames: ['hg38'],
+        adapter: {
+        }
+      }
+
+      switch(format) {
+        case 'TXT':
+          conf.type = 'QuantitativeTrack'
+          conf.adapter = {
+            type: 'SegmentCNVAdapter',
+            segLocation: {
+              uri: 'https://api.gdc.cancer.gov/data/' + query,
+            },
+          }
+          break
+        default:
+          break
+      }
+
+      // @ts-ignore
+      session.addTrackConf({
+        ...conf
+      })
+      //@ts-ignore
+      session.views[0].showTrack(
+        trackId,
+        {},
+        {
+          height: 20,
+          constraints: { max: 2, min: -2 },
+          rendererTypeNameState: 'density',
+        },
+      )
+
       setSuccess(true)
     } catch (e) {
       console.error(e)
