@@ -10,6 +10,7 @@ import ExitToApp from '@material-ui/icons/ExitToApp'
 import { openLocation } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
 import { inflate } from 'pako'
+import { mapDataInfo } from './GDCDataInfo'
 
 //const LoginDialogue = lazy(() => import('./LoginDialogue'))
 
@@ -104,7 +105,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 async function fetchFileInfo(token: any, query: any) {
-  const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
+  const response = await fetch(`http://localhost:8010/proxy/files/${query}?expand=index_files`, {
     method: 'GET',
     headers: { 'X-Auth-Token': `${token}` }
   })
@@ -121,6 +122,7 @@ const Panel = ({ model }: { model: any }) => {
   const [ dragError, setDragError ] = useState<Error>()
   const [ success, setSuccess ] = useState(false)
   const [ tokenStored, setTokenStored ] = useState(false)
+  const [ processingError, setProcessingError ] = useState(false)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -187,7 +189,7 @@ const Panel = ({ model }: { model: any }) => {
                 file.file_id,
                 {},
                 {
-                  height: 20,
+                  height: 200,
                   constraints: { max: 2, min: -2 },
                   rendererTypeNameState: 'density',
                 },
@@ -248,22 +250,65 @@ const Panel = ({ model }: { model: any }) => {
     // reset for multiple attempts
     setSuccess(false)
     setIdError(false)
+    setProcessingError(false)
     try {
       //@ts-ignore
       const query = inputRef ? inputRef.current.value : ''
       let token = window.sessionStorage.getItem('GDCToken')
       const response = await fetchFileInfo(token, query)
 
-      const format = response.data.data_format
+      //const format = response.data.data_format
+      const category = response.data.data_category
+      //const type = response.data.data_type
       const isCompressed = response.data.file_name.endsWith('.gz') ? true : false
+      // BAM files require an index file, if the response contains index_files, then we want to utilize it
+      const indexFileId = response.data?.index_files[0].file_id
 
       /* TODO: at this point we know what kind of data we are handling, and we should hand off to another adapter
       * the adapter would perform the query with openLocation or fetch to open the file 
       * compression state needs to be considered */
 
-      console.log(format, isCompressed)
+      /* data adapter needs to take into consideration the data format AND the data category */
 
-      setSuccess(true)
+      //console.log(format, category, isCompressed)
+
+      // const location = {uri: `http://localhost:8010/proxy/data/${query}`} as FileLocation
+      // let data = (await openLocation(location).readFile({headers: {'X-Auth-Token': `${token}`}})) as string
+
+      // if (isCompressed) {
+      //   data = new TextDecoder().decode(inflate(data))
+      // }
+
+      const uri = `http://localhost:8010/proxy/data/${query}`
+
+      const trackId = `${response.data.file_id}`
+
+      const typeAdapterObject = mapDataInfo(category, uri, isCompressed, indexFileId)
+
+      if (typeAdapterObject) {
+        let conf = {
+          trackId,
+          //@ts-ignore
+          type: typeAdapterObject.config.type,
+          name: `${response.data.file_name}`,
+          assemblyNames: ['hg38'],
+          adapter: {
+            //@ts-ignore
+            ...typeAdapterObject.config.adapter
+          }
+        }
+
+        //@ts-ignore
+        session.addTrackConf({
+          ...conf
+        })
+        //@ts-ignore
+        session.views[0].showTrack(trackId)
+
+        setSuccess(true)
+      } else {
+        setProcessingError(true)
+      }
     } catch (e) {
       console.error(e)
       setIdError(true)
@@ -339,6 +384,11 @@ const Panel = ({ model }: { model: any }) => {
           { idError ? (
             <div className={classes.alertContainer}>
               <Alert severity="error">Authentication failed.<br/>Please verify your token, re-enter your token in the GDC Login, and try again.</Alert>
+            </div>
+          ) : null }
+          { processingError ? (
+            <div className={classes.alertContainer}>
+              <Alert severity="error">Failed to add track.<br/>The configuration of this file is not currently supported.</Alert>
             </div>
           ) : null }
           { success ? (
