@@ -13,7 +13,6 @@ import { version } from '../package.json'
 import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
-import GDCLoginWidgetF from './GDCLoginWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
@@ -107,14 +106,6 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
-    pluginManager.addWidgetType(() => {
-      return new WidgetType({
-        name: 'GDCLoginWidget',
-        heading: 'GDC Login',
-        ...GDCLoginWidgetF(pluginManager),
-      })
-    })
-
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
@@ -145,15 +136,6 @@ export default class GDCPlugin extends Plugin {
           )
         },
       })
-      // pluginManager.rootModel.appendToMenu('File', {
-      //   label: 'GDC Login',
-      //   icon: VerifiedUserIcon,
-      //   onClick: (session: SessionWithWidgets) => {
-      //     session.showWidget(
-      //       session.addWidget('GDCLoginWidget', 'gdcLoginWidget'),
-      //     )
-      //   }
-      // })
     }
 
     pluginManager.jexl.addFunction('switch', (feature: any, hlBy:any) => {

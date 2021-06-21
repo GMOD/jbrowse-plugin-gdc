@@ -11,8 +11,6 @@ import { openLocation } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
 import { inflate } from 'pako'
 
-//const LoginDialogue = lazy(() => import('./LoginDialogue'))
-
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 
 //@ts-ignore
