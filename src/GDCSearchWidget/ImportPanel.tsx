@@ -1,10 +1,15 @@
 import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
-import { getSession } from '@jbrowse/core/util'
-import { Paper, Button, Typography, makeStyles } from '@material-ui/core'
+import { FileLocation, getSession } from '@jbrowse/core/util'
+import { Paper, Button, Typography, TextField, makeStyles } from '@material-ui/core'
+import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import ErrorIcon from '@material-ui/icons/Error'
+import ExitToApp from '@material-ui/icons/ExitToApp'
+import { openLocation } from '@jbrowse/core/util/io'
+import LoginDialogue from './LoginDialogue'
+import { inflate } from 'pako'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 
@@ -27,6 +32,8 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    padding: theme.spacing(2),
+    margin: `0px 0px ${theme.spacing(1)}px 0px`
   },
   dropZone: {
     textAlign: 'center',
@@ -73,10 +80,45 @@ const useStyles = makeStyles(theme => ({
   errorMessage: {
     padding: theme.spacing(2),
   },
+  submitContainer: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  alertContainer: {
+    padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`
+  },
+  loginPromptContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  typoContainer: {
+    width: '100%'
+  }
 }))
 
+async function fetchFileInfo(token: any, query: any) {
+  const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
+    method: 'GET',
+    headers: { 'X-Auth-Token': `${token}` }
+  })
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch ${response.status} ${response.statusText}`,
+    )
+  }
+  return response.json()
+}
+
 const Panel = ({ model }: { model: any }) => {
-  const [error, setError] = useState<Error>()
+  const [ idError, setIdError ] = useState(false)
+  const [ dragError, setDragError ] = useState<Error>()
+  const [ success, setSuccess ] = useState(false)
+  const [ tokenStored, setTokenStored ] = useState(false)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -87,7 +129,7 @@ const Panel = ({ model }: { model: any }) => {
         if (acceptedFiles.length || rejectedFiles.length > 1) {
           const message = 'Only one session at a time may be imported'
           console.error(message)
-          setError(new Error(message))
+          setDragError(new Error(message))
           //@ts-ignore
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
@@ -95,16 +137,16 @@ const Panel = ({ model }: { model: any }) => {
             rejectedFiles[0].file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
-          setError(new Error(message))
+          setDragError(new Error(message))
           //@ts-ignore
         } else if (rejectedFiles[0].file.type !== 'application/json') {
           const message = 'File does not appear to be JSON'
           console.error(message)
-          setError(new Error(message))
+          setDragError(new Error(message))
         } else {
           const message = 'Unknown file import error'
           console.error(message)
-          setError(new Error(message))
+          setDragError(new Error(message))
         }
         return
       }
@@ -194,18 +236,48 @@ const Panel = ({ model }: { model: any }) => {
           }
         } catch (e) {
           console.error(e)
-          setError(e)
+          setDragError(e)
         }
       }
     },
   })
 
+  const handleSubmit = async () => {
+    // reset for multiple attempts
+    setSuccess(false)
+    setIdError(false)
+    try {
+      //@ts-ignore
+      const query = inputRef ? inputRef.current.value : ''
+      let token = window.sessionStorage.getItem('GDCToken')
+      const response = await fetchFileInfo(token, query)
+
+      const format = response.data.data_format
+      const isCompressed = response.data.file_name.endsWith('.gz') ? true : false
+
+      /* TODO: at this point we know what kind of data we are handling, and we should hand off to another adapter
+      * the adapter would perform the query with openLocation or fetch to open the file 
+      * compression state needs to be considered */
+
+      console.log(format, isCompressed)
+
+      setSuccess(true)
+    } catch (e) {
+      console.error(e)
+      setIdError(true)
+    }
+  }
+  
   const classes = useStyles({ isDragActive })
   const session = getSession(model)
+  const inputRef = useRef()
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
+        <Typography variant="h6" component="h1" align="center">
+          Drag and Drop Local GDC Files
+        </Typography>
         <div {...getRootProps({ className: classes.dropZone })}>
           <input {...getInputProps()} />
           <CloudUploadIcon className={classes.uploadIcon} fontSize="large" />
@@ -219,20 +291,67 @@ const Panel = ({ model }: { model: any }) => {
             Browse Files
           </Button>
         </div>
-      </Paper>
-      {error ? (
-        <Paper className={classes.error}>
-          <div className={classes.errorHeader}>
-            <ErrorIcon color="inherit" fontSize="large" />
-            <div>
-              <Typography variant="h6" color="inherit" align="center">
-                Import error
-              </Typography>
+        { dragError ? (
+          <Paper className={classes.error}>
+            <div className={classes.errorHeader}>
+              <ErrorIcon color="inherit" fontSize="large" />
+              <div>
+                <Typography variant="h6" color="inherit" align="center">
+                  Import error
+                </Typography>
+              </div>
             </div>
+            <Typography className={classes.errorMessage}>
+              {dragError}
+            </Typography>
+          </Paper>
+        ) : null }
+      </Paper>
+      <Paper className={classes.paper}>
+        { tokenStored ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="success">Your token has been stored.<br/>Verification of your token will be performed when you attempt to access controlled data.</Alert>
           </div>
-          <Typography className={classes.errorMessage}>{error}</Typography>
-        </Paper>
-      ) : null}
+        ) : null }
+        <div className={classes.loginPromptContainer}>
+          <div className={classes.typoContainer}>
+            <Typography variant="body1">
+              Login to access controlled data
+            </Typography>
+          </div>
+          <div className={classes.buttonContainer}>
+            <Button color="primary" variant="contained" size="small" startIcon={<ExitToApp />} onClick={() => {session.setDialogComponent(LoginDialogue, { setTokenStored })}}>
+              Login
+            </Button>
+          </div>
+        </div>
+      </Paper>
+      <Paper className={classes.paper}>
+        <Typography variant="h6" component="h1" align="center">
+          Import File by ID or URL
+        </Typography>
+        <Typography variant="body1" align="center">
+          Add a track by providing ID or URL of a file, including controlled data.
+        </Typography>
+        <div className={classes.submitContainer}>
+          { idError ? (
+            <div className={classes.alertContainer}>
+              <Alert severity="error">Authentication failed.<br/>Please verify your token, re-enter your token in the GDC Login, and try again.</Alert>
+            </div>
+          ) : null }
+          { success ? (
+            <div className={classes.alertContainer}>
+              <Alert severity="success">The requested track has been added.</Alert>
+            </div>
+          ) : null }
+          <TextField color="primary" variant="outlined" label="Enter file ID" inputRef={inputRef}/>
+          <div className={classes.buttonContainer}>
+            <Button color="primary" variant="contained" size="large" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </div>
+        </div>
+      </Paper>
     </div>
   )
 }
