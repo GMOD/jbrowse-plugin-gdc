@@ -19,11 +19,11 @@ const mapToAdapter: Map<string, Object> = new Map([
   [
     'Simple Nucleotide Variation',
     {
-      config: { type: 'VariantTrack', adapter: { type: 'VcfAdapter'} },
-      prefix: 'vcf'
-    }
+      config: { type: 'VariantTrack', adapter: { type: 'VcfAdapter' } },
+      prefix: 'vcf',
+    },
   ],
-]);
+])
 
 /**
  * maps the data info to an appropriate data adapter
@@ -35,7 +35,7 @@ const mapToAdapter: Map<string, Object> = new Map([
 export function mapDataInfo(
   category: string,
   uri: string,
-  indexFileId?: string
+  indexFileId?: string,
 ) {
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCToken')
@@ -44,11 +44,19 @@ export function mapDataInfo(
 
   if (configObject) {
     //@ts-ignore
-    configObject.config.adapter[`${configObject.prefix}Location`] = { uri: uri, authHeader: 'X-Auth-Token', authToken: `${token}` }
+    configObject.config.adapter[`${configObject.prefix}Location`] = {
+      uri: uri,
+      authHeader: 'X-Auth-Token',
+      authToken: `${token}`,
+    }
     if (indexFileId) {
       //@ts-ignore
-      configObject.config.adapter["index"] = {
-        location: { uri: `http://localhost:8010/proxy/data/${indexFileId}`, authHeader: 'X-Auth-Token', authToken: `${token}`},
+      configObject.config.adapter['index'] = {
+        location: {
+          uri: `http://localhost:8010/proxy/data/${indexFileId}`,
+          authHeader: 'X-Auth-Token',
+          authToken: `${token}`,
+        },
       }
     }
   }
