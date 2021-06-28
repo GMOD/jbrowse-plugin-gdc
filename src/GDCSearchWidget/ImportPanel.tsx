@@ -1,15 +1,19 @@
 import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { FileLocation, getSession } from '@jbrowse/core/util'
-import { Paper, Button, Typography, TextField, makeStyles } from '@material-ui/core'
+import {
+  Paper,
+  Button,
+  Typography,
+  TextField,
+  makeStyles,
+} from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import ErrorIcon from '@material-ui/icons/Error'
 import ExitToApp from '@material-ui/icons/ExitToApp'
-import { openLocation } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
-import { inflate } from 'pako'
 import { mapDataInfo } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
@@ -34,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(2),
-    margin: `0px 0px ${theme.spacing(1)}px 0px`
+    margin: `0px 0px ${theme.spacing(1)}px 0px`,
   },
   dropZone: {
     textAlign: 'center',
@@ -83,44 +87,48 @@ const useStyles = makeStyles(theme => ({
   },
   submitContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   alertContainer: {
-    padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`
+    padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`,
   },
   loginPromptContainer: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   typoContainer: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 }))
 
-async function fetchFileInfo(token: any, query: any) {
-  const response = await fetch(`http://localhost:8010/proxy/files/${query}?expand=index_files`, {
-    method: 'GET',
-    headers: { 'X-Auth-Token': `${token}` }
-  })
+async function fetchFileInfo(query: any) {
+  const response = await fetch(
+    `http://localhost:8010/proxy/files/${query}?expand=index_files`,
+    {
+      method: 'GET',
+    },
+  )
+
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch ${response.status} ${response.statusText}`,
-    )
+    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
   }
   return response.json()
 }
 
 const Panel = ({ model }: { model: any }) => {
-  const [ idError, setIdError ] = useState(false)
-  const [ dragError, setDragError ] = useState<Error>()
-  const [ success, setSuccess ] = useState(false)
-  const [ tokenStored, setTokenStored ] = useState(false)
-  const [ processingError, setProcessingError ] = useState(false)
+  const [dragError, setDragError] = useState<Error>()
+  const [success, setSuccess] = useState(false)
+  const [tokenStored, setTokenStored] = useState(false)
+  const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
+  const [authErrorMessage, setAuthErrorMessage] = useState<String>()
+
+  const session = getSession(model)
+  const inputRef = useRef()
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'application/json',
@@ -245,77 +253,78 @@ const Panel = ({ model }: { model: any }) => {
   })
 
   const handleSubmit = async () => {
-    // reset for multiple attempts
+    setTrackErrorMessage(undefined)
+    setAuthErrorMessage(undefined)
     setSuccess(false)
-    setIdError(false)
-    setProcessingError(false)
+
     try {
       //@ts-ignore
-      const query = inputRef ? inputRef.current.value : ''
-      let token = window.sessionStorage.getItem('GDCToken')
-      const response = await fetchFileInfo(token, query)
+      const query = inputRef ? inputRef.current.value : undefined
 
-      //const format = response.data.data_format
-      const category = response.data.data_category
-      //const type = response.data.data_type
-      const isCompressed = response.data.file_name.endsWith('.gz') ? true : false
-      // BAM files require an index file, if the response contains index_files, then we want to utilize it
-      const indexFileId = response.data?.index_files[0].file_id
+      if (query) {
+        const response = await fetchFileInfo(query)
+        if (
+          response.data.access == 'controlled' &&
+          !window.sessionStorage.getItem('GDCToken')
+        ) {
+          setAuthErrorMessage(
+            'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
+          )
+          setTrackErrorMessage(
+            'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
+          )
+        } else {
+          const category = response.data.data_category
+          // BAM files require an index file, if the response contains index_files, then we want to utilize it
+          const indexFileId = response.data.index_files
+            ? response.data.index_files[0].file_id
+            : undefined
 
-      /* TODO: at this point we know what kind of data we are handling, and we should hand off to another adapter
-      * the adapter would perform the query with openLocation or fetch to open the file 
-      * compression state needs to be considered */
+          const uri = `http://localhost:8010/proxy/data/${query}`
 
-      /* data adapter needs to take into consideration the data format AND the data category */
+          const trackId = `${response.data.file_id}`
 
-      //console.log(format, category, isCompressed)
+          const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
 
-      // const location = {uri: `http://localhost:8010/proxy/data/${query}`} as FileLocation
-      // let data = (await openLocation(location).readFile({headers: {'X-Auth-Token': `${token}`}})) as string
+          if (typeAdapterObject) {
+            let conf = {
+              trackId,
+              //@ts-ignore
+              type: typeAdapterObject.config.type,
+              name: `${response.data.file_name}`,
+              assemblyNames: ['hg38'],
+              adapter: {
+                //@ts-ignore
+                ...typeAdapterObject.config.adapter,
+              },
+            }
 
-      // if (isCompressed) {
-      //   data = new TextDecoder().decode(inflate(data))
-      // }
-
-      const uri = `http://localhost:8010/proxy/data/${query}`
-
-      const trackId = `${response.data.file_id}`
-
-      const typeAdapterObject = mapDataInfo(category, uri, isCompressed, indexFileId)
-
-      if (typeAdapterObject) {
-        let conf = {
-          trackId,
-          //@ts-ignore
-          type: typeAdapterObject.config.type,
-          name: `${response.data.file_name}`,
-          assemblyNames: ['hg38'],
-          adapter: {
             //@ts-ignore
-            ...typeAdapterObject.config.adapter
+            session.addTrackConf({
+              ...conf,
+            })
+            //@ts-ignore
+            session.views[0].showTrack(trackId)
+
+            setSuccess(true)
+          } else {
+            setTrackErrorMessage(
+              'Failed to add track.\nThe configuration of this file is not currently supported.',
+            )
           }
         }
-
-        //@ts-ignore
-        session.addTrackConf({
-          ...conf
-        })
-        //@ts-ignore
-        session.views[0].showTrack(trackId)
-
-        setSuccess(true)
       } else {
-        setProcessingError(true)
+        setTrackErrorMessage(
+          'Failed to add track.\nUUID or URL must be provided.',
+        )
       }
     } catch (e) {
       console.error(e)
-      setIdError(true)
+      setTrackErrorMessage(`Failed to add track.\n ${e}.`)
     }
   }
-  
+
   const classes = useStyles({ isDragActive })
-  const session = getSession(model)
-  const inputRef = useRef()
 
   return (
     <div className={classes.root}>
@@ -336,7 +345,7 @@ const Panel = ({ model }: { model: any }) => {
             Browse Files
           </Button>
         </div>
-        { dragError ? (
+        {dragError ? (
           <Paper className={classes.error}>
             <div className={classes.errorHeader}>
               <ErrorIcon color="inherit" fontSize="large" />
@@ -350,14 +359,24 @@ const Panel = ({ model }: { model: any }) => {
               {dragError}
             </Typography>
           </Paper>
-        ) : null }
+        ) : null}
       </Paper>
       <Paper className={classes.paper}>
-        { tokenStored ? (
+        {tokenStored ? (
           <div className={classes.alertContainer}>
-            <Alert severity="success">Your token has been stored.<br/>Verification of your token will be performed when you attempt to access controlled data.</Alert>
+            <Alert severity="success">
+              Your token has been stored.
+              <br />
+              Verification of your token will be performed when you attempt to
+              access controlled data.
+            </Alert>
           </div>
-        ) : null }
+        ) : null}
+        {authErrorMessage ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="error">{authErrorMessage}</Alert>
+          </div>
+        ) : null}
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
             <Typography variant="body1">
@@ -365,7 +384,15 @@ const Panel = ({ model }: { model: any }) => {
             </Typography>
           </div>
           <div className={classes.buttonContainer}>
-            <Button color="primary" variant="contained" size="small" startIcon={<ExitToApp />} onClick={() => {session.setDialogComponent(LoginDialogue, { setTokenStored })}}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="small"
+              startIcon={<ExitToApp />}
+              onClick={() => {
+                session.setDialogComponent(LoginDialogue, { setTokenStored })
+              }}
+            >
               Login
             </Button>
           </div>
@@ -376,27 +403,35 @@ const Panel = ({ model }: { model: any }) => {
           Import File by ID or URL
         </Typography>
         <Typography variant="body1" align="center">
-          Add a track by providing ID or URL of a file, including controlled data.
+          Add a track by providing ID or URL of a file, including controlled
+          data.
         </Typography>
         <div className={classes.submitContainer}>
-          { idError ? (
+          {trackErrorMessage ? (
             <div className={classes.alertContainer}>
-              <Alert severity="error">Authentication failed.<br/>Please verify your token, re-enter your token in the GDC Login, and try again.</Alert>
+              <Alert severity="error">{trackErrorMessage}</Alert>
             </div>
-          ) : null }
-          { processingError ? (
+          ) : null}
+          {success ? (
             <div className={classes.alertContainer}>
-              <Alert severity="error">Failed to add track.<br/>The configuration of this file is not currently supported.</Alert>
+              <Alert severity="success">
+                The requested track has been added.
+              </Alert>
             </div>
-          ) : null }
-          { success ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="success">The requested track has been added.</Alert>
-            </div>
-          ) : null }
-          <TextField color="primary" variant="outlined" label="Enter file ID" inputRef={inputRef}/>
+          ) : null}
+          <TextField
+            color="primary"
+            variant="outlined"
+            label="Enter file ID"
+            inputRef={inputRef}
+          />
           <div className={classes.buttonContainer}>
-            <Button color="primary" variant="contained" size="large" onClick={handleSubmit}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              onClick={handleSubmit}
+            >
               Submit
             </Button>
           </div>

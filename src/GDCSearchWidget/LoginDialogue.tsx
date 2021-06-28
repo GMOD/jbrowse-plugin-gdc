@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   imgContainer: {
     display: 'flex',
@@ -40,18 +40,18 @@ const useStyles = makeStyles(theme => ({
   },
   helperTextContainer: {
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
   },
   submitTokenContainer: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   alertContainer: {
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
   },
 }))
 
@@ -59,11 +59,9 @@ export default function LoginDialogue({
   setTokenStored,
   handleClose,
 }: {
-  setTokenStored: any,
+  setTokenStored: any
   handleClose: () => void
 }) {
-  const [ error, setError ] = useState<Error>()
-  const [ success, setSuccess ] = useState(false)
   const inputRef = useRef()
   const classes = useStyles()
 
@@ -72,13 +70,12 @@ export default function LoginDialogue({
     const token = inputRef ? inputRef.current.value : ''
     window.sessionStorage.setItem('GDCToken', token)
 
-    setSuccess(true)
     setTokenStored(true)
     handleClose()
   }
 
   return (
-    <Dialog open onClose={handleClose} maxWidth='sm'>
+    <Dialog open onClose={handleClose} maxWidth="sm">
       <DialogTitle>
         Login to access controlled GDC data
         <IconButton
@@ -92,7 +89,10 @@ export default function LoginDialogue({
         <div className={classes.root}>
           <div className={classes.paper}>
             <div className={classes.imgContainer}>
-              <img className={classes.img} src="https://me-pedia.org/images/2/2b/NIH_logo.png"></img>
+              <img
+                className={classes.img}
+                src="https://me-pedia.org/images/2/2b/NIH_logo.png"
+              ></img>
             </div>
             <div className={classes.helperTextContainer}>
               <Typography variant="h6" component="h1" align="center">
@@ -102,23 +102,25 @@ export default function LoginDialogue({
                 An authentication token is required to access controlled data.
               </Typography>
               <Typography variant="body2" align="center">
-                You will need to provide your authentication token every time you start a new session, as the token is deleted when the session expires.
+                You will need to provide your authentication token every time
+                you start a new session, as the token is deleted when the
+                session expires.
               </Typography>
             </div>
             <div className={classes.submitTokenContainer}>
-                { error ? (
-                  <div className={classes.alertContainer}>
-                    <Alert severity="error">Authentication failed.<br/>Please verify your token and try again.</Alert>
-                  </div>
-                ) : null }
-                { success ? (
-                  <div className={classes.alertContainer}>
-                    <Alert severity="success">Your token has been stored.<br/>Verification of your token will be performed when you attempt to access controlled data.</Alert>
-                  </div>
-                ) : null }
-              <TextField color="primary" variant="outlined" label="Enter token" inputRef={inputRef}/>
+              <TextField
+                color="primary"
+                variant="outlined"
+                label="Enter token"
+                inputRef={inputRef}
+              />
               <div className={classes.buttonContainer}>
-                <Button color="primary" variant="contained" size="large" onClick={handleLogin}>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="large"
+                  onClick={handleLogin}
+                >
                   Login
                 </Button>
               </div>
