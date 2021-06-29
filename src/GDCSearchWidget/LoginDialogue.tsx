@@ -57,9 +57,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function LoginDialogue({
   setTokenStored,
+  setAuthErrorMessage,
   handleClose,
 }: {
   setTokenStored: any
+  setAuthErrorMessage: any
   handleClose: () => void
 }) {
   const inputRef = useRef()
@@ -70,6 +72,7 @@ export default function LoginDialogue({
     const token = inputRef ? inputRef.current.value : ''
     window.sessionStorage.setItem('GDCToken', token)
 
+    setAuthErrorMessage(false)
     setTokenStored(true)
     handleClose()
   }

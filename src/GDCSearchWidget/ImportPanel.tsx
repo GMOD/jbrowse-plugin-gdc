@@ -390,7 +390,10 @@ const Panel = ({ model }: { model: any }) => {
               size="small"
               startIcon={<ExitToApp />}
               onClick={() => {
-                session.setDialogComponent(LoginDialogue, { setTokenStored })
+                session.setDialogComponent(LoginDialogue, {
+                  setTokenStored,
+                  setAuthErrorMessage,
+                })
               }}
             >
               Login
