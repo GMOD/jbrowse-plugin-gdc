@@ -259,7 +259,11 @@ const Panel = ({ model }: { model: any }) => {
 
     try {
       //@ts-ignore
-      const query = inputRef ? inputRef.current.value : undefined
+      let query = inputRef ? inputRef.current.value : undefined
+
+      if (query.includes('files/')) {
+        query = query.split('/')[4]
+      }
 
       if (query) {
         const response = await fetchFileInfo(query)
@@ -403,11 +407,11 @@ const Panel = ({ model }: { model: any }) => {
       </Paper>
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h1" align="center">
-          Import File by ID or URL
+          Import File by UUID or URL
         </Typography>
         <Typography variant="body1" align="center">
-          Add a track by providing ID or URL of a file, including controlled
-          data.
+          Add a track by providing the UUID or URL of a file, including
+          controlled data.
         </Typography>
         <div className={classes.submitContainer}>
           {trackErrorMessage ? (
@@ -425,7 +429,7 @@ const Panel = ({ model }: { model: any }) => {
           <TextField
             color="primary"
             variant="outlined"
-            label="Enter file ID"
+            label="Enter file UUID or URL"
             inputRef={inputRef}
           />
           <div className={classes.buttonContainer}>
