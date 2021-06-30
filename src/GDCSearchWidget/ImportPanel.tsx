@@ -324,7 +324,9 @@ const Panel = ({ model }: { model: any }) => {
       }
     } catch (e) {
       console.error(e)
-      setTrackErrorMessage(`Failed to add track.\n ${e}.`)
+      const message =
+        e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
+      setTrackErrorMessage(`Failed to add track.\n ${message}.`)
     }
   }
 
