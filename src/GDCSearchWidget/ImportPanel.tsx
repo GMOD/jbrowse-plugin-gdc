@@ -261,11 +261,7 @@ const Panel = ({ model }: { model: any }) => {
       // @ts-ignore
       let query = inputRef ? inputRef.current.value : undefined
 
-      if (query.includes('files/')) {
-        query = query.split('/')[4]
-      } else {
-        // explore work
-        query = undefined
+      if (query.includes('exploration?')) {
         // @ts-ignore
         let uri = inputRef ? inputRef.current.value : undefined
         const featureType = uri.split('searchTableTab=')[1].slice(0, -1)
@@ -314,9 +310,14 @@ const Panel = ({ model }: { model: any }) => {
         })
         // @ts-ignore
         session.views[0].showTrack(trackId)
-      }
-
-      if (query) {
+      } else if (!query) {
+        setTrackErrorMessage(
+          'Failed to add track.\nUUID or URL must be provided.',
+        )
+      } else {
+        if (query.includes('files/')) {
+          query = query.split('/')[4]
+        }
         const response = await fetchFileInfo(query)
         if (
           response.data.access == 'controlled' &&
@@ -368,10 +369,6 @@ const Panel = ({ model }: { model: any }) => {
             )
           }
         }
-      } else {
-        setTrackErrorMessage(
-          'Failed to add track.\nUUID or URL must be provided.',
-        )
       }
     } catch (e) {
       console.error(e)
