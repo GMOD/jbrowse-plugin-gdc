@@ -258,14 +258,66 @@ const Panel = ({ model }: { model: any }) => {
     setSuccess(false)
 
     try {
-      //@ts-ignore
+      // @ts-ignore
       let query = inputRef ? inputRef.current.value : undefined
 
-      if (query.includes('files/')) {
-        query = query.split('/')[4]
-      }
+      if (query.includes('exploration?')) {
+        // @ts-ignore
+        let uri = inputRef ? inputRef.current.value : undefined
+        const featureType = uri.split('searchTableTab=')[1].slice(0, -1)
+        const filters = decodeURIComponent(
+          uri
+            .split('&searchTableTab=')[0]
+            .split('/')[3]
+            .split('filters=')[1],
+        )
 
-      if (query) {
+        const datenow = Date.now()
+        const trackId = `gdc_plugin_track-${datenow}`
+        const color1 =
+          featureType == 'mutation'
+            ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+            : "jexl:cast('goldenrod')"
+        const config = {
+          adapter: {
+            type: 'GDCAdapter',
+            featureType,
+            filters,
+          },
+          assemblyNames: ['hg38'],
+          category: undefined,
+          displays: [
+            {
+              displayId: `gdc_plugin_track_linear-${datenow}`,
+              renderer: {
+                color1,
+                labels: {
+                  name: "jexl:get(feature,'genomicDnaChange')",
+                  type: 'SvgFeatureRenderer',
+                },
+              },
+              type: 'LinearGDCDisplay',
+            },
+          ],
+          name: `GDC-plugin-track-${datenow}`,
+          trackId,
+          type: 'GDCTrack',
+        }
+
+        // @ts-ignore
+        session.addTrackConf({
+          ...config,
+        })
+        // @ts-ignore
+        session.views[0].showTrack(trackId)
+      } else if (!query) {
+        setTrackErrorMessage(
+          'Failed to add track.\nUUID or URL must be provided.',
+        )
+      } else {
+        if (query.includes('files/')) {
+          query = query.split('/')[4]
+        }
         const response = await fetchFileInfo(query)
         if (
           response.data.access == 'controlled' &&
@@ -317,10 +369,6 @@ const Panel = ({ model }: { model: any }) => {
             )
           }
         }
-      } else {
-        setTrackErrorMessage(
-          'Failed to add track.\nUUID or URL must be provided.',
-        )
       }
     } catch (e) {
       console.error(e)
@@ -409,11 +457,11 @@ const Panel = ({ model }: { model: any }) => {
       </Paper>
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h1" align="center">
-          Import File by UUID or URL
+          Import File or Exploration by UUID or URL
         </Typography>
         <Typography variant="body1" align="center">
           Add a track by providing the UUID or URL of a file, including
-          controlled data.
+          controlled data, or by providing the URL of an Exploration session.
         </Typography>
         <div className={classes.submitContainer}>
           {trackErrorMessage ? (
@@ -431,7 +479,7 @@ const Panel = ({ model }: { model: any }) => {
           <TextField
             color="primary"
             variant="outlined"
-            label="Enter file UUID or URL"
+            label="Enter UUID or URL"
             inputRef={inputRef}
           />
           <div className={classes.buttonContainer}>
