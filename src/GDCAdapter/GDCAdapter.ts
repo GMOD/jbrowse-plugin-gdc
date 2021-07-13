@@ -84,7 +84,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
     ]
   }
 
-  public getFeatures(region: Region, opts: BaseOptions) {
+  public getFeatures(region: Region, opts: BaseOptions = {}) {
     const { refName, start, end } = region
     return ObservableCreate<Feature>(async observer => {
       try {

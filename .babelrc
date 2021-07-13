@@ -2,8 +2,31 @@
   "presets": [
     // need this to be able to use spread operator on Set and Map
     // see https://github.com/formium/tsdx/issues/376#issuecomment-566750042
-    ["@babel/preset-env", { "loose": false }],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry",
+        "corejs": 3,
+        "loose": false,
+        "targets": { "node": "8", "browsers": ["> 0.5%", "last 2 versions"] }
+      }
+    ],
     // can remove this if only using TypeScript
-    "@babel/preset-react"
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "absoluteRuntime": true,
+        "corejs": false,
+        "helpers": false,
+        "regenerator": true,
+        "version": "7.0.0-beta.0"
+      }
+    ],
+    ["@babel/plugin-proposal-private-methods", { "loose": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }]
   ]
 }

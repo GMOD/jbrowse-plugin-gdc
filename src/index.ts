@@ -19,7 +19,7 @@ import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
 import {
   configSchema as GDCJSONConfigSchema,
-  AdapterClass as GDCJSONAdapter
+  AdapterClass as GDCJSONAdapter,
 } from './GDCJSONAdapter'
 import {
   configSchema as segmentCnvConfigSchema,
@@ -121,7 +121,7 @@ export default class GDCPlugin extends Plugin {
           name: 'GDCJSONAdapter',
           configSchema: GDCJSONConfigSchema,
           AdapterClass: GDCJSONAdapter,
-        })
+        }),
     )
   }
 
@@ -138,23 +138,29 @@ export default class GDCPlugin extends Plugin {
       })
     }
 
-    pluginManager.jexl.addFunction('switch', (feature: any, hlBy:any) => {
+    pluginManager.jexl.addFunction('switch', (feature: any, hlBy: any) => {
       hlBy = JSON.parse(hlBy)
-      const filteredConsequences = feature.get('consequence').hits.edges.filter((cons:any) => cons.node.transcript.is_canonical)
-      const impact = filteredConsequences[0].node.transcript.annotation[hlBy.attributeName]
+      const filteredConsequences = feature
+        .get('consequence')
+        .hits.edges.filter((cons: any) => cons.node.transcript.is_canonical)
+      const impact =
+        filteredConsequences[0].node.transcript.annotation[hlBy.attributeName]
       const attrValue = feature.get(hlBy.attributeName)
       const target = impact ? impact : attrValue
       let colour = 'black'
-      hlBy.values.forEach((element:any) => {
+      hlBy.values.forEach((element: any) => {
         if (target === element.name) {
           colour = `${element.colour}`
         }
       })
       return colour
     })
-    pluginManager.jexl.addFunction('rgb', (feature: any, attributeName:string) => {
-      const percentage = feature.get(attributeName)
-      return `rgb(0,${percentage},0)`
-    })
+    pluginManager.jexl.addFunction(
+      'rgb',
+      (feature: any, attributeName: string) => {
+        const percentage = feature.get(attributeName)
+        return `rgb(0,${percentage},0)`
+      },
+    )
   }
 }
