@@ -62,13 +62,12 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
    */
   private convertPropertyCaseToCamel(src: any) {
     const tgt = src
-    Object.keys(src).forEach((k) => {
-      const toCamel = (str:any) => {
-        return str.replace(/([-_][a-z])/ig, ($1:any) => {
-          return $1.toUpperCase()
-            .replace('_', '');
-        });
-      };
+    Object.keys(src).forEach(k => {
+      const toCamel = (str: any) => {
+        return str.replace(/([-_][a-z])/gi, ($1: any) => {
+          return $1.toUpperCase().replace('_', '')
+        })
+      }
 
       if (!isArray(src[k])) {
         tgt[toCamel(k)] = src[k]
@@ -91,8 +90,8 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
     for (const transcript of consequence) {
       edges.push({
         node: {
-          ...transcript
-        }
+          ...transcript,
+        },
       })
     }
 
@@ -101,17 +100,25 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
     const genomicDnaChange = gdcObject.genomicDnaChange
 
     // properties derived from genomic dna change
-    gdcObject.chromosome = genomicDnaChange.split(":")[0]
-    gdcObject.referenceAllele = genomicDnaChange.split(".")[1].split(">")[0].slice(-1)
-    gdcObject.startPosition = parseInt(genomicDnaChange.split(".")[1].split(">")[0].slice(0, -1))
+    gdcObject.chromosome = genomicDnaChange.split(':')[0]
+    gdcObject.referenceAllele = genomicDnaChange
+      .split('.')[1]
+      .split('>')[0]
+      .slice(-1)
+    gdcObject.startPosition = parseInt(
+      genomicDnaChange
+        .split('.')[1]
+        .split('>')[0]
+        .slice(0, -1),
+    )
     gdcObject.endPosition = gdcObject.startPosition
     // constant properties for mutations
-    gdcObject.mutationType = "Simple Somatic Mutation"
-    gdcObject.nciBuild = "GRCh38"
+    gdcObject.mutationType = 'Simple Somatic Mutation'
+    gdcObject.nciBuild = 'GRCh38'
     gdcObject.consequence = {
       hits: {
-        edges
-      }
+        edges,
+      },
     }
     // cohort, score and percentage properties
     const cohortCount = this.totalData
@@ -164,10 +171,10 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
           content: [
             {
               op: 'in',
-              content: { field: 'genes.gene_id', value: geneId}
-            }
-          ]
-        }
+              content: { field: 'genes.gene_id', value: geneId },
+            },
+          ],
+        },
       ],
     }
 
@@ -191,7 +198,10 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
     const idField = this.featureType === 'mutation' ? 'ssmId' : 'geneId'
 
     for (const entity of parsed) {
-      const gdcObject = idField === 'ssmId' ? this.constructMutation(entity) : await this.constructGene(entity, opts)
+      const gdcObject =
+        idField === 'ssmId'
+          ? this.constructMutation(entity)
+          : await this.constructGene(entity, opts)
       const feature = new GDCFeature({
         gdcObject,
         id: gdcObject[idField],
@@ -252,7 +262,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
         this.totalData = Object.keys(parsedData).length
         const features = await this.setup(parsedData, opts)
 
-        features.forEach((feature:GDCFeature) => {
+        features.forEach((feature: GDCFeature) => {
           if (
             feature.get('refName') === refName &&
             feature.get('end') > start &&
