@@ -1,15 +1,8 @@
 import React from 'react'
 import { types } from 'mobx-state-tree'
-//eslint-disable-next-line no-unused-vars
-import regeneratorRuntime from 'regenerator-runtime'
 import { render } from '@testing-library/react'
-
-import PluginManager from '@jbrowse/core/PluginManager'
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
-import GDCFeatureDetailsF from './GDCFeatureWidget'
-
-const pm = new PluginManager([])
-const GDCFeatureDetails = pm.load(GDCFeatureDetailsF)
+import GDCFeatureDetails from './GDCFeatureWidget'
 
 describe('GDCTrack widget', () => {
   it('renders mutation with just the required model elements', () => {

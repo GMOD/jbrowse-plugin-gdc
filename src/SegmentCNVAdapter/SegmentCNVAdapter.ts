@@ -18,6 +18,7 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
 
   public constructor(config: AnyConfigurationModel) {
     super(config)
+    this.config = config
   }
 
   public async getLines() {

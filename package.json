@@ -50,8 +50,12 @@
     "@jbrowse/core": "^1.0.3"
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
     "@babel/core": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.14.5",
     "@jbrowse/core": "^1.2.0",
     "@jbrowse/development-tools": "^1.0.3",
     "@jbrowse/plugin-linear-genome-view": "^1.0.0",
@@ -59,8 +63,11 @@
     "@material-ui/data-grid": "^4.0.0-alpha.19",
     "@material-ui/lab": "^4.0.0-alpha.45",
     "@testing-library/react": "^11.2.5",
+    "@types/jest": "^26.0.24",
     "@types/pako": "^1.0.1",
     "@types/react": "^17.0.0",
+    "browserslist": "^4.16.6",
+    "jest-fetch-mock": "^3.0.3",
     "mobx": "^5.0.0",
     "mobx-react": "^6.0.0",
     "mobx-state-tree": "3.14.1",
@@ -72,6 +79,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.0.0",
     "serve": "^11.3.2",
+    "ts-jest": "^27.0.3",
     "tslib": "^2.0.3",
     "typescript": "^4.1.2"
   }

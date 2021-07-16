@@ -1,0 +1,562 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`adapter can fetch featues from a genes explore json file 1`] = `Array []`;
+
+exports[`adapter can fetch features from a mutations explore json file 1`] = `
+Array [
+  "chr1",
+  "chr10",
+  "chr11",
+  "chr12",
+  "chr13",
+  "chr14",
+  "chr15",
+  "chr16",
+  "chr17",
+  "chr18",
+  "chr19",
+  "chr2",
+  "chr20",
+  "chr21",
+  "chr22",
+  "chr3",
+  "chr4",
+  "chr5",
+  "chr6",
+  "chr7",
+  "chr8",
+  "chr9",
+  "chrX",
+  "chrY",
+]
+`;
+
+exports[`adapter can fetch features from a mutations explore json file 2`] = `
+Array [
+  Object {
+    "chromosome": "chr3",
+    "consequence": Object {
+      "hits": Object {
+        "edges": Array [
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "annotation": Object {
+                  "polyphen_impact": "",
+                  "sift_impact": "",
+                  "vep_impact": "MODIFIER",
+                },
+                "consequence_type": "non_coding_transcript_exon_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": true,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "annotation": Object {
+                  "polyphen_impact": "",
+                  "sift_impact": "",
+                  "vep_impact": "MODIFIER",
+                },
+                "consequence_type": "non_coding_transcript_exon_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+        ],
+      },
+    },
+    "end": 69739599,
+    "endPosition": 69739599,
+    "genomicDnaChange": "chr3:g.69739599T>C",
+    "mutationSubtype": "Single base substitution",
+    "mutationType": "Simple Somatic Mutation",
+    "nciBuild": "GRCh38",
+    "numOfCasesInCohort": 31,
+    "occurrenceInCohort": "1 / 31",
+    "percentage": 100,
+    "refName": "chr3",
+    "referenceAllele": "T",
+    "score": 1,
+    "ssmId": "f7c735a1-1aad-529e-86ba-b694cc0243c3",
+    "start": 69739598,
+    "startPosition": 69739599,
+    "type": "Simple Somatic Mutation",
+    "uniqueId": "f7c735a1-1aad-529e-86ba-b694cc0243c3",
+  },
+  Object {
+    "chromosome": "chr3",
+    "consequence": Object {
+      "hits": Object {
+        "edges": Array [
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "probably_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "probably_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "unknown",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "probably_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": true,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000114861",
+                  "symbol": "FOXP1",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+        ],
+      },
+    },
+    "end": 71198379,
+    "endPosition": 71198379,
+    "genomicDnaChange": "chr3:g.71198379C>T",
+    "mutationSubtype": "Single base substitution",
+    "mutationType": "Simple Somatic Mutation",
+    "nciBuild": "GRCh38",
+    "numOfCasesInCohort": 31,
+    "occurrenceInCohort": "1 / 31",
+    "percentage": 100,
+    "refName": "chr3",
+    "referenceAllele": "C",
+    "score": 1,
+    "ssmId": "73f3f305-5aac-593c-93cb-fe02378d0d3a",
+    "start": 71198378,
+    "startPosition": 71198379,
+    "type": "Simple Somatic Mutation",
+    "uniqueId": "73f3f305-5aac-593c-93cb-fe02378d0d3a",
+  },
+  Object {
+    "chromosome": "chr3",
+    "consequence": Object {
+      "hits": Object {
+        "edges": Array [
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M52L",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M37L",
+                "annotation": Object {
+                  "polyphen_impact": "possibly_damaging",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M52L",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious_low_confidence",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M37L",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "unknown",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "",
+                  "sift_impact": "",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M53L",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": true,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "annotation": Object {
+                  "polyphen_impact": "",
+                  "sift_impact": "",
+                  "vep_impact": "MODIFIER",
+                },
+                "consequence_type": "non_coding_transcript_exon_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M1?",
+                "annotation": Object {
+                  "polyphen_impact": "unknown",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "HIGH",
+                },
+                "consequence_type": "start_lost",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+          Object {
+            "node": Object {
+              "transcript": Object {
+                "aa_change": "M53L",
+                "annotation": Object {
+                  "polyphen_impact": "benign",
+                  "sift_impact": "deleterious",
+                  "vep_impact": "MODERATE",
+                },
+                "consequence_type": "missense_variant",
+                "gene": Object {
+                  "gene_id": "ENSG00000187098",
+                  "symbol": "MITF",
+                },
+                "is_canonical": false,
+              },
+            },
+          },
+        ],
+      },
+    },
+    "end": 69879186,
+    "endPosition": 69879186,
+    "genomicDnaChange": "chr3:g.69879186A>C",
+    "mutationSubtype": "Single base substitution",
+    "mutationType": "Simple Somatic Mutation",
+    "nciBuild": "GRCh38",
+    "numOfCasesInCohort": 31,
+    "occurrenceInCohort": "1 / 31",
+    "percentage": 100,
+    "refName": "chr3",
+    "referenceAllele": "A",
+    "score": 1,
+    "ssmId": "0a1ffe21-3a5d-5d60-87c2-160569579b22",
+    "start": 69879185,
+    "startPosition": 69879186,
+    "type": "Simple Somatic Mutation",
+    "uniqueId": "0a1ffe21-3a5d-5d60-87c2-160569579b22",
+  },
+]
+`;
