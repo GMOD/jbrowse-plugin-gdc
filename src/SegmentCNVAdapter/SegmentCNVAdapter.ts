@@ -21,7 +21,7 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     this.config = config
   }
 
-  public async getLines() {
+  private async getLines() {
     const segLocation = readConfObject(
       this.config,
       'segLocation',
@@ -46,19 +46,34 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
       })
   }
 
-  public async setup() {
+  private async setup() {
     if (!this.setupP) {
       this.setupP = this.getLines()
     }
     return this.setupP
   }
 
+  private async determineRefNamesFromFile() {
+    const segLocation = readConfObject(
+      this.config,
+      'segLocation',
+    ) as FileLocation
+    const lines = (await openLocation(segLocation).readFile('utf8')) as string
+
+    let refNames = lines
+      .split('\n')
+      .slice(1)
+      .filter(f => !!f)
+      .map(line => {
+        return line.split('\t')[1]
+      })
+
+    return Array.from(new Set(refNames))
+  }
+
   public async getRefNames(_: BaseOptions = {}) {
-    const l = []
-    for (let i = 0; i < 23; i++) {
-      l.push('' + i)
-    }
-    return l
+    const refNames = await this.determineRefNamesFromFile()
+    return refNames
   }
 
   public getFeatures(region: Region, opts: BaseOptions = {}) {
