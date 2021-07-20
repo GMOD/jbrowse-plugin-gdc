@@ -9,6 +9,7 @@ fetchMock.enableMocks()
 test('adapter can fetch features from the gdc', async () => {
   const adapter = new GDCAdapter(
     configSchema.create({
+      GDCAdapterId: 'test-gdc-adapter',
       filters: JSON.stringify(gdcFilters),
     }),
   )
