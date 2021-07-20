@@ -23,6 +23,18 @@ const mapToAdapter: Map<string, Object> = new Map([
       prefix: 'vcf',
     },
   ],
+  [
+    'GDC Explore',
+    {
+      config: { type: 'GDCTrack', adapter: { type: 'GDCAdapter' } },
+    },
+  ],
+  [
+    'SSM or Gene',
+    {
+      config: { type: 'GDCTrack', adapter: { type: 'GDCJSONAdapter' } },
+    },
+  ],
 ])
 
 /**
@@ -32,11 +44,7 @@ const mapToAdapter: Map<string, Object> = new Map([
  * @param indexFileId the fileId of the index file that the data may require (BAM)
  * @returns an object containing the config type and the adapter object
  */
-export function mapDataInfo(
-  category: string,
-  uri: string,
-  indexFileId?: string,
-) {
+export function mapDataInfo(category: string, uri: any, indexFileId?: string) {
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCToken')
 
@@ -61,5 +69,51 @@ export function mapDataInfo(
     }
   }
 
+  return configObject
+}
+
+export function mapGDCExploreConfig(
+  category: string,
+  featureType: string,
+  adapterPropertyValue: string,
+) {
+  const configObject = mapToAdapter.get(category)
+
+  const adapterProperty = category == 'GDC Explore' ? 'filters' : 'data'
+
+  if (configObject) {
+    const datenow = Date.now()
+    const color1 =
+      featureType == 'mutation'
+        ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+        : "jexl:cast('goldenrod')"
+    // @ts-ignore
+    configObject.config = {
+      adapter: {
+        // @ts-ignore
+        ...configObject.config.adapter,
+        [adapterProperty]: adapterPropertyValue,
+        featureType,
+      },
+      category: undefined,
+      displays: [
+        {
+          displayId: `gdc_plugin_track_linear-${datenow}`,
+          renderer: {
+            color1,
+            labels: {
+              name: "jexl:get(feature,'genomicDnaChange')",
+              type: 'SvgFeatureRenderer',
+            },
+          },
+          type: 'LinearGDCDisplay',
+        },
+      ],
+      // @ts-ignore
+      type: configObject.config.type,
+    }
+  }
+
+  // @ts-ignore
   return configObject
 }
