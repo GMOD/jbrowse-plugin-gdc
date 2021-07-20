@@ -43,6 +43,7 @@
       "assemblyNames": ["hg38"],
       "category": ["Annotation"],
       "adapter": {
+        "GDCAdapterId": "DefaultGDCAdapter",
         "type": "GDCAdapter"
       },
       "displays": [
