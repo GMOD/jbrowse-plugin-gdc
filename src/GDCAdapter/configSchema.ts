@@ -33,5 +33,5 @@ export default ConfigurationSchema(
       description: 'The max number of features to show.',
     },
   },
-  { explicitlyTyped: true },
+  { explicitlyTyped: true, explicitIdentifier: 'GDCAdapterId' },
 )
