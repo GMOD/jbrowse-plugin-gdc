@@ -21,7 +21,8 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "start": "tsdx watch --verbose --noClean --format umd --name JBrowsePluginGDC --onFirstSuccess \"yarn serve --cors --listen 9000 .\"",
+    "proxy": "lcp --proxyUrl https://api.gdc.cancer.gov",
+    "start": "tsdx watch --verbose --noClean --format umd --name JBrowsePluginGDC --onFirstSuccess \"yarn serve --cors --listen 9000 .\" & yarn proxy",
     "prebuild": "npm run clean",
     "build": "tsdx build --format cjs,esm,umd --name JBrowsePluginGDC && cp distconfig.json dist/config.json",
     "test": "tsdx test",
