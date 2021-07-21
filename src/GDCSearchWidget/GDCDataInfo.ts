@@ -1,6 +1,6 @@
 const mapToAdapter: Map<string, Object> = new Map([
   [
-    'Copy Number Variation',
+    'txt-Copy Number Variation',
     {
       config: {
         type: 'QuantitativeTrack',
@@ -10,17 +10,24 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
-    'Sequencing Reads',
+    'bam-Sequencing Reads',
     {
       config: { type: 'AlignmentsTrack', adapter: { type: 'BamAdapter' } },
       prefix: 'bam',
     },
   ],
   [
-    'Simple Nucleotide Variation',
+    'vcf-Simple Nucleotide Variation',
     {
       config: { type: 'VariantTrack', adapter: { type: 'VcfAdapter' } },
       prefix: 'vcf',
+    },
+  ],
+  [
+    'maf-Simple Nucleotide Variation',
+    {
+      config: { type: 'VariantTrack', adapter: { type: 'MafAdapter' } },
+      prefix: 'maf',
     },
   ],
   [
