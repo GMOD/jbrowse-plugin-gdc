@@ -14,7 +14,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import ErrorIcon from '@material-ui/icons/Error'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import LoginDialogue from './LoginDialogue'
-import { mapDataInfo } from './GDCDataInfo'
+import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 
@@ -121,8 +121,9 @@ async function fetchFileInfo(query: any) {
 }
 
 const Panel = ({ model }: { model: any }) => {
-  const [dragError, setDragError] = useState<Error>()
+  const [dragErrorMessage, setDragErrorMessage] = useState<String>()
   const [success, setSuccess] = useState(false)
+  const [dragSuccess, setDragSuccess] = useState(false)
   const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
   const [authErrorMessage, setAuthErrorMessage] = useState<String>()
@@ -130,16 +131,109 @@ const Panel = ({ model }: { model: any }) => {
   const session = getSession(model)
   const inputRef = useRef()
 
+  /**
+   * uses the provided configuration to add the track to the session and then displays it
+   * displays an error message if typeAdapterObject is null
+   * @param typeAdapterObject the object from GDCDataInfo with some of the configuration for the track
+   * @param trackId the trackId of the track
+   * @param name the name of the track
+   */
+  function addAndShowTrack(
+    typeAdapterObject: any,
+    trackId: string,
+    name: string,
+    isFile?: boolean,
+  ) {
+    if (typeAdapterObject) {
+      let conf = {
+        ...typeAdapterObject.config,
+        trackId,
+        //@ts-ignore
+        name,
+        assemblyNames: ['hg38'],
+      }
+
+      //@ts-ignore
+      session.addTrackConf({
+        ...conf,
+      })
+      //@ts-ignore
+      session.views[0].showTrack(
+        trackId,
+        {},
+        {
+          height: 200,
+          constraints: { max: 2, min: -2 },
+          rendererTypeNameState: 'density',
+        },
+      )
+      if (isFile) {
+        setDragSuccess(true)
+      } else {
+        setSuccess(true)
+      }
+    } else {
+      if (isFile) {
+        setDragErrorMessage(
+          'Failed to add track.\nThe configuration of this file is not currently supported.',
+        )
+      } else {
+        setTrackErrorMessage(
+          'Failed to add track.\nThe configuration of this file is not currently supported.',
+        )
+      }
+    }
+  }
+
+  /**
+   * helper function to determine the file type of a dragged file. needed because files like BAM and VCF do not
+   * have inherent types to extract from the File object. this function needs to be modified whenever new file
+   * types are to be supported. files with several extensions can be supported in the future
+   * @param fileName the name of the file to determine the extension
+   * @returns the type of the file that coordinates with the keys in GDCDataInfo
+   */
+  function determineFileType(fileName: string) {
+    let type = ''
+    const fileNameArray = fileName.split('.')
+
+    for (const e of fileNameArray) {
+      switch (e) {
+        case 'seg':
+          type = 'Copy Number Variation'
+          break
+        case 'vcf':
+          type = 'Simple Nucleotide Variation'
+          break
+        case 'json':
+          type = 'json'
+          break
+        default:
+          break
+      }
+    }
+
+    return type
+  }
+
+  function resetErrorMessages() {
+    setTrackErrorMessage(undefined)
+    setAuthErrorMessage(undefined)
+    setDragErrorMessage(undefined)
+    setSuccess(false)
+    setDragSuccess(false)
+  }
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    accept: 'application/json',
     maxSize: MAX_FILE_SIZE,
     multiple: false,
     onDrop: async (acceptedFiles, rejectedFiles) => {
+      resetErrorMessages()
+
       if (rejectedFiles.length) {
         if (acceptedFiles.length || rejectedFiles.length > 1) {
           const message = 'Only one session at a time may be imported'
           console.error(message)
-          setDragError(new Error(message))
+          setDragErrorMessage(message)
           //@ts-ignore
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
@@ -147,115 +241,100 @@ const Panel = ({ model }: { model: any }) => {
             rejectedFiles[0].file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
-          setDragError(new Error(message))
-          //@ts-ignore
-        } else if (rejectedFiles[0].file.type !== 'application/json') {
-          const message = 'File does not appear to be JSON'
-          console.error(message)
-          setDragError(new Error(message))
+          setDragErrorMessage(message)
         } else {
           const message = 'Unknown file import error'
           console.error(message)
-          setDragError(new Error(message))
+          setDragErrorMessage(message)
         }
         return
       }
 
       const [file] = acceptedFiles
       if (file) {
+        const type = determineFileType(file.name)
         try {
-          const res = await new Promise(resolve => {
-            const reader = new FileReader()
-            reader.addEventListener('load', event =>
-              resolve(JSON.parse(event.target?.result as string)),
-            )
-            reader.readAsText(file)
-          })
+          if (type == 'json') {
+            const res = await new Promise(resolve => {
+              const reader = new FileReader()
+              reader.addEventListener('load', event =>
+                resolve(JSON.parse(event.target?.result as string)),
+              )
+              reader.readAsText(file)
+            })
 
-          // processing determined by the file name for now
-          if (file.name.includes('files')) {
+            // if the file is json we need to look at the properties to determine how to process it
+            let propertyArray = []
             //@ts-ignore
-            const t = res.slice(0, 5)
-            t.map((file: { file_id: string; file_name: string }) => {
+            for (const property in res.slice(0, 1)[0]) {
+              propertyArray.push(property)
+            }
+
+            // key properties dictate how a file should be processed and displayed
+            if (propertyArray.includes('file_id')) {
               //@ts-ignore
-              session.addTrackConf({
-                type: 'QuantitativeTrack',
-                trackId: file.file_id,
-                name: file.file_name,
-                assemblyNames: ['hg38'],
-                adapter: {
-                  type: 'SegmentCNVAdapter',
-                  segLocation: {
-                    uri: 'https://api.gdc.cancer.gov/data/' + file.file_id,
-                  },
-                },
-              })
-              //@ts-ignore
-              session.views[0].showTrack(
-                file.file_id,
-                {},
-                {
-                  height: 200,
-                  constraints: { max: 2, min: -2 },
-                  rendererTypeNameState: 'density',
+              const ele = res.slice(0, 25)
+              ele.map(
+                (file: {
+                  file_id: string
+                  file_name: string
+                  data_category: string
+                }) => {
+                  const category = file.data_category
+                  const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
+                  const typeAdapterObject = mapDataInfo(category, uri)
+                  addAndShowTrack(
+                    typeAdapterObject,
+                    file.file_id,
+                    file.file_name,
+                    true,
+                  )
                 },
               )
-            })
-          } else {
-            const featureType = file.name.includes('mutations')
-              ? 'mutation'
-              : 'gene'
+            } else if (
+              propertyArray.includes('gene_id') ||
+              propertyArray.includes('ssm_id')
+            ) {
+              const featureType = propertyArray.includes('ssm_id')
+                ? 'mutation'
+                : 'gene'
 
-            const datenow = Date.now()
-            const trackId = `gdc_plugin_track-${datenow}`
-            const color1 =
-              featureType == 'mutation'
-                ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
-                : "jexl:cast('goldenrod')"
-            const config = {
-              adapter: {
-                type: 'GDCJSONAdapter',
+              const trackId = `gdc_plugin_track-${Date.now()}`
+
+              const typeAdapterObject = mapGDCExploreConfig(
+                'SSM or Gene',
                 featureType,
-                data: JSON.stringify(res),
-              },
-              assemblyNames: ['hg38'],
-              category: undefined,
-              displays: [
-                {
-                  displayId: `gdc_plugin_track_linear-${datenow}`,
-                  renderer: {
-                    color1,
-                    labels: {
-                      name: "jexl:get(feature,'genomicDnaChange')",
-                      type: 'SvgFeatureRenderer',
-                    },
-                  },
-                  type: 'LinearGDCDisplay',
-                },
-              ],
-              name: `GDC-${file.name}`,
-              trackId,
-              type: 'GDCTrack',
+                JSON.stringify(res),
+              )
+              addAndShowTrack(typeAdapterObject, trackId, file.name, true)
+            } else {
+              const message =
+                'Failed to add track.\nThe configuration of this file is not currently supported.'
+              console.error(message)
+              setDragErrorMessage(message)
             }
-            //@ts-ignore
-            session.addTrackConf({
-              ...config,
+          } else {
+            const res = await new Promise(resolve => {
+              const reader = new FileReader()
+              reader.addEventListener('load', event =>
+                resolve(event.target?.result as string),
+              )
+              reader.readAsDataURL(file)
             })
-            //@ts-ignore
-            session.views[0].showTrack(trackId)
+            const trackId = `gdc_plugin_track-${Date.now()}`
+            const typeAdapterObject = mapDataInfo(type, res)
+            addAndShowTrack(typeAdapterObject, trackId, file.name, true)
           }
         } catch (e) {
           console.error(e)
-          setDragError(e)
+          setDragErrorMessage(e.message)
         }
       }
     },
   })
 
   const handleSubmit = async () => {
-    setTrackErrorMessage(undefined)
-    setAuthErrorMessage(undefined)
-    setSuccess(false)
+    resetErrorMessages()
 
     try {
       // @ts-ignore
@@ -265,51 +344,29 @@ const Panel = ({ model }: { model: any }) => {
         // @ts-ignore
         let uri = inputRef ? inputRef.current.value : undefined
         const featureType = uri.split('searchTableTab=')[1].slice(0, -1)
-        const filters = decodeURIComponent(
-          uri
-            .split('&searchTableTab=')[0]
-            .split('/')[3]
-            .split('filters=')[1],
-        )
+        if (featureType != 'case') {
+          const filters = decodeURIComponent(
+            uri
+              .split('&searchTableTab=')[0]
+              .split('/')[3]
+              .split('filters=')[1],
+          )
 
-        const datenow = Date.now()
-        const trackId = `gdc_plugin_track-${datenow}`
-        const color1 =
-          featureType == 'mutation'
-            ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
-            : "jexl:cast('goldenrod')"
-        const config = {
-          adapter: {
-            type: 'GDCAdapter',
+          const typeAdapterObject = mapGDCExploreConfig(
+            'GDC Explore',
             featureType,
             filters,
-          },
-          assemblyNames: ['hg38'],
-          category: undefined,
-          displays: [
-            {
-              displayId: `gdc_plugin_track_linear-${datenow}`,
-              renderer: {
-                color1,
-                labels: {
-                  name: "jexl:get(feature,'genomicDnaChange')",
-                  type: 'SvgFeatureRenderer',
-                },
-              },
-              type: 'LinearGDCDisplay',
-            },
-          ],
-          name: `GDC-plugin-track-${datenow}`,
-          trackId,
-          type: 'GDCTrack',
-        }
+          )
 
-        // @ts-ignore
-        session.addTrackConf({
-          ...config,
-        })
-        // @ts-ignore
-        session.views[0].showTrack(trackId)
+          const datenow = Date.now()
+          const trackId = `gdc_plugin_track-${datenow}`
+          const trackName = `GDC-${datenow}`
+          addAndShowTrack(typeAdapterObject, trackId, trackName)
+        } else {
+          setTrackErrorMessage(
+            'Failed to add track.\nConfiguration to "cases" is not currently supported.',
+          )
+        }
       } else if (!query) {
         setTrackErrorMessage(
           'Failed to add track.\nUUID or URL must be provided.',
@@ -340,34 +397,11 @@ const Panel = ({ model }: { model: any }) => {
 
           const trackId = `${response.data.file_id}`
 
+          const trackName = `${response.data.file_name}`
+
           const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
 
-          if (typeAdapterObject) {
-            let conf = {
-              trackId,
-              //@ts-ignore
-              type: typeAdapterObject.config.type,
-              name: `${response.data.file_name}`,
-              assemblyNames: ['hg38'],
-              adapter: {
-                //@ts-ignore
-                ...typeAdapterObject.config.adapter,
-              },
-            }
-
-            //@ts-ignore
-            session.addTrackConf({
-              ...conf,
-            })
-            //@ts-ignore
-            session.views[0].showTrack(trackId)
-
-            setSuccess(true)
-          } else {
-            setTrackErrorMessage(
-              'Failed to add track.\nThe configuration of this file is not currently supported.',
-            )
-          }
+          addAndShowTrack(typeAdapterObject, trackId, trackName)
         }
       }
     } catch (e) {
@@ -399,20 +433,17 @@ const Panel = ({ model }: { model: any }) => {
             Browse Files
           </Button>
         </div>
-        {dragError ? (
-          <Paper className={classes.error}>
-            <div className={classes.errorHeader}>
-              <ErrorIcon color="inherit" fontSize="large" />
-              <div>
-                <Typography variant="h6" color="inherit" align="center">
-                  Import error
-                </Typography>
-              </div>
-            </div>
-            <Typography className={classes.errorMessage}>
-              {dragError}
-            </Typography>
-          </Paper>
+        {dragSuccess ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="success">
+              The requested track(s) from the file have been added.
+            </Alert>
+          </div>
+        ) : null}
+        {dragErrorMessage ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="error">{dragErrorMessage}</Alert>
+          </div>
         ) : null}
       </Paper>
       <Paper className={classes.paper}>
