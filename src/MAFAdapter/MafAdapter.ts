@@ -41,9 +41,11 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       if (line.startsWith('#')) {
         header.push(line)
       } else if (line) {
-        if (!columns) {
+        if (columns.length === 0) {
           columns = line.split('\t')
-          refNameColumnIndex = columns.findIndex('Chromosome'.toLowerCase)
+          const chromosome = (element: any) =>
+            element.toLowerCase() === 'chromosome'
+          refNameColumnIndex = columns.findIndex(chromosome)
         } else {
           rows.push(line)
           refNames.push(line.split('\t')[refNameColumnIndex])
@@ -60,9 +62,9 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    let mutationObject: any
+    let mutationObject: any = {}
     line.split('\t').forEach((property: string, i: number) => {
-      mutationObject[columns[i]] = property
+      mutationObject[columns[i].toLowerCase()] = property
     })
     return mutationObject
   }

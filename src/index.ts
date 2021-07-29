@@ -25,6 +25,10 @@ import {
   configSchema as segmentCnvConfigSchema,
   AdapterClass as SegmentCNVAdapter,
 } from './SegmentCNVAdapter'
+import {
+  configSchema as mafConfigSchema,
+  AdapterClass as MafAdapter,
+} from './MAFAdapter'
 
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
@@ -48,6 +52,15 @@ export default class GDCPlugin extends Plugin {
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
           AdapterClass: GDCAdapterClass,
+        }),
+    )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'MafAdapter',
+          configSchema: mafConfigSchema,
+          AdapterClass: MafAdapter,
         }),
     )
 

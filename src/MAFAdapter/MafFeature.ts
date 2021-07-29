@@ -6,13 +6,15 @@ interface FeatureData {
   refName: string
   start: number
   end: number
-  ncbi_build: string
-  strand: string
-  variant_classification: string
-  variant_type: string
-  reference_allele: string
-  tumor_seq_allele1: string
-  tumor_seq_allele2: string
+  name: string
+  note: string
+  ncbi_build?: string
+  strand?: string
+  variant_classification?: string
+  variant_type?: string
+  reference_allele?: string
+  tumor_seq_allele1?: string
+  tumor_seq_allele2?: string
 }
 
 export default class MafFeature implements Feature {
@@ -50,7 +52,13 @@ export default class MafFeature implements Feature {
   }
 
   dataFromMutation(mutation: any): FeatureData {
-    const featureData: FeatureData = {}
+    const featureData: FeatureData = {
+      refName: mutation.chromosome,
+      start: mutation.start_position - 1,
+      end: mutation.end_position,
+      name: `${mutation.chromosome}:g.${mutation.start_position}${mutation.tumor_seq_allele1}>${mutation.tumor_seq_allele2}`,
+      note: mutation.hgvsc,
+    }
     return featureData
   }
 

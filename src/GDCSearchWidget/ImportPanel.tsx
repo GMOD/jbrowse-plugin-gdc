@@ -390,7 +390,9 @@ const Panel = ({ model }: { model: any }) => {
             'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
           )
         } else {
-          const category = `${response.data.data_format}-${response.data.data_category}`
+          const category = `${response.data.data_format.toLowerCase()}-${
+            response.data.data_category
+          }`
           // BAM files require an index file, if the response contains index_files, then we want to utilize it
           const indexFileId = response.data.index_files
             ? response.data.index_files[0].file_id
