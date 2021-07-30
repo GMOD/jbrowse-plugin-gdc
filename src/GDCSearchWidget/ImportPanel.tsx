@@ -150,6 +150,15 @@ const Panel = ({ model }: { model: any }) => {
         //@ts-ignore
         name,
         assemblyNames: ['hg38'],
+        displays: [
+          {
+            type: 'LinearLollipopDisplay',
+            displayId: `complete-unique`,
+            renderer: {
+              type: 'LollipopRenderer',
+            },
+          },
+        ],
       }
 
       //@ts-ignore

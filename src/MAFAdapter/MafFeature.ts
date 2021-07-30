@@ -8,6 +8,8 @@ interface FeatureData {
   end: number
   name: string
   note: string
+  score: number
+  type: string
   ncbi_build?: string
   strand?: string
   variant_classification?: string
@@ -58,7 +60,10 @@ export default class MafFeature implements Feature {
       end: mutation.end_position,
       name: `${mutation.chromosome}:g.${mutation.start_position}${mutation.tumor_seq_allele1}>${mutation.tumor_seq_allele2}`,
       note: mutation.hgvsc,
+      score: 100,
+      type: 'foo',
     }
+    console.log(featureData)
     return featureData
   }
 
