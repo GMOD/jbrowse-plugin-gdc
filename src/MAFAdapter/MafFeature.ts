@@ -56,14 +56,13 @@ export default class MafFeature implements Feature {
   dataFromMutation(mutation: any): FeatureData {
     const featureData: FeatureData = {
       refName: mutation.chromosome,
-      start: mutation.start_position - 1,
-      end: mutation.end_position,
+      start: +mutation.start_position - 1,
+      end: +mutation.end_position,
       name: `${mutation.chromosome}:g.${mutation.start_position}${mutation.tumor_seq_allele1}>${mutation.tumor_seq_allele2}`,
       note: mutation.hgvsc,
       score: 100,
       type: 'foo',
     }
-    console.log(featureData)
     return featureData
   }
 

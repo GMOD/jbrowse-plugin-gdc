@@ -146,6 +146,7 @@ const Panel = ({ model }: { model: any }) => {
     if (typeAdapterObject) {
       let conf = {
         ...typeAdapterObject.config,
+        type: 'FeatureTrack',
         trackId,
         //@ts-ignore
         name,
