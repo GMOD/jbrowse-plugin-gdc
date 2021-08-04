@@ -64,7 +64,9 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
   private parseLine(line: string, columns: string[]) {
     let mutationObject: any = {}
     line.split('\t').forEach((property: string, i: number) => {
-      mutationObject[columns[i].toLowerCase()] = property
+      if (property) {
+        mutationObject[columns[i].toLowerCase()] = property
+      }
     })
     return mutationObject
   }
