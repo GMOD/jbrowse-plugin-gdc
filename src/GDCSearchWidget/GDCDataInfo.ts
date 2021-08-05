@@ -1,3 +1,5 @@
+import { storeBlobLocation } from '@jbrowse/core/util/tracks'
+
 const mapToAdapter: Map<string, Object> = new Map([
   [
     'txt-Copy Number Variation',
@@ -51,27 +53,40 @@ const mapToAdapter: Map<string, Object> = new Map([
  * @param indexFileId the fileId of the index file that the data may require (BAM)
  * @returns an object containing the config type and the adapter object
  */
-export function mapDataInfo(category: string, uri: any, indexFileId?: string) {
+export function mapDataInfo(
+  category: string,
+  uri?: any,
+  indexFileId?: string,
+  fileBlob?: any,
+) {
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCToken')
 
   if (!token) token = ''
 
   if (configObject) {
-    //@ts-ignore
-    configObject.config.adapter[`${configObject.prefix}Location`] = {
-      uri: uri,
-      authHeader: 'X-Auth-Token',
-      authToken: `${token}`,
-    }
-    if (indexFileId) {
+    if (fileBlob) {
       //@ts-ignore
-      configObject.config.adapter['index'] = {
-        location: {
-          uri: `http://localhost:8010/proxy/data/${indexFileId}`,
-          authHeader: 'X-Auth-Token',
-          authToken: `${token}`,
-        },
+      configObject.config.adapter[
+        //@ts-ignore
+        `${configObject.prefix}Location`
+      ] = storeBlobLocation({ blob: fileBlob })
+    } else {
+      //@ts-ignore
+      configObject.config.adapter[`${configObject.prefix}Location`] = {
+        uri: uri,
+        authHeader: 'X-Auth-Token',
+        authToken: `${token}`,
+      }
+      if (indexFileId) {
+        //@ts-ignore
+        configObject.config.adapter['index'] = {
+          location: {
+            uri: `http://localhost:8010/proxy/data/${indexFileId}`,
+            authHeader: 'X-Auth-Token',
+            authToken: `${token}`,
+          },
+        }
       }
     }
   }

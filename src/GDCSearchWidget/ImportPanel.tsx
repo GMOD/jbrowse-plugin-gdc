@@ -151,15 +151,6 @@ const Panel = ({ model }: { model: any }) => {
         //@ts-ignore
         name,
         assemblyNames: ['hg38'],
-        displays: [
-          {
-            type: 'LinearLollipopDisplay',
-            displayId: `complete-unique`,
-            renderer: {
-              type: 'LollipopRenderer',
-            },
-          },
-        ],
       }
 
       //@ts-ignore
@@ -327,15 +318,13 @@ const Panel = ({ model }: { model: any }) => {
               setDragErrorMessage(message)
             }
           } else {
-            const res = await new Promise(resolve => {
-              const reader = new FileReader()
-              reader.addEventListener('load', event =>
-                resolve(event.target?.result as string),
-              )
-              reader.readAsDataURL(file)
-            })
             const trackId = `gdc_plugin_track-${Date.now()}`
-            const typeAdapterObject = mapDataInfo(type, res)
+            const typeAdapterObject = mapDataInfo(
+              type,
+              undefined,
+              undefined,
+              file,
+            )
             addAndShowTrack(typeAdapterObject, trackId, file.name, true)
           }
         } catch (e) {

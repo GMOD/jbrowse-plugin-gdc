@@ -8,8 +8,8 @@ fetchMock.enableMocks()
 test('adapter can fetch features from ', async () => {
   const adapter = new MafAdapter(
     configSchema.create({
-      segLocation: {
-        localPath: require.resolve('./test_data/.maf'),
+      mafLocation: {
+        localPath: require.resolve('./test_data/maf_test_data.maf'),
       },
     }),
   )
