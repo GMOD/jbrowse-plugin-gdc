@@ -89,6 +89,22 @@ export function mapDataInfo(
         }
       }
     }
+
+    //@ts-ignore
+    if (configObject.prefix === 'maf') {
+      const datenow = Date.now()
+      //@ts-ignore
+      configObject.config['displays'] = [
+        {
+          type: 'LinearBasicDisplay',
+          displayId: `gdc_plugin_track_linear_basic-${datenow}`,
+          renderer: {
+            color1: 'jexl:mafColouring(feature)',
+            type: 'SvgFeatureRenderer',
+          },
+        },
+      ]
+    }
   }
 
   return configObject

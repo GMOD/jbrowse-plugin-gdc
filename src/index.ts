@@ -151,6 +151,51 @@ export default class GDCPlugin extends Plugin {
       })
     }
 
+    pluginManager.jexl.addFunction('mafColouring', (feature: any) => {
+      const classification = feature.get('variant_classification')
+
+      switch (classification) {
+        case 'Intron':
+          return 'blue'
+        case 'Nonsense_Mutation':
+          return 'brown'
+        case 'Missense_Mutation':
+          return 'goldenrod'
+        case 'Silent':
+          return 'orange'
+        case 'Splice_Site':
+          return 'green'
+        case 'Translation_Start_Site':
+          return 'skyblue'
+        case 'Nonstop_Mutation':
+          return 'red'
+        case 'IGR':
+          return 'violet'
+        case 'Frame_Shift_Del':
+          return 'pink'
+        case 'Frame_Shift_Ins':
+          return 'olive'
+        case 'In_Frame_Del':
+          return 'yellowgreen'
+        case 'In_Frame_Ins':
+          return 'purple'
+        case "3'UTR":
+          return 'lightgray'
+        case "3'Flank":
+          return 'maroon'
+        case "5'UTR":
+          return 'lime'
+        case "5'Flank":
+          return 'magenta'
+        case 'RNA':
+          return 'cyan'
+        case 'Targeted_Region':
+          return 'crimson'
+        default:
+          return 'black'
+      }
+    })
+
     pluginManager.jexl.addFunction('switch', (feature: any, hlBy: any) => {
       hlBy = JSON.parse(hlBy)
       const filteredConsequences = feature
@@ -168,6 +213,7 @@ export default class GDCPlugin extends Plugin {
       })
       return colour
     })
+
     pluginManager.jexl.addFunction(
       'rgb',
       (feature: any, attributeName: string) => {
