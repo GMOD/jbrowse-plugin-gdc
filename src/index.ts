@@ -30,6 +30,9 @@ import {
   AdapterClass as MafAdapter,
 } from './MAFAdapter'
 
+import GDCInternetAccountConfigSchema from './GDCInternetAccount/configSchema'
+import GDCInternetAccountModel from './GDCInternetAccount/model'
+
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
   version = version
@@ -41,6 +44,10 @@ export default class GDCPlugin extends Plugin {
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
+    // const InternetAccountType =
+    //   pluginManager.lib[
+    //     '@jbrowse/core/pluggableElementTypes/InternetAccountType'
+    //   ]
     const LGVPlugin = pluginManager.getPlugin(
       'LinearGenomeViewPlugin',
     ) as import('@jbrowse/plugin-linear-genome-view').default
@@ -136,6 +143,15 @@ export default class GDCPlugin extends Plugin {
           AdapterClass: GDCJSONAdapter,
         }),
     )
+
+    // pluginManager.addInternetAccountType(
+    //   () =>
+    //     new InternetAccountType({
+    //       name: 'GDCInternetAccount',
+    //       configSchema: GDCInternetAccountConfigSchema,
+    //       stateModel: GDCInternetAccountModel,
+    //     }),
+    // )
   }
 
   configure(pluginManager: PluginManager) {

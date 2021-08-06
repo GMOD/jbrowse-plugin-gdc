@@ -5,12 +5,10 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Paper,
   TextField,
   Typography,
   makeStyles,
 } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
 import CloseIcon from '@material-ui/icons/Close'
 
 const useStyles = makeStyles(theme => ({

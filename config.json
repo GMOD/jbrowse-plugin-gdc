@@ -162,5 +162,17 @@
         "minimumBlockWidth": 20
       }
     ]
-  }
+  },
+  "internetAccounts": [
+    {
+      "type": "GDCInternetAccount",
+      "internetAccountId": "GDCExternalToken",
+      "name": "GDC",
+      "description": "GDC External Token",
+      "validDomains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
+      "authHeader": "X-Auth-Token",
+      "origin": "GDC",
+      "customEndpoint": "http://localhost:8010/proxy"
+    }
+  ]
 }
