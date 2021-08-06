@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
-import { FileLocation, getSession } from '@jbrowse/core/util'
+import { getSession } from '@jbrowse/core/util'
 import {
   Paper,
   Button,
@@ -11,7 +11,6 @@ import {
 import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import ErrorIcon from '@material-ui/icons/Error'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import LoginDialogue from './LoginDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
@@ -147,6 +146,7 @@ const Panel = ({ model }: { model: any }) => {
     if (typeAdapterObject) {
       let conf = {
         ...typeAdapterObject.config,
+        type: 'FeatureTrack',
         trackId,
         //@ts-ignore
         name,
@@ -199,10 +199,13 @@ const Panel = ({ model }: { model: any }) => {
     for (const e of fileNameArray) {
       switch (e) {
         case 'seg':
-          type = 'Copy Number Variation'
+          type = 'seg-Copy Number Variation'
           break
         case 'vcf':
-          type = 'Simple Nucleotide Variation'
+          type = 'vcf-Simple Nucleotide Variation'
+          break
+        case 'maf':
+          type = 'maf-Simple Nucleotide Variation'
           break
         case 'json':
           type = 'json'
@@ -279,8 +282,9 @@ const Panel = ({ model }: { model: any }) => {
                   file_id: string
                   file_name: string
                   data_category: string
+                  file_type: string
                 }) => {
-                  const category = file.data_category
+                  const category = `${file.file_type}-${file.data_category}`
                   const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
                   const typeAdapterObject = mapDataInfo(category, uri)
                   addAndShowTrack(
@@ -314,15 +318,13 @@ const Panel = ({ model }: { model: any }) => {
               setDragErrorMessage(message)
             }
           } else {
-            const res = await new Promise(resolve => {
-              const reader = new FileReader()
-              reader.addEventListener('load', event =>
-                resolve(event.target?.result as string),
-              )
-              reader.readAsDataURL(file)
-            })
             const trackId = `gdc_plugin_track-${Date.now()}`
-            const typeAdapterObject = mapDataInfo(type, res)
+            const typeAdapterObject = mapDataInfo(
+              type,
+              undefined,
+              undefined,
+              file,
+            )
             addAndShowTrack(typeAdapterObject, trackId, file.name, true)
           }
         } catch (e) {
@@ -387,7 +389,9 @@ const Panel = ({ model }: { model: any }) => {
             'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
           )
         } else {
-          const category = response.data.data_category
+          const category = `${response.data.data_format.toLowerCase()}-${
+            response.data.data_category
+          }`
           // BAM files require an index file, if the response contains index_files, then we want to utilize it
           const indexFileId = response.data.index_files
             ? response.data.index_files[0].file_id

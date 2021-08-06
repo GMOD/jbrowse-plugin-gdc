@@ -8,7 +8,6 @@ import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import GDCFeature from '../GDCAdapter/GDCFeature'
-import { isArray } from '@material-ui/data-grid'
 import AbortablePromiseCache from 'abortable-promise-cache'
 import LRU from '@jbrowse/core/util/QuickLRU'
 
@@ -69,7 +68,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
         })
       }
 
-      if (!isArray(src[k])) {
+      if (!Array.isArray(src[k])) {
         tgt[toCamel(k)] = src[k]
         delete tgt[k]
       }

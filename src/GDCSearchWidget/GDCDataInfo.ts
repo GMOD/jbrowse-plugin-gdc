@@ -1,6 +1,8 @@
+import { storeBlobLocation } from '@jbrowse/core/util/tracks'
+
 const mapToAdapter: Map<string, Object> = new Map([
   [
-    'Copy Number Variation',
+    'txt-Copy Number Variation',
     {
       config: {
         type: 'QuantitativeTrack',
@@ -10,17 +12,24 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
-    'Sequencing Reads',
+    'bam-Sequencing Reads',
     {
       config: { type: 'AlignmentsTrack', adapter: { type: 'BamAdapter' } },
       prefix: 'bam',
     },
   ],
   [
-    'Simple Nucleotide Variation',
+    'vcf-Simple Nucleotide Variation',
     {
       config: { type: 'VariantTrack', adapter: { type: 'VcfAdapter' } },
       prefix: 'vcf',
+    },
+  ],
+  [
+    'maf-Simple Nucleotide Variation',
+    {
+      config: { type: 'VariantTrack', adapter: { type: 'MafAdapter' } },
+      prefix: 'maf',
     },
   ],
   [
@@ -44,28 +53,57 @@ const mapToAdapter: Map<string, Object> = new Map([
  * @param indexFileId the fileId of the index file that the data may require (BAM)
  * @returns an object containing the config type and the adapter object
  */
-export function mapDataInfo(category: string, uri: any, indexFileId?: string) {
+export function mapDataInfo(
+  category: string,
+  uri?: any,
+  indexFileId?: string,
+  fileBlob?: any,
+) {
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCToken')
 
   if (!token) token = ''
 
   if (configObject) {
-    //@ts-ignore
-    configObject.config.adapter[`${configObject.prefix}Location`] = {
-      uri: uri,
-      authHeader: 'X-Auth-Token',
-      authToken: `${token}`,
-    }
-    if (indexFileId) {
+    if (fileBlob) {
       //@ts-ignore
-      configObject.config.adapter['index'] = {
-        location: {
-          uri: `http://localhost:8010/proxy/data/${indexFileId}`,
-          authHeader: 'X-Auth-Token',
-          authToken: `${token}`,
-        },
+      configObject.config.adapter[
+        //@ts-ignore
+        `${configObject.prefix}Location`
+      ] = storeBlobLocation({ blob: fileBlob })
+    } else {
+      //@ts-ignore
+      configObject.config.adapter[`${configObject.prefix}Location`] = {
+        uri: uri,
+        authHeader: 'X-Auth-Token',
+        authToken: `${token}`,
       }
+      if (indexFileId) {
+        //@ts-ignore
+        configObject.config.adapter['index'] = {
+          location: {
+            uri: `http://localhost:8010/proxy/data/${indexFileId}`,
+            authHeader: 'X-Auth-Token',
+            authToken: `${token}`,
+          },
+        }
+      }
+    }
+
+    //@ts-ignore
+    if (configObject.prefix === 'maf') {
+      const datenow = Date.now()
+      //@ts-ignore
+      configObject.config['displays'] = [
+        {
+          type: 'LinearBasicDisplay',
+          displayId: `gdc_plugin_track_linear_basic-${datenow}`,
+          renderer: {
+            color1: 'jexl:mafColouring(feature)',
+            type: 'SvgFeatureRenderer',
+          },
+        },
+      ]
     }
   }
 
