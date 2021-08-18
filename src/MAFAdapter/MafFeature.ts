@@ -1,4 +1,3 @@
-import { objectTypeSpreadProperty } from '@babel/types'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 
 interface FeatureData {

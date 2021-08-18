@@ -152,7 +152,6 @@ const Panel = ({ model }: { model: any }) => {
         name,
         assemblyNames: ['hg38'],
       }
-
       //@ts-ignore
       session.addTrackConf({
         ...conf,
@@ -206,6 +205,9 @@ const Panel = ({ model }: { model: any }) => {
           break
         case 'maf':
           type = 'maf-Simple Nucleotide Variation'
+          break
+        case 'txt':
+          type = 'txt-Transcriptome Profiling'
           break
         case 'json':
           type = 'json'

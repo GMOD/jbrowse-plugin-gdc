@@ -5,7 +5,7 @@ import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-test('adapter can fetch features from ', async () => {
+test('adapter can fetch features from maf_test_data.maf', async () => {
   const adapter = new MafAdapter(
     configSchema.create({
       mafLocation: {

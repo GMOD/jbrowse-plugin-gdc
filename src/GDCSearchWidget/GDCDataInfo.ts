@@ -28,8 +28,39 @@ const mapToAdapter: Map<string, Object> = new Map([
   [
     'maf-Simple Nucleotide Variation',
     {
-      config: { type: 'VariantTrack', adapter: { type: 'MafAdapter' } },
+      config: {
+        type: 'VariantTrack',
+        adapter: { type: 'MafAdapter' },
+        displays: [
+          {
+            type: 'LinearBasicDisplay',
+            renderer: {
+              color1: 'jexl:mafColouring(feature)',
+              type: 'SvgFeatureRenderer',
+            },
+          },
+        ],
+      },
       prefix: 'maf',
+    },
+  ],
+  [
+    'txt-Transcriptome Profiling',
+    {
+      config: {
+        type: 'ReferenceSequenceTrack',
+        adapter: { type: 'IeqAdapter' },
+        displays: [
+          {
+            type: 'LinearBasicDisplay',
+            renderer: {
+              color1: `jexl:ieqColouring(feature, 'reads_per_million_mirna_mapped')`,
+              type: 'SvgFeatureRenderer',
+            },
+          },
+        ],
+      },
+      prefix: 'ieq',
     },
   ],
   [
@@ -65,6 +96,14 @@ export function mapDataInfo(
   if (!token) token = ''
 
   if (configObject) {
+    //@ts-ignore
+    if (configObject.config.displays) {
+      const datenow = Date.now()
+      //@ts-ignore
+      configObject.config.displays[0][
+        'displayId'
+      ] = `gdc_plugin_track_linear_basic-${datenow}`
+    }
     if (fileBlob) {
       //@ts-ignore
       configObject.config.adapter[
@@ -88,22 +127,6 @@ export function mapDataInfo(
           },
         }
       }
-    }
-
-    //@ts-ignore
-    if (configObject.prefix === 'maf') {
-      const datenow = Date.now()
-      //@ts-ignore
-      configObject.config['displays'] = [
-        {
-          type: 'LinearBasicDisplay',
-          displayId: `gdc_plugin_track_linear_basic-${datenow}`,
-          renderer: {
-            color1: 'jexl:mafColouring(feature)',
-            type: 'SvgFeatureRenderer',
-          },
-        },
-      ]
     }
   }
 
