@@ -233,7 +233,6 @@ export default class GDCPlugin extends Plugin {
         const percentage = feature.get(attributeName)
         const denom = Math.ceil(Math.log10(6060))
         const val = Math.abs((100 * Math.log10(percentage)) / denom - 200)
-        console.log(`abs(100 * log10(${percentage}) / ${denom} - 100) = ${val}`)
         return `rgb(184,${val},11)`
       },
     )
