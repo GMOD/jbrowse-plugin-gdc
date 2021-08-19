@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`adapter can fetch features from maf_test_data.maf 1`] = `
+exports[`adapter can fetch features from ieq_test_data.txt 1`] = `
 Array [
   "chr1",
   "chr2",
@@ -25,7 +25,8 @@ Array [
   "chr21",
   "chr22",
   "chrX",
+  "chrY",
 ]
 `;
 
-exports[`adapter can fetch features from maf_test_data.maf 2`] = `Array []`;
+exports[`adapter can fetch features from ieq_test_data.txt 2`] = `Array []`;

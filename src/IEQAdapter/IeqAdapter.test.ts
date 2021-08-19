@@ -1,15 +1,15 @@
 import { toArray } from 'rxjs/operators'
-import MafAdapter from './MafAdapter'
+import IeqAdapter from './IeqAdapter'
 import configSchema from './configSchema'
 import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()
 
-test('adapter can fetch features from maf_test_data.maf', async () => {
-  const adapter = new MafAdapter(
+test('adapter can fetch features from ieq_test_data.txt', async () => {
+  const adapter = new IeqAdapter(
     configSchema.create({
-      mafLocation: {
-        localPath: require.resolve('./test_data/maf_test_data.maf'),
+      ieqLocation: {
+        localPath: require.resolve('./test_data/ieq_test_data.txt'),
       },
     }),
   )
