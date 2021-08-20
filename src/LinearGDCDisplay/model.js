@@ -45,27 +45,33 @@ export default jbrowse => {
       },
     }))
 
-    .views(self => ({
-      get renderProps() {
-        return {
-          ...self.composedRenderProps,
-          ...getParentRenderProps(self),
-          config: self.configuration.renderer,
-        }
-      },
-
-      get rendererTypeName() {
-        return self.configuration.renderer.type
-      },
-
-      get trackMenuItems() {
-        return [
-          {
-            label: 'Filter',
-            onClick: self.openFilterConfig,
-            icon: FilterListIcon,
+    .views(self => {
+      const {
+        renderProps: superRenderProps,
+        trackMenuItems: superTrackMenuItems,
+      } = self
+      return {
+        renderProps() {
+          return {
+            ...superRenderProps,
+            config: self.configuration.renderer,
           }
-        ]
+        },
+
+        get rendererTypeName() {
+          return self.configuration.renderer.type
+        },
+
+        trackMenuItems() {
+          return [
+            ...superTrackMenuItems(),
+            {
+              label: 'Filter',
+              onClick: self.openFilterConfig,
+              icon: FilterListIcon,
+            },
+          ]
+        },
       }
-    }))
+    })
 }
