@@ -53,7 +53,9 @@ export default jbrowse => {
       return {
         renderProps() {
           return {
-            ...superRenderProps,
+            ...superRenderProps(),
+            ...getParentRenderProps(self),
+            displayModel: self,
             config: self.configuration.renderer,
           }
         },
