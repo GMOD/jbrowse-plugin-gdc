@@ -29,6 +29,10 @@ import {
   configSchema as mafConfigSchema,
   AdapterClass as MafAdapter,
 } from './MAFAdapter'
+import {
+  configSchema as ieqConfigSchema,
+  AdapterClass as IeqAdapter,
+} from './IEQAdapter'
 
 import GDCInternetAccountConfigSchema from './GDCInternetAccount/configSchema'
 import GDCInternetAccountModel from './GDCInternetAccount/model'
@@ -68,6 +72,15 @@ export default class GDCPlugin extends Plugin {
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
           AdapterClass: MafAdapter,
+        }),
+    )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'IeqAdapter',
+          configSchema: ieqConfigSchema,
+          AdapterClass: IeqAdapter,
         }),
     )
 
@@ -229,6 +242,16 @@ export default class GDCPlugin extends Plugin {
       })
       return colour
     })
+
+    pluginManager.jexl.addFunction(
+      'ieqColouring',
+      (feature: any, attributeName: string) => {
+        const percentage = feature.get(attributeName)
+        const denom = Math.ceil(Math.log10(6060))
+        const val = Math.abs((100 * Math.log10(percentage)) / denom - 200)
+        return `rgb(184,${val},11)`
+      },
+    )
 
     pluginManager.jexl.addFunction(
       'rgb',
