@@ -5,7 +5,7 @@ export default ConfigurationSchema(
   {
     mafLocation: {
       type: 'fileLocation',
-      defaultValue: { uri: '/path/to/myfile.maf' },
+      defaultValue: { uri: '/path/to/myfile.maf', locationType: 'UriLocation' },
     },
   },
   { explicitlyTyped: true },
