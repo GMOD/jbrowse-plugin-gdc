@@ -97,6 +97,7 @@ const stateModelFactory = (
           authInfo: {
             authHeader: self.authHeader,
             tokenType: '',
+            configuration: self.accountConfig,
           },
         }
       },
@@ -203,7 +204,7 @@ const stateModelFactory = (
           const query = String(url)
             .split('/')
             .pop()
-          url = `http://localhost:8010/proxy/data/${query}`
+          url = `${preAuthInfo.authInfo.configuration.customEndpoint}/data/${query}`
           return fetch(url as RequestInfo, {
             method: 'GET',
             credentials: 'same-origin',
