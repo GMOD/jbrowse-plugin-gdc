@@ -1,11 +1,11 @@
 import { ConfigurationReference } from '@jbrowse/core/configuration'
 import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
 import PluginManager from '@jbrowse/core/PluginManager'
-import { FileLocation, AuthLocation } from '@jbrowse/core/util/types'
-import { searchOrReplaceInArgs } from '@jbrowse/core/util'
+import { UriLocation } from '@jbrowse/core/util/types'
 import { GDCInternetAccountConfigModel } from './configSchema'
-import { Instance, types, getRoot } from 'mobx-state-tree'
+import { Instance, types, getParent } from 'mobx-state-tree'
 import React, { useState } from 'react'
+import { RemoteFile } from 'generic-filehandle'
 import {
   Button,
   Dialog,
@@ -60,10 +60,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-interface Account {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
-}
+const inWebWorker = typeof sessionStorage === 'undefined'
 
 const stateModelFactory = (
   pluginManager: PluginManager,
@@ -74,33 +71,37 @@ const stateModelFactory = (
       'GDCInternetAccount',
       InternetAccount,
       types.model({
-        id: 'GDC',
+        id: 'GDCToken',
         type: types.literal('GDCInternetAccount'),
         configuration: ConfigurationReference(configSchema),
       }),
     )
     .volatile(() => ({
-      externalToken: '',
-      currentTypeAuthorizing: '',
       needsToken: false,
     }))
     .views(self => ({
-      handlesLocation(location: FileLocation): boolean {
+      get internetAccountType() {
+        return 'GDCTokenInternetAccount'
+      },
+      handlesLocation(location: UriLocation): boolean {
+        // this will probably look at something in the config which indicates that it is an OAuth pathway,
+        // also look at location, if location is set to need authentication it would reutrn true
         const validDomains = self.accountConfig.validDomains || []
         return validDomains.some((domain: string) =>
-          (location as AuthLocation)?.uri.includes(domain),
+          location?.uri.includes(domain),
         )
+      },
+      get generateAuthInfo() {
+        return {
+          internetAccountType: this.internetAccountType,
+          authInfo: {
+            authHeader: self.authHeader,
+            tokenType: '',
+          },
+        }
       },
     }))
     .actions(self => ({
-      async fetchFile(location: string) {
-        if (!location || !self.externalToken) {
-          return
-        }
-      },
-      setExternalToken(token: string) {
-        self.externalToken = token
-      },
       setNeedsToken(bool: boolean) {
         self.needsToken = bool
       },
@@ -109,109 +110,169 @@ const stateModelFactory = (
       let resolve: Function = () => {}
       let reject: Function = () => {}
       let openLocationPromise: Promise<string> | undefined = undefined
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let preAuthInfo: any = {}
       return {
+        setTokenInfo(token: string) {
+          sessionStorage.setItem(`${self.internetAccountId}-token`, token)
+        },
         handleClose(token?: string) {
-          const { session } = getRoot(self)
-          if ((token && self.needsToken) || (token && !self.needsToken)) {
-            console.log(token)
-            sessionStorage.setItem(`${self.internetAccountId}-token`, token)
+          if (token) {
+            if (!inWebWorker) {
+              this.setTokenInfo(token)
+            }
             resolve(token)
           } else {
-            // we should only see this error if the resource requires a token
+            // we will only see this error if the resource requires a token
             reject(
               new Error(
                 'failed to add track: this is a controlled resource that requires an authenticated token to access. Please verify your credentials and try again.',
               ),
             )
           }
-          session.setDialogComponent(undefined, undefined)
           resolve = () => {}
           reject = () => {}
           openLocationPromise = undefined
         },
-        async openLocation(location: FileLocation) {
-          if (!openLocationPromise) {
-            // determine if the resource requires a token
-            const query = (location as AuthLocation).uri.split('/').pop()
-            const response = await fetch(
-              `${self.accountConfig.customEndpoint}/files/${query}?expand=index_files`,
-              {
-                method: 'GET',
-              },
-            )
-
-            if (!response.ok) {
-              const errorText = await response.text()
-              throw new Error(
-                `Network response failure: ${response.status} (${errorText})`,
-              )
-            }
-
-            const metadata = await response.json()
-            if (metadata) {
-              metadata.data.access === 'controlled'
-                ? self.setNeedsToken(true)
-                : self.setNeedsToken(false)
-            }
-
-            openLocationPromise = new Promise(async (r, x) => {
-              if (self.needsToken) {
-                const { session } = getRoot(self)
-                session.setDialogComponent(GDCTokenEntryForm, {
-                  internetAccountId: self.internetAccountId,
-                  handleClose: this.handleClose,
-                })
-              }
-              resolve = r
-              reject = x
-            })
-          }
-          return openLocationPromise
-        },
-        async handleRpcMethodCall(
-          location: FileLocation,
-          authenticationInfoMap: Record<string, string>,
-          args: {},
-        ) {
-          const token = authenticationInfoMap[self.internetAccountId]
+        async checkToken() {
+          let token =
+            preAuthInfo?.authInfo?.token ||
+            (!inWebWorker
+              ? sessionStorage.getItem(`${self.internetAccountId}-token`)
+              : null)
           if (!token) {
-            await this.openLocation(location)
+            if (!openLocationPromise) {
+              openLocationPromise = new Promise(async (r, x) => {
+                // we only need to open the dialog if this resource requires a token
+                if (self.needsToken) {
+                  const { session } = getParent(self, 2)
+                  session.queueDialog((doneCallback: Function) => [
+                    GDCTokenEntryForm,
+                    {
+                      internetAccountId: self.internetAccountId,
+                      handleClose: (token: string) => {
+                        this.handleClose(token)
+                        doneCallback()
+                      },
+                    },
+                  ])
+                }
+                resolve = r
+                reject = x
+              })
+            }
+            token = await openLocationPromise
           }
 
-          try {
-            const query = (location as AuthLocation).uri.split('/').pop()
-            args = JSON.parse(JSON.stringify(args))
-            searchOrReplaceInArgs(
-              args,
-              'uri',
-              `${self.accountConfig.customEndpoint}/data/${query}`,
-            )
-          } catch (e) {
-            await this.handleError(authenticationInfoMap, e)
+          if (!preAuthInfo.authInfo.token) {
+            preAuthInfo.authInfo.token = token
           }
-
-          return args
+          resolve()
+          openLocationPromise = undefined
+          return token
         },
-        async handleError(
-          authenticationInfoMap: Record<string, string>,
-          errorText: string,
-        ) {
-          const rootModel = getRoot(self)
-          rootModel.removeFromAuthenticationMap(
-            self.internetAccountId,
-            authenticationInfoMap,
+        async getFetcher(
+          url: RequestInfo,
+          opts?: RequestInit,
+        ): Promise<Response> {
+          if (!preAuthInfo || !preAuthInfo.authInfo) {
+            throw new Error('Authentication information is missing.')
+          }
+
+          let foundToken
+          try {
+            foundToken = await this.checkToken()
+          } catch (e) {
+            throw new Error(
+              'Something went wrong when attempting to fetch the authentication token.',
+            )
+          }
+
+          let newOpts = opts
+          if (foundToken) {
+            const newHeaders = {
+              ...opts?.headers,
+              [preAuthInfo.authInfo
+                .authHeader]: `${preAuthInfo.authInfo.token}`,
+            }
+            newOpts = {
+              ...opts,
+              headers: newHeaders,
+            }
+          }
+          const query = String(url)
+            .split('/')
+            .pop()
+          url = `http://localhost:8010/proxy/data/${query}`
+          return fetch(url as RequestInfo, {
+            method: 'GET',
+            credentials: 'same-origin',
+            ...newOpts,
+          })
+        },
+        openLocation(location: UriLocation) {
+          preAuthInfo =
+            location.internetAccountPreAuthorization || self.generateAuthInfo
+          return new RemoteFile(String(location.uri), {
+            fetch: this.getFetcher,
+          })
+        },
+        /**
+         * uses the location of the resource to fetch the 'metadata' of the file, which contains the index files (if applicable)
+         *  and the property 'controlled' which determines whether the user needs a token to be checked against the resource or
+         *  not. if controlled = false, then the user will not be prompted with a token dialogue
+         * @param location the uri location of the resource to be fetched
+         */
+        async checkMetadata(location: UriLocation) {
+          // determine if the resource requires a token
+          const query = location?.uri.split('/').pop()
+          const response = await fetch(
+            `${self.accountConfig.customEndpoint}/files/${query}?expand=index_files`,
+            {
+              method: 'GET',
+            },
           )
-          return new Error(errorText)
+
+          if (!response.ok) {
+            const errorText = await response.text()
+            throw new Error(
+              `Network response failure: ${response.status} (${errorText})`,
+            )
+          }
+
+          const metadata = await response.json()
+          if (metadata) {
+            metadata.data.access === 'controlled'
+              ? self.setNeedsToken(true)
+              : self.setNeedsToken(false)
+          }
+        },
+        async getPreAuthorizationInformation(location: UriLocation) {
+          if (!preAuthInfo.authInfo) {
+            preAuthInfo = self.generateAuthInfo
+          }
+
+          // needs to check the metadata first so we know whether or not to collect a token from the user
+          await this.checkMetadata(location)
+          await this.checkToken()
+
+          return preAuthInfo
+        },
+        async handleError(errorText: string) {
+          preAuthInfo = self.generateAuthInfo
+          if (!inWebWorker) {
+            sessionStorage.removeItem(`${self.internetAccountId}-token`)
+          }
+
+          throw new Error(errorText)
         },
       }
     })
 }
 
 const GDCTokenEntryForm = ({
-  internetAccountId,
   handleClose,
 }: {
-  internetAccountId: string
   handleClose: (arg?: string) => void
 }) => {
   const [token, setToken] = useState('')
@@ -282,5 +343,5 @@ const GDCTokenEntryForm = ({
 }
 
 export default stateModelFactory
-export type AlignmentsDisplayStateModel = ReturnType<typeof stateModelFactory>
-export type AlignmentsDisplayModel = Instance<AlignmentsDisplayStateModel>
+export type ExternalTokenStateModel = ReturnType<typeof stateModelFactory>
+export type ExternalTokenModel = Instance<ExternalTokenStateModel>
