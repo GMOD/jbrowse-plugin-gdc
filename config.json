@@ -170,7 +170,7 @@
   },
   "internetAccounts": [
     {
-      "type": "GDCInternetAccount",
+      "type": "ExternalTokenInternetAccount",
       "internetAccountId": "GDCExternalToken",
       "name": "GDC",
       "description": "GDC External Token",

@@ -7,6 +7,7 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
+import { FileLocation } from '@jbrowse/core/util/types'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import { version } from '../package.json'
 
@@ -62,6 +63,9 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
+          // addTrackConfig: {
+          //   excludeFromTrackSelector: true,
+          // },
           AdapterClass: GDCAdapterClass,
         }),
     )
@@ -71,6 +75,24 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
+          // addTrackConfig: {
+          //   regexGuess: /\.maf$/i,
+          //   trackGuess: 'VariantTrack',
+          //   fetchConfig: (
+          //     file: FileLocation,
+          //     index: FileLocation,
+          //     indexName: string,
+          //   ) => {
+          //     return {
+          //       type: 'MafAdapter',
+          //       mafLocation: file,
+          //       index: {
+          //         location: index || makeIndex(file, '.bai'),
+          //         indexType: makeIndexType(indexName, 'CSI', 'BAI'),
+          //       },
+          //     }
+          //   },
+          // },
           AdapterClass: MafAdapter,
         }),
     )
