@@ -43,7 +43,7 @@
     {
       "type": "GDCTrack",
       "trackId": "gdc_plugin_track",
-      "name": "GDC",
+      "name": "GDC Explore",
       "assemblyNames": ["hg38"],
       "category": ["Annotation"],
       "adapter": {

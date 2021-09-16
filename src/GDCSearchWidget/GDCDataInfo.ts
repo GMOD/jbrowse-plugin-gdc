@@ -133,10 +133,19 @@ export function mapDataInfo(
   return configObject
 }
 
+/**
+ * creates a specialized config for a GDC explore track using filters that have been parsed from a given url
+ * @param category 'GDC Explore' or 'SSM or Gene' indicating what kind of adapter to use
+ * @param featureType mutation or gene indicating what kind of feature is being displayed
+ * @param adapterPropertyValue filters or data indicating what kind of data has been fed to the function
+ * @param trackId the id for the track, needs to be passed in to be specified against the unique identifier
+ * @returns a configuration object that will create the track
+ */
 export function mapGDCExploreConfig(
   category: string,
   featureType: string,
   adapterPropertyValue: string,
+  trackId: string,
 ) {
   const configObject = mapToAdapter.get(category)
 
@@ -153,6 +162,7 @@ export function mapGDCExploreConfig(
       adapter: {
         // @ts-ignore
         ...configObject.config.adapter,
+        GDCAdapterId: trackId,
         [adapterProperty]: adapterPropertyValue,
         featureType,
       },

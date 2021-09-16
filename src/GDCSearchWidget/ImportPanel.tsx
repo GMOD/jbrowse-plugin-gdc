@@ -146,9 +146,7 @@ const Panel = ({ model }: { model: any }) => {
     if (typeAdapterObject) {
       let conf = {
         ...typeAdapterObject.config,
-        type: 'FeatureTrack',
         trackId,
-        //@ts-ignore
         name,
         assemblyNames: ['hg38'],
       }
@@ -311,6 +309,7 @@ const Panel = ({ model }: { model: any }) => {
                 'SSM or Gene',
                 featureType,
                 JSON.stringify(res),
+                trackId,
               )
               addAndShowTrack(typeAdapterObject, trackId, file.name, true)
             } else {
@@ -337,6 +336,39 @@ const Panel = ({ model }: { model: any }) => {
     },
   })
 
+  function processExplorationURI() {
+    // @ts-ignore
+    let uri = inputRef ? inputRef.current.value : undefined
+    const featureType = uri
+      .split('facetTab=')[1]
+      .split('&filters=')[0]
+      .slice(0, -1)
+    if (featureType != 'case') {
+      const filters = decodeURIComponent(
+        uri
+          .split('&facetTab=')[0]
+          .split('/')[3]
+          .split('filters=')[1],
+      )
+
+      const datenow = Date.now()
+      const trackId = `gdc_plugin_track-${datenow}`
+      const trackName = `GDC Explore session-${datenow}`
+      const typeAdapterObject = mapGDCExploreConfig(
+        'GDC Explore',
+        featureType,
+        filters,
+        trackId,
+      )
+
+      addAndShowTrack(typeAdapterObject, trackId, trackName)
+    } else {
+      setTrackErrorMessage(
+        'Failed to add track.\nConfiguration to "cases" is not currently supported.',
+      )
+    }
+  }
+
   const handleSubmit = async () => {
     resetErrorMessages()
 
@@ -345,70 +377,40 @@ const Panel = ({ model }: { model: any }) => {
       let query = inputRef ? inputRef.current.value : undefined
 
       if (query.includes('exploration?')) {
-        // @ts-ignore
-        let uri = inputRef ? inputRef.current.value : undefined
-        const featureType = uri.split('searchTableTab=')[1].slice(0, -1)
-        if (featureType != 'case') {
-          const filters = decodeURIComponent(
-            uri
-              .split('&searchTableTab=')[0]
-              .split('/')[3]
-              .split('filters=')[1],
-          )
-
-          const typeAdapterObject = mapGDCExploreConfig(
-            'GDC Explore',
-            featureType,
-            filters,
-          )
-
-          const datenow = Date.now()
-          const trackId = `gdc_plugin_track-${datenow}`
-          const trackName = `GDC-${datenow}`
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
-        } else {
-          setTrackErrorMessage(
-            'Failed to add track.\nConfiguration to "cases" is not currently supported.',
-          )
-        }
+        processExplorationURI()
       } else if (!query) {
         setTrackErrorMessage(
           'Failed to add track.\nUUID or URL must be provided.',
         )
       } else {
-        if (query.includes('files/')) {
-          query = query.split('/')[4]
-        }
-        const response = await fetchFileInfo(query)
-        if (
-          response.data.access == 'controlled' &&
-          !window.sessionStorage.getItem('GDCToken')
-        ) {
-          setAuthErrorMessage(
-            'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
-          )
-          setTrackErrorMessage(
-            'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
-          )
-        } else {
-          const category = `${response.data.data_format.toLowerCase()}-${
-            response.data.data_category
-          }`
-          // BAM files require an index file, if the response contains index_files, then we want to utilize it
-          const indexFileId = response.data.index_files
-            ? response.data.index_files[0].file_id
-            : undefined
-
-          const uri = `http://localhost:8010/proxy/data/${query}`
-
-          const trackId = `${response.data.file_id}`
-
-          const trackName = `${response.data.file_name}`
-
-          const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
-
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
-        }
+        // if (query.includes('files/')) {
+        //   query = query.split('/')[4]
+        // }
+        // const response = await fetchFileInfo(query)
+        // if (
+        //   response.data.access == 'controlled' &&
+        //   !window.sessionStorage.getItem('GDCToken')
+        // ) {
+        //   setAuthErrorMessage(
+        //     'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
+        //   )
+        //   setTrackErrorMessage(
+        //     'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
+        //   )
+        // } else {
+        //   const category = `${response.data.data_format.toLowerCase()}-${
+        //     response.data.data_category
+        //   }`
+        //   // BAM files require an index file, if the response contains index_files, then we want to utilize it
+        //   const indexFileId = response.data.index_files
+        //     ? response.data.index_files[0].file_id
+        //     : undefined
+        //   const uri = `http://localhost:8010/proxy/data/${query}`
+        //   const trackId = `${response.data.file_id}`
+        //   const trackName = `${response.data.file_name}`
+        //   const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
+        //   addAndShowTrack(typeAdapterObject, trackId, trackName)
+        // }
       }
     } catch (e) {
       console.error(e)
