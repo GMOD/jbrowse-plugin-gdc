@@ -1,16 +1,19 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { getSession } from '@jbrowse/core/util'
+import { FileLocation, getSession } from '@jbrowse/core/util'
+import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 import {
   Paper,
   Button,
   Typography,
   TextField,
+  Chip,
   makeStyles,
 } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import LoginDialogue from './LoginDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
@@ -126,6 +129,8 @@ const Panel = ({ model }: { model: any }) => {
   const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
   const [authErrorMessage, setAuthErrorMessage] = useState<String>()
+  const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
+  const [fileChip, setFileChip] = useState<String>()
 
   const session = getSession(model)
   const inputRef = useRef()
@@ -222,8 +227,15 @@ const Panel = ({ model }: { model: any }) => {
     setTrackErrorMessage(undefined)
     setAuthErrorMessage(undefined)
     setDragErrorMessage(undefined)
+    setUploadInfoMessage(undefined)
     setSuccess(false)
     setDragSuccess(false)
+  }
+  const handleDelete = () => {
+    model.setTrackData(undefined)
+    model.setIndexTrackData(undefined)
+    setFileChip(undefined)
+    setUploadInfoMessage(undefined)
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -258,79 +270,124 @@ const Panel = ({ model }: { model: any }) => {
         const type = determineFileType(file.name)
         try {
           if (type == 'json') {
-            const res = await new Promise(resolve => {
-              const reader = new FileReader()
-              reader.addEventListener('load', event =>
-                resolve(JSON.parse(event.target?.result as string)),
-              )
-              reader.readAsText(file)
-            })
-
-            // if the file is json we need to look at the properties to determine how to process it
-            let propertyArray = []
-            //@ts-ignore
-            for (const property in res.slice(0, 1)[0]) {
-              propertyArray.push(property)
+            // const res = await new Promise(resolve => {
+            //   const reader = new FileReader()
+            //   reader.addEventListener('load', event =>
+            //     resolve(JSON.parse(event.target?.result as string)),
+            //   )
+            //   reader.readAsText(file)
+            // })
+            // // if the file is json we need to look at the properties to determine how to process it
+            // let propertyArray = []
+            // //@ts-ignore
+            // for (const property in res.slice(0, 1)[0]) {
+            //   propertyArray.push(property)
+            // }
+            // // key properties dictate how a file should be processed and displayed
+            // if (propertyArray.includes('file_id')) {
+            //   //@ts-ignore
+            //   const ele = res.slice(0, 25)
+            //   ele.map(
+            //     (file: {
+            //       file_id: string
+            //       file_name: string
+            //       data_category: string
+            //       file_type: string
+            //     }) => {
+            //       const category = `${file.file_type}-${file.data_category}`
+            //       const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
+            //       const typeAdapterObject = mapDataInfo(category, uri)
+            //       addAndShowTrack(
+            //         typeAdapterObject,
+            //         file.file_id,
+            //         file.file_name,
+            //         true,
+            //       )
+            //     },
+            //   )
+            // } else if (
+            //   propertyArray.includes('gene_id') ||
+            //   propertyArray.includes('ssm_id')
+            // ) {
+            //   const featureType = propertyArray.includes('ssm_id')
+            //     ? 'mutation'
+            //     : 'gene'
+            //   const trackId = `gdc_plugin_track-${Date.now()}`
+            //   const typeAdapterObject = mapGDCExploreConfig(
+            //     'SSM or Gene',
+            //     featureType,
+            //     JSON.stringify(res),
+            //     trackId,
+            //   )
+            //   addAndShowTrack(typeAdapterObject, trackId, file.name, true)
+            // } else {
+            //   const message =
+            //     'Failed to add track.\nThe configuration of this file is not currently supported.'
+            //   console.error(message)
+            //   setDragErrorMessage(message)
+            // }
+          } else {
+            if (/\.bam$/i.test(file.name)) {
+              if (!model.indexTrackData) {
+                setUploadInfoMessage('Please upload a corresponding BAI file.')
+                setFileChip(file.name)
+              }
+              model.setTrackData(storeBlobLocation({ blob: file }))
             }
-
-            // key properties dictate how a file should be processed and displayed
-            if (propertyArray.includes('file_id')) {
-              //@ts-ignore
-              const ele = res.slice(0, 25)
-              ele.map(
-                (file: {
-                  file_id: string
-                  file_name: string
-                  data_category: string
-                  file_type: string
-                }) => {
-                  const category = `${file.file_type}-${file.data_category}`
-                  const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
-                  const typeAdapterObject = mapDataInfo(category, uri)
-                  addAndShowTrack(
-                    typeAdapterObject,
-                    file.file_id,
-                    file.file_name,
-                    true,
-                  )
-                },
-              )
-            } else if (
-              propertyArray.includes('gene_id') ||
-              propertyArray.includes('ssm_id')
+            if (/\.bai$/i.test(file.name)) {
+              if (!model.trackData) {
+                setUploadInfoMessage('Please upload a corresponding BAM file.')
+                setFileChip(file.name)
+              }
+              model.setIndexTrackData(storeBlobLocation({ blob: file }))
+            }
+            if (
+              (/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name)) &&
+              model.indexTrackData &&
+              model.trackData
             ) {
-              const featureType = propertyArray.includes('ssm_id')
-                ? 'mutation'
-                : 'gene'
-
               const trackId = `gdc_plugin_track-${Date.now()}`
 
-              const typeAdapterObject = mapGDCExploreConfig(
-                'SSM or Gene',
-                featureType,
-                JSON.stringify(res),
+              const typeAdapterObject = {
+                config: {
+                  type: 'AlignmentsTrack',
+                  adapter: {
+                    type: 'BamAdapter',
+                    bamLocation: model.trackData,
+                    index: {
+                      location: model.indexTrackData,
+                      indexType: 'BAI',
+                    },
+                  },
+                },
+              }
+              addAndShowTrack(
+                typeAdapterObject,
                 trackId,
+                model.trackData.name,
+                true,
+              )
+              model.setTrackData(undefined)
+              model.setIndexTrackData(undefined)
+              setFileChip(undefined)
+              setUploadInfoMessage(undefined)
+            }
+            if (!(/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name))) {
+              const trackId = `gdc_plugin_track-${Date.now()}`
+              const typeAdapterObject = mapDataInfo(
+                type,
+                undefined,
+                undefined,
+                file,
               )
               addAndShowTrack(typeAdapterObject, trackId, file.name, true)
-            } else {
-              const message =
-                'Failed to add track.\nThe configuration of this file is not currently supported.'
-              console.error(message)
-              setDragErrorMessage(message)
             }
-          } else {
-            const trackId = `gdc_plugin_track-${Date.now()}`
-            const typeAdapterObject = mapDataInfo(
-              type,
-              undefined,
-              undefined,
-              file,
-            )
-            addAndShowTrack(typeAdapterObject, trackId, file.name, true)
           }
         } catch (e) {
           console.error(e)
-          setDragErrorMessage(e.message)
+          const message =
+            e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
+          setDragErrorMessage(`Failed to add track.\n ${message}.`)
         }
       }
     },
@@ -451,6 +508,20 @@ const Panel = ({ model }: { model: any }) => {
         {dragErrorMessage ? (
           <div className={classes.alertContainer}>
             <Alert severity="error">{dragErrorMessage}</Alert>
+          </div>
+        ) : null}
+        {fileChip ? (
+          <div>
+            <Chip
+              label={fileChip}
+              avatar={<InsertDriveFile />}
+              onDelete={handleDelete}
+            />
+          </div>
+        ) : null}
+        {uploadInfoMessage ? (
+          <div className={classes.alertContainer}>
+            <Alert severity="info">{uploadInfoMessage}</Alert>
           </div>
         ) : null}
       </Paper>
