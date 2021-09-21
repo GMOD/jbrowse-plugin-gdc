@@ -48,17 +48,8 @@ const mapToAdapter: Map<string, Object> = new Map([
     'txt-Transcriptome Profiling',
     {
       config: {
-        type: 'ReferenceSequenceTrack',
+        type: 'IEQTrack',
         adapter: { type: 'IeqAdapter' },
-        displays: [
-          {
-            type: 'LinearBasicDisplay',
-            renderer: {
-              color1: `jexl:ieqColouring(feature, 'reads_per_million_mirna_mapped')`,
-              type: 'SvgFeatureRenderer',
-            },
-          },
-        ],
       },
       prefix: 'ieq',
     },
@@ -153,10 +144,10 @@ export function mapGDCExploreConfig(
 
   if (configObject) {
     const datenow = Date.now()
-    const color1 =
-      featureType == 'mutation'
-        ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
-        : "jexl:cast('goldenrod')"
+    // const color1 =
+    //   featureType == 'mutation'
+    //     ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+    //     : "jexl:cast('goldenrod')"
     // @ts-ignore
     configObject.config = {
       adapter: {
@@ -167,19 +158,19 @@ export function mapGDCExploreConfig(
         featureType,
       },
       category: undefined,
-      displays: [
-        {
-          displayId: `gdc_plugin_track_linear-${datenow}`,
-          renderer: {
-            color1,
-            labels: {
-              name: "jexl:get(feature,'genomicDnaChange')",
-              type: 'SvgFeatureRenderer',
-            },
-          },
-          type: 'LinearGDCDisplay',
-        },
-      ],
+      // displays: [
+      //   {
+      //     displayId: `gdc_plugin_track_linear-${datenow}`,
+      //     renderer: {
+      //       color1,
+      //       labels: {
+      //         name: "jexl:get(feature,'genomicDnaChange')",
+      //         type: 'SvgFeatureRenderer',
+      //       },
+      //     },
+      //     type: 'LinearGDCDisplay',
+      //   },
+      // ],
       // @ts-ignore
       type: configObject.config.type,
     }

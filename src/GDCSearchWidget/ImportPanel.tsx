@@ -386,6 +386,7 @@ const Panel = ({ model }: { model: any }) => {
         } catch (e) {
           console.error(e)
           const message =
+            // @ts-ignore
             e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
           setDragErrorMessage(`Failed to add track.\n ${message}.`)
         }
@@ -472,6 +473,7 @@ const Panel = ({ model }: { model: any }) => {
     } catch (e) {
       console.error(e)
       const message =
+        // @ts-ignore
         e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
       setTrackErrorMessage(`Failed to add track.\n ${message}.`)
     }

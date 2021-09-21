@@ -20,6 +20,7 @@ import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
+import LinearIEQDisplay from './LinearIEQDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
@@ -317,37 +318,37 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
-    // pluginManager.addTrackType(() => {
-    //   const configSchema = ConfigurationSchema(
-    //     'IEQTrack',
-    //     {},
-    //     {
-    //       baseConfiguration: createBaseTrackConfig(pluginManager),
-    //       explicitIdentifier: 'trackId',
-    //     },
-    //   )
-    //   return new TrackType({
-    //     name: 'IEQTrack',
-    //     configSchema,
-    //     stateModel: createBaseTrackModel(
-    //       pluginManager,
-    //       'IEQTrack',
-    //       configSchema,
-    //     ),
-    //   })
-    // })
+    pluginManager.addTrackType(() => {
+      const configSchema = ConfigurationSchema(
+        'IEQTrack',
+        {},
+        {
+          baseConfiguration: createBaseTrackConfig(pluginManager),
+          explicitIdentifier: 'trackId',
+        },
+      )
+      return new TrackType({
+        name: 'IEQTrack',
+        configSchema,
+        stateModel: createBaseTrackModel(
+          pluginManager,
+          'IEQTrack',
+          configSchema,
+        ),
+      })
+    })
 
-    // pluginManager.addDisplayType(() => {
-    //   const { configSchema, stateModel } = pluginManager.load(LinearIEQDisplay)
-    //   return new DisplayType({
-    //     name: 'LinearIEQDisplay',
-    //     configSchema,
-    //     stateModel,
-    //     trackType: 'IEQTrack',
-    //     viewType: 'LinearGenomeView',
-    //     ReactComponent: BaseLinearDisplayComponent,
-    //   })
-    // })
+    pluginManager.addDisplayType(() => {
+      const { configSchema, stateModel } = pluginManager.load(LinearIEQDisplay)
+      return new DisplayType({
+        name: 'LinearIEQDisplay',
+        configSchema,
+        stateModel,
+        trackType: 'IEQTrack',
+        viewType: 'LinearGenomeView',
+        ReactComponent: BaseLinearDisplayComponent,
+      })
+    })
 
     pluginManager.addWidgetType(() => {
       return new WidgetType({
