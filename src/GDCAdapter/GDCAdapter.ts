@@ -255,12 +255,12 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
             op: 'and',
             content: [
               {
-                op: '>=',
-                content: { field: 'ssms.start_position', value: start },
+                op: '<=',
+                content: { field: 'ssms.start_position', value: end },
               },
               {
-                op: '<=',
-                content: { field: 'ssms.end_position', value: end },
+                op: '>=',
+                content: { field: 'ssms.end_position', value: start },
               },
               {
                 op: '=',
@@ -275,10 +275,10 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
             op: 'and',
             content: [
               {
-                op: '>=',
-                content: { field: 'genes.gene_start', value: start },
+                op: '<=',
+                content: { field: 'genes.gene_start', value: end },
               },
-              { op: '<=', content: { field: 'genes.gene_end', value: end } },
+              { op: '>=', content: { field: 'genes.gene_end', value: start } },
               {
                 op: '=',
                 content: { field: 'genes.gene_chromosome', value: [chr] },
