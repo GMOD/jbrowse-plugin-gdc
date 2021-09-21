@@ -29,17 +29,8 @@ const mapToAdapter: Map<string, Object> = new Map([
     'maf-Simple Nucleotide Variation',
     {
       config: {
-        type: 'VariantTrack',
+        type: 'MAFTrack',
         adapter: { type: 'MafAdapter' },
-        displays: [
-          {
-            type: 'LinearBasicDisplay',
-            renderer: {
-              color1: 'jexl:mafColouring(feature)',
-              type: 'SvgFeatureRenderer',
-            },
-          },
-        ],
       },
       prefix: 'maf',
     },

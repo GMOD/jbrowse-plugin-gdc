@@ -13,10 +13,10 @@ export default jbrowse => {
 
   return types
     .compose(
-      'LinearIEQDisplay',
+      'LinearMAFDisplay',
       BaseLinearDisplay,
       types.model({
-        type: types.literal('LinearIEQDisplay'),
+        type: types.literal('LinearMAFDisplay'),
         configuration: ConfigurationReference(configSchema),
       }),
     )
@@ -43,7 +43,7 @@ export default jbrowse => {
         renderProps() {
           const config = self.rendererType.configSchema.create(
             {
-              color1: `jexl:ieqColouring(feature, 'reads_per_million_mirna_mapped')`,
+              color1: `jexl:mafColouring(feature)`,
             },
             getEnv(self),
           )

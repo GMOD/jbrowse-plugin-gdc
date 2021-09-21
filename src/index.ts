@@ -21,6 +21,7 @@ import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 import LinearIEQDisplay from './LinearIEQDisplay'
+import LinearMAFDisplay from './LinearMAFDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
@@ -345,6 +346,38 @@ export default class GDCPlugin extends Plugin {
         configSchema,
         stateModel,
         trackType: 'IEQTrack',
+        viewType: 'LinearGenomeView',
+        ReactComponent: BaseLinearDisplayComponent,
+      })
+    })
+
+    pluginManager.addTrackType(() => {
+      const configSchema = ConfigurationSchema(
+        'MAFTrack',
+        {},
+        {
+          baseConfiguration: createBaseTrackConfig(pluginManager),
+          explicitIdentifier: 'trackId',
+        },
+      )
+      return new TrackType({
+        name: 'MAFTrack',
+        configSchema,
+        stateModel: createBaseTrackModel(
+          pluginManager,
+          'MAFTrack',
+          configSchema,
+        ),
+      })
+    })
+
+    pluginManager.addDisplayType(() => {
+      const { configSchema, stateModel } = pluginManager.load(LinearMAFDisplay)
+      return new DisplayType({
+        name: 'LinearMAFDisplay',
+        configSchema,
+        stateModel,
+        trackType: 'MAFTrack',
         viewType: 'LinearGenomeView',
         ReactComponent: BaseLinearDisplayComponent,
       })
