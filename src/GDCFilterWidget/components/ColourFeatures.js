@@ -50,7 +50,7 @@ const HighlightFeature = observer(({ schema, type }) => {
     } else if (hlBy.type === 'category') {
       colourFunction = `jexl:switch(feature,'${JSON.stringify(hlBy)}')`
     } else if (hlBy.type === 'boolean') {
-      colourFunction = `jexl:cast([get(feature,'${hlBy.attributeName}')] ? '${hlBy.values[0].colour1}' : '${hlBy.values[0].colour2}')`
+      colourFunction = `jexl:cancer(feature,'${hlBy.attributeName}')`
     } else if (hlBy.type === 'percentage') {
       colourFunction = `jexl:rgb(feature,'${hlBy.attributeName}')`
     } else {
