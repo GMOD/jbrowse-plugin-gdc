@@ -15,6 +15,7 @@ import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import ExitToApp from '@material-ui/icons/ExitToApp'
+import AddIcon from '@material-ui/icons/Add'
 import LoginDialogue from './LoginDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
@@ -95,6 +96,11 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
+  addTrackButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+  },
   alertContainer: {
     padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`,
   },
@@ -126,6 +132,7 @@ const Panel = ({ model }: { model: any }) => {
   const [dragErrorMessage, setDragErrorMessage] = useState<String>()
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
+  const [exploreSuccess, setExploreSuccess] = useState(false)
   const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
   const [authErrorMessage, setAuthErrorMessage] = useState<String>()
@@ -146,7 +153,7 @@ const Panel = ({ model }: { model: any }) => {
     typeAdapterObject: any,
     trackId: string,
     name: string,
-    isFile?: boolean,
+    paper?: string,
   ) {
     if (typeAdapterObject) {
       let conf = {
@@ -169,13 +176,15 @@ const Panel = ({ model }: { model: any }) => {
           rendererTypeNameState: 'density',
         },
       )
-      if (isFile) {
+      if (paper === 'drag') {
         setDragSuccess(true)
+      } else if (paper === 'explore') {
+        setExploreSuccess(true)
       } else {
         setSuccess(true)
       }
     } else {
-      if (isFile) {
+      if (paper === 'drag') {
         setDragErrorMessage(
           'Failed to add track.\nThe configuration of this file is not currently supported.',
         )
@@ -230,6 +239,7 @@ const Panel = ({ model }: { model: any }) => {
     setUploadInfoMessage(undefined)
     setSuccess(false)
     setDragSuccess(false)
+    setExploreSuccess(false)
   }
   const handleDelete = () => {
     model.setTrackData(undefined)
@@ -301,7 +311,7 @@ const Panel = ({ model }: { model: any }) => {
             //         typeAdapterObject,
             //         file.file_id,
             //         file.file_name,
-            //         true,
+            //         'drag',
             //       )
             //     },
             //   )
@@ -319,7 +329,7 @@ const Panel = ({ model }: { model: any }) => {
             //     JSON.stringify(res),
             //     trackId,
             //   )
-            //   addAndShowTrack(typeAdapterObject, trackId, file.name, true)
+            //   addAndShowTrack(typeAdapterObject, trackId, file.name, 'drag')
             // } else {
             //   const message =
             //     'Failed to add track.\nThe configuration of this file is not currently supported.'
@@ -327,6 +337,7 @@ const Panel = ({ model }: { model: any }) => {
             //   setDragErrorMessage(message)
             // }
           } else {
+            // BAM files are a special case w drag and drop that require forcing the user to upload a bai file
             if (/\.bam$/i.test(file.name)) {
               if (!model.indexTrackData) {
                 setUploadInfoMessage('Please upload a corresponding BAI file.')
@@ -348,6 +359,7 @@ const Panel = ({ model }: { model: any }) => {
             ) {
               const trackId = `gdc_plugin_track-${Date.now()}`
 
+              //TODO: update this to go through the enahancement 2135 workflow
               const typeAdapterObject = {
                 config: {
                   type: 'AlignmentsTrack',
@@ -365,22 +377,24 @@ const Panel = ({ model }: { model: any }) => {
                 typeAdapterObject,
                 trackId,
                 model.trackData.name,
-                true,
+                'drag',
               )
               model.setTrackData(undefined)
               model.setIndexTrackData(undefined)
               setFileChip(undefined)
               setUploadInfoMessage(undefined)
             }
+            // all other files go through this channel
             if (!(/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name))) {
               const trackId = `gdc_plugin_track-${Date.now()}`
+              //TODO: update this to go through the enhancement 2135 workflow
               const typeAdapterObject = mapDataInfo(
                 type,
                 undefined,
                 undefined,
                 file,
               )
-              addAndShowTrack(typeAdapterObject, trackId, file.name, true)
+              addAndShowTrack(typeAdapterObject, trackId, file.name, 'drag')
             }
           }
         } catch (e) {
@@ -394,20 +408,27 @@ const Panel = ({ model }: { model: any }) => {
     },
   })
 
-  function processExplorationURI() {
-    // @ts-ignore
-    let uri = inputRef ? inputRef.current.value : undefined
+  function processExplorationURI(uri: string, source?: string) {
+    if (!uri.includes('facetTab')) {
+      setTrackErrorMessage(
+        "Failed to add track.\nExploration URI's must contain a facet, please narrow your search through the GDC portal, or add quick-add an Explore Track below and filter using the track menu.",
+      )
+    }
     const featureType = uri
       .split('facetTab=')[1]
       .split('&filters=')[0]
       .slice(0, -1)
     if (featureType != 'case') {
-      const filters = decodeURIComponent(
+      let filters = decodeURIComponent(
         uri
           .split('&facetTab=')[0]
           .split('/')[3]
           .split('filters=')[1],
       )
+
+      if (filters == 'undefined') {
+        filters = '{}'
+      }
 
       const datenow = Date.now()
       const trackId = `gdc_plugin_track-${datenow}`
@@ -419,7 +440,7 @@ const Panel = ({ model }: { model: any }) => {
         trackId,
       )
 
-      addAndShowTrack(typeAdapterObject, trackId, trackName)
+      addAndShowTrack(typeAdapterObject, trackId, trackName, source)
     } else {
       setTrackErrorMessage(
         'Failed to add track.\nConfiguration to "cases" is not currently supported.',
@@ -435,7 +456,7 @@ const Panel = ({ model }: { model: any }) => {
       let query = inputRef ? inputRef.current.value : undefined
 
       if (query.includes('exploration?')) {
-        processExplorationURI()
+        processExplorationURI(query)
       } else if (!query) {
         setTrackErrorMessage(
           'Failed to add track.\nUUID or URL must be provided.',
@@ -602,6 +623,40 @@ const Panel = ({ model }: { model: any }) => {
               onClick={handleSubmit}
             >
               Submit
+            </Button>
+          </div>
+        </div>
+      </Paper>
+      <Paper className={classes.paper}>
+        <div className={classes.typoContainer}>
+          <Typography variant="h6" component="h1" align="center">
+            Quick-add a GDC Explore Track
+          </Typography>
+          <Typography variant="body1" align="center">
+            Add additional 'Explore' tracks to your current view by clicking
+            this button.
+          </Typography>
+          {exploreSuccess ? (
+            <div className={classes.alertContainer}>
+              <Alert severity="success">
+                The requested Explore track has been added.
+              </Alert>
+            </div>
+          ) : null}
+          <div className={classes.addTrackButtonContainer}>
+            <Button
+              color="primary"
+              variant="contained"
+              size="large"
+              startIcon={<AddIcon />}
+              onClick={() => {
+                processExplorationURI(
+                  'https://portal.gdc.cancer.gov/exploration?facetTab=mutations',
+                  'explore',
+                )
+              }}
+            >
+              Add New GDC Explore Track
             </Button>
           </div>
         </div>
