@@ -41,7 +41,7 @@
     "trailingComma": "all"
   },
   "dependencies": {
-    "@material-ui/icons": "^4.9.1",
+    "@material-ui/icons": "^4.11.2",
     "local-cors-proxy": "^1.1.0",
     "pako": "^2.0.3",
     "react-dropzone": "^11.3.2",
@@ -61,7 +61,7 @@
     "@jbrowse/core": "1.4.4",
     "@jbrowse/development-tools": "^1.0.3",
     "@jbrowse/plugin-linear-genome-view": "^1.0.0",
-    "@material-ui/core": "^4.9.13",
+    "@material-ui/core": "^4.12.3",
     "@material-ui/data-grid": "^4.0.0-alpha.19",
     "@material-ui/lab": "^4.0.0-alpha.45",
     "@testing-library/react": "^11.2.5",

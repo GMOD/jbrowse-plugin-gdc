@@ -16,7 +16,9 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import AddIcon from '@material-ui/icons/Add'
+import InfoIcon from '@material-ui/icons/Info'
 import LoginDialogue from './LoginDialogue'
+import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
@@ -43,12 +45,14 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2),
     margin: `0px 0px ${theme.spacing(1)}px 0px`,
   },
+  dragAndDropContainer: {
+    margin: theme.spacing(2),
+  },
   dropZone: {
     textAlign: 'center',
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
     borderWidth: 2,
     borderRadius: 2,
+    padding: theme.spacing(2),
     // borderColor: styledBy('isDragActive', {
     //   true: theme.palette.secondary.light,
     //   false: theme.palette.divider,
@@ -111,6 +115,21 @@ const useStyles = makeStyles(theme => ({
   },
   typoContainer: {
     width: '100%',
+  },
+  tipContainer: {
+    display: 'flex',
+    paddingTop: theme.spacing(2),
+  },
+  tipPaper: {
+    display: 'flex',
+    background: theme.palette.grey[100],
+  },
+  tipMessageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: theme.spacing(2),
+    gap: theme.spacing(2),
+    alignItems: 'center',
   },
 }))
 
@@ -279,63 +298,51 @@ const Panel = ({ model }: { model: any }) => {
       if (file) {
         const type = determineFileType(file.name)
         try {
+          /**
+           * JSON files are for bulk import of files from the GDC site
+           */
           if (type == 'json') {
-            // const res = await new Promise(resolve => {
-            //   const reader = new FileReader()
-            //   reader.addEventListener('load', event =>
-            //     resolve(JSON.parse(event.target?.result as string)),
-            //   )
-            //   reader.readAsText(file)
-            // })
-            // // if the file is json we need to look at the properties to determine how to process it
-            // let propertyArray = []
-            // //@ts-ignore
-            // for (const property in res.slice(0, 1)[0]) {
-            //   propertyArray.push(property)
-            // }
-            // // key properties dictate how a file should be processed and displayed
-            // if (propertyArray.includes('file_id')) {
-            //   //@ts-ignore
-            //   const ele = res.slice(0, 25)
-            //   ele.map(
-            //     (file: {
-            //       file_id: string
-            //       file_name: string
-            //       data_category: string
-            //       file_type: string
-            //     }) => {
-            //       const category = `${file.file_type}-${file.data_category}`
-            //       const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
-            //       const typeAdapterObject = mapDataInfo(category, uri)
-            //       addAndShowTrack(
-            //         typeAdapterObject,
-            //         file.file_id,
-            //         file.file_name,
-            //         'drag',
-            //       )
-            //     },
-            //   )
-            // } else if (
-            //   propertyArray.includes('gene_id') ||
-            //   propertyArray.includes('ssm_id')
-            // ) {
-            //   const featureType = propertyArray.includes('ssm_id')
-            //     ? 'mutation'
-            //     : 'gene'
-            //   const trackId = `gdc_plugin_track-${Date.now()}`
-            //   const typeAdapterObject = mapGDCExploreConfig(
-            //     'SSM or Gene',
-            //     featureType,
-            //     JSON.stringify(res),
-            //     trackId,
-            //   )
-            //   addAndShowTrack(typeAdapterObject, trackId, file.name, 'drag')
-            // } else {
-            //   const message =
-            //     'Failed to add track.\nThe configuration of this file is not currently supported.'
-            //   console.error(message)
-            //   setDragErrorMessage(message)
-            // }
+            const res = await new Promise(resolve => {
+              const reader = new FileReader()
+              reader.addEventListener('load', event =>
+                resolve(JSON.parse(event.target?.result as string)),
+              )
+              reader.readAsText(file)
+            })
+            // if the file is json we need to look at the properties to determine how to process it
+            let propertyArray = []
+            //@ts-ignore
+            for (const property in res.slice(0, 1)[0]) {
+              propertyArray.push(property)
+            }
+            // key properties dictate how a file should be processed and displayed, i.e. the file_id
+            if (propertyArray.includes('file_id')) {
+              //@ts-ignore
+              const ele = res.slice(0, 25) //TODO: it only gets the first 25 files
+              ele.map(
+                (file: {
+                  file_id: string
+                  file_name: string
+                  data_category: string
+                  file_type: string
+                }) => {
+                  const category = determineFileType(file.file_name)
+                  const uri = `http://localhost:8010/proxy/data/${file.file_id}`
+                  const typeAdapterObject = mapDataInfo(category, uri)
+                  addAndShowTrack(
+                    typeAdapterObject,
+                    file.file_id,
+                    file.file_name,
+                    'drag',
+                  )
+                },
+              )
+            } else {
+              const message =
+                'Failed to add track.\nThe configuration of this file is not currently supported. Ensure that you have enabled the "File UUID" column on the GDC explore page table before exporting.'
+              console.error(message)
+              setDragErrorMessage(message)
+            }
           } else {
             // BAM files are a special case w drag and drop that require forcing the user to upload a bai file
             if (/\.bam$/i.test(file.name)) {
@@ -508,18 +515,39 @@ const Panel = ({ model }: { model: any }) => {
         <Typography variant="h6" component="h1" align="center">
           Drag and Drop Local GDC Files
         </Typography>
-        <div {...getRootProps({ className: classes.dropZone })}>
-          <input {...getInputProps()} />
-          <CloudUploadIcon className={classes.uploadIcon} fontSize="large" />
-          <Typography color="textSecondary" align="center" variant="body1">
-            Drag and drop files here
-          </Typography>
-          <Typography color="textSecondary" align="center" variant="body2">
-            or
-          </Typography>
-          <Button color="primary" variant="contained">
-            Browse Files
-          </Button>
+        <div className={classes.dragAndDropContainer}>
+          <div {...getRootProps({ className: classes.dropZone })}>
+            <input {...getInputProps()} />
+            <CloudUploadIcon className={classes.uploadIcon} fontSize="large" />
+            <Typography color="textSecondary" align="center" variant="body1">
+              Drag and drop files here
+            </Typography>
+            <Typography color="textSecondary" align="center" variant="body2">
+              or
+            </Typography>
+            <Button color="primary" variant="contained">
+              Browse Files
+            </Button>
+          </div>
+          <div className={classes.tipContainer}>
+            <Paper className={classes.tipPaper} elevation={0}>
+              <div className={classes.tipMessageContainer}>
+                <InfoIcon />
+                <Typography color="textSecondary" variant="caption">
+                  You can bulk import files from the GDC Repository using the
+                  JSON export button.
+                </Typography>
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    session.setDialogComponent(TipDialogue)
+                  }}
+                >
+                  <b>Learn More</b>
+                </Button>
+              </div>
+            </Paper>
+          </div>
         </div>
         {dragSuccess ? (
           <div className={classes.alertContainer}>
@@ -633,8 +661,8 @@ const Panel = ({ model }: { model: any }) => {
             Quick-add a GDC Explore Track
           </Typography>
           <Typography variant="body1" align="center">
-            Add additional 'Explore' tracks to your current view by clicking
-            this button.
+            Add additional Explore tracks to your current view by clicking this
+            button.
           </Typography>
           {exploreSuccess ? (
             <div className={classes.alertContainer}>
