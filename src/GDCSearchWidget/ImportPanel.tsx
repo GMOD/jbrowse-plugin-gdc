@@ -22,6 +22,7 @@ import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
+const MAX_FILES = 25
 
 //@ts-ignore
 function styledBy(property, mapping) {
@@ -161,6 +162,20 @@ const Panel = ({ model }: { model: any }) => {
   const session = getSession(model)
   const inputRef = useRef()
 
+  async function addBEDPEView(uri: string, fileUUID: string) {
+    session.addView('SpreadsheetView', {})
+    const xView = session.views.length - 1
+    // @ts-ignore
+    session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
+    // @ts-ignore
+    session.views[xView].importWizard.setFileSource({ uri })
+    // @ts-ignore
+    session.views[xView].importWizard.setFileType('BEDPE')
+    // @ts-ignore
+    session.views[xView].importWizard.setSelectedAssemblyName('hg38')
+    // @ts-ignore
+    await session.views[xView].importWizard.import('hg38')
+  }
   /**
    * uses the provided configuration to add the track to the session and then displays it
    * displays an error message if typeAdapterObject is null
@@ -229,7 +244,7 @@ const Panel = ({ model }: { model: any }) => {
     for (const e of fileNameArray) {
       switch (e) {
         case 'seg':
-          type = 'seg-Copy Number Variation'
+          type = 'txt-Copy Number Variation'
           break
         case 'vcf':
           type = 'vcf-Simple Nucleotide Variation'
@@ -318,7 +333,7 @@ const Panel = ({ model }: { model: any }) => {
             // key properties dictate how a file should be processed and displayed, i.e. the file_id
             if (propertyArray.includes('file_id')) {
               //@ts-ignore
-              const ele = res.slice(0, 25) //TODO: it only gets the first 25 files
+              const ele = res.slice(0, MAX_FILES) //TODO: it only gets the first 25 files
               ele.map(
                 (file: {
                   file_id: string
@@ -469,34 +484,38 @@ const Panel = ({ model }: { model: any }) => {
           'Failed to add track.\nUUID or URL must be provided.',
         )
       } else {
-        // if (query.includes('files/')) {
-        //   query = query.split('/')[4]
-        // }
-        // const response = await fetchFileInfo(query)
-        // if (
-        //   response.data.access == 'controlled' &&
-        //   !window.sessionStorage.getItem('GDCToken')
-        // ) {
-        //   setAuthErrorMessage(
-        //     'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
-        //   )
-        //   setTrackErrorMessage(
-        //     'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
-        //   )
-        // } else {
-        //   const category = `${response.data.data_format.toLowerCase()}-${
-        //     response.data.data_category
-        //   }`
-        //   // BAM files require an index file, if the response contains index_files, then we want to utilize it
-        //   const indexFileId = response.data.index_files
-        //     ? response.data.index_files[0].file_id
-        //     : undefined
-        //   const uri = `http://localhost:8010/proxy/data/${query}`
-        //   const trackId = `${response.data.file_id}`
-        //   const trackName = `${response.data.file_name}`
-        //   const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
-        //   addAndShowTrack(typeAdapterObject, trackId, trackName)
-        // }
+        if (query.includes('files/')) {
+          query = query.split('/')[4]
+        }
+        const response = await fetchFileInfo(query)
+        if (
+          response.data.access == 'controlled' &&
+          !window.sessionStorage.getItem('GDCToken')
+        ) {
+          setAuthErrorMessage(
+            'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
+          )
+          setTrackErrorMessage(
+            'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
+          )
+        } else {
+          const category = `${response.data.data_format.toLowerCase()}-${
+            response.data.data_category
+          }`
+          // BAM files require an index file, if the response contains index_files, then we want to utilize it
+          const indexFileId = response.data.index_files
+            ? response.data.index_files[0].file_id
+            : undefined
+          const uri = `http://localhost:8010/proxy/data/${query}`
+          const trackId = `${response.data.file_id}`
+          const trackName = `${response.data.file_name}`
+          if (category !== 'bedpe-Structural Variation') {
+            const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
+            addAndShowTrack(typeAdapterObject, trackId, trackName)
+          } else {
+            await addBEDPEView(uri, response.data.file_id)
+          }
+        }
       }
     } catch (e) {
       console.error(e)
