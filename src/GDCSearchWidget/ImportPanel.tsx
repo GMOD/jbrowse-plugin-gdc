@@ -168,7 +168,10 @@ const Panel = ({ model }: { model: any }) => {
     // @ts-ignore
     session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
     // @ts-ignore
-    session.views[xView].importWizard.setFileSource({ uri })
+    session.views[xView].importWizard.setFileSource({
+      uri,
+      locationType: 'UriLocation',
+    })
     // @ts-ignore
     session.views[xView].importWizard.setFileType('BEDPE')
     // @ts-ignore
@@ -559,7 +562,15 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    session.setDialogComponent(TipDialogue)
+                    // @ts-ignore
+                    session.queueDialog((doneCallback: Function) => [
+                      TipDialogue,
+                      {
+                        handleClose: () => {
+                          doneCallback()
+                        },
+                      },
+                    ])
                   }}
                 >
                   <b>Learn More</b>
@@ -624,10 +635,17 @@ const Panel = ({ model }: { model: any }) => {
               size="small"
               startIcon={<ExitToApp />}
               onClick={() => {
-                session.setDialogComponent(LoginDialogue, {
-                  setTokenStored,
-                  setAuthErrorMessage,
-                })
+                // @ts-ignore
+                session.queueDialog((doneCallback: Function) => [
+                  LoginDialogue,
+                  {
+                    setTokenStored,
+                    setAuthErrorMessage,
+                    handleClose: () => {
+                      doneCallback()
+                    },
+                  },
+                ])
               }}
             >
               Login
