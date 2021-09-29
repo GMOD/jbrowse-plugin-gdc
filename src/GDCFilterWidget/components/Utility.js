@@ -101,7 +101,7 @@ export const geneFacets = [
   {
     name: 'is_cancer_gene_census',
     prettyName: 'is cancer gene census',
-    values: ['1'],
+    values: ['true'],
   },
 ]
 export const caseFacets = [

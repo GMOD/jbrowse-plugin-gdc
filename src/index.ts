@@ -509,5 +509,12 @@ export default class GDCPlugin extends Plugin {
         return `rgb(0,${percentage},0)`
       },
     )
+
+    pluginManager.jexl.addFunction(
+      'cancer',
+      (feature: any, attributeName: string) => {
+        return feature.get(attributeName) ? 'red' : 'blue'
+      },
+    )
   }
 }
