@@ -43,11 +43,14 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    gap: theme.spacing(2),
     padding: theme.spacing(2),
     margin: `0px 0px ${theme.spacing(1)}px 0px`,
   },
   dragAndDropContainer: {
-    margin: theme.spacing(2),
+    margin: `${theme.spacing(2)}px ${theme.spacing(2)}px 0px ${theme.spacing(
+      2,
+    )}px`,
   },
   dropZone: {
     textAlign: 'center',
@@ -104,10 +107,6 @@ const useStyles = makeStyles(theme => ({
   addTrackButtonContainer: {
     display: 'flex',
     justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
-  alertContainer: {
-    padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`,
   },
   loginPromptContainer: {
     display: 'flex',
@@ -155,6 +154,7 @@ const Panel = ({ model }: { model: any }) => {
   const [exploreSuccess, setExploreSuccess] = useState(false)
   const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
+  const [trackInfoMessage, setTrackInfoMessage] = useState<String>()
   const [authErrorMessage, setAuthErrorMessage] = useState<String>()
   const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
   const [fileChip, setFileChip] = useState<String>()
@@ -162,16 +162,32 @@ const Panel = ({ model }: { model: any }) => {
   const session = getSession(model)
   const inputRef = useRef()
 
-  async function addBEDPEView(uri: string, fileUUID: string) {
+  /**
+   * uses information about the BEDPE file to display the contents in a spreadsheet view
+   * @param uri optional the uri of the BEDPE file being added to be passed to the track
+   * @param fileUUID the UUID of the file being added for the title of the view
+   * @param fileBlob optional the file being populated from the local machine
+   */
+  async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
     session.addView('SpreadsheetView', {})
     const xView = session.views.length - 1
     // @ts-ignore
     session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
-    // @ts-ignore
-    session.views[xView].importWizard.setFileSource({
-      uri,
-      locationType: 'UriLocation',
-    })
+    if (uri) {
+      // @ts-ignore
+      session.views[xView].importWizard.setFileSource({
+        uri,
+        locationType: 'UriLocation',
+        authHeader: 'X-Auth-Token',
+        internetAccountId: 'GDCExternalToken',
+      })
+    }
+    if (fileBlob) {
+      // @ts-ignore
+      session.views[xView].importWizard.setFileSource(
+        storeBlobLocation({ blob: fileBlob }),
+      )
+    }
     // @ts-ignore
     session.views[xView].importWizard.setFileType('BEDPE')
     // @ts-ignore
@@ -179,6 +195,7 @@ const Panel = ({ model }: { model: any }) => {
     // @ts-ignore
     await session.views[xView].importWizard.import('hg38')
   }
+
   /**
    * uses the provided configuration to add the track to the session and then displays it
    * displays an error message if typeAdapterObject is null
@@ -261,6 +278,9 @@ const Panel = ({ model }: { model: any }) => {
         case 'json':
           type = 'json'
           break
+        case 'bedpe':
+          type = 'bedpe'
+          break
         default:
           break
       }
@@ -271,6 +291,7 @@ const Panel = ({ model }: { model: any }) => {
 
   function resetErrorMessages() {
     setTrackErrorMessage(undefined)
+    setTrackInfoMessage(undefined)
     setAuthErrorMessage(undefined)
     setDragErrorMessage(undefined)
     setUploadInfoMessage(undefined)
@@ -278,6 +299,7 @@ const Panel = ({ model }: { model: any }) => {
     setDragSuccess(false)
     setExploreSuccess(false)
   }
+
   const handleDelete = () => {
     model.setTrackData(undefined)
     model.setIndexTrackData(undefined)
@@ -361,6 +383,9 @@ const Panel = ({ model }: { model: any }) => {
               console.error(message)
               setDragErrorMessage(message)
             }
+          } else if (type === 'bedpe') {
+            await addBEDPEView(file.name, undefined, file)
+            setDragSuccess(true)
           } else {
             // BAM files are a special case w drag and drop that require forcing the user to upload a bai file
             if (/\.bam$/i.test(file.name)) {
@@ -434,43 +459,42 @@ const Panel = ({ model }: { model: any }) => {
   })
 
   function processExplorationURI(uri: string, source?: string) {
-    if (!uri.includes('facetTab')) {
-      setTrackErrorMessage(
-        "Failed to add track.\nExploration URI's must contain a facet, please narrow your search through the GDC portal, or add quick-add an Explore Track below and filter using the track menu.",
-      )
+    let featureType = uri.split('facetTab=')[1]
+    if (featureType !== undefined) {
+      featureType = featureType.split('&filters=')[0].slice(0, -1)
     }
-    const featureType = uri
-      .split('facetTab=')[1]
-      .split('&filters=')[0]
-      .slice(0, -1)
-    if (featureType != 'case') {
-      let filters = decodeURIComponent(
-        uri
-          .split('&facetTab=')[0]
-          .split('/')[3]
-          .split('filters=')[1],
+    if (
+      featureType === 'case' ||
+      featureType === 'clinica' ||
+      featureType === undefined
+    ) {
+      setTrackInfoMessage(
+        'Configurations to "Cases" and "Clinical" are not currently supported. The requested Explore Track will default to displaying Mutations with your applied filters.',
       )
-
-      if (filters == 'undefined') {
-        filters = '{}'
-      }
-
-      const datenow = Date.now()
-      const trackId = `gdc_plugin_track-${datenow}`
-      const trackName = `GDC Explore session-${datenow}`
-      const typeAdapterObject = mapGDCExploreConfig(
-        'GDC Explore',
-        featureType,
-        filters,
-        trackId,
-      )
-
-      addAndShowTrack(typeAdapterObject, trackId, trackName, source)
-    } else {
-      setTrackErrorMessage(
-        'Failed to add track.\nConfiguration to "cases" is not currently supported.',
-      )
+      featureType = 'mutation'
     }
+    let filters = decodeURIComponent(
+      uri
+        .split('&facetTab=')[0]
+        .split('/')[3]
+        .split('filters=')[1],
+    )
+
+    if (filters == 'undefined') {
+      filters = '{}'
+    }
+
+    const datenow = Date.now()
+    const trackId = `gdc_plugin_track-${datenow}`
+    const trackName = `GDC Explore session-${datenow}`
+    const typeAdapterObject = mapGDCExploreConfig(
+      'GDC Explore',
+      featureType,
+      filters,
+      trackId,
+    )
+
+    addAndShowTrack(typeAdapterObject, trackId, trackName, source)
   }
 
   const handleSubmit = async () => {
@@ -516,17 +540,23 @@ const Panel = ({ model }: { model: any }) => {
             const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
             addAndShowTrack(typeAdapterObject, trackId, trackName)
           } else {
-            await addBEDPEView(uri, response.data.file_id)
+            await addBEDPEView(response.data.file_id, uri)
+            setSuccess(true)
           }
         }
       }
     } catch (e) {
-      console.error(e)
-      const message =
-        // @ts-ignore
-        e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-      setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+      // @ts-ignore
+      if (!e.message.includes('unable to determine size of file at')) {
+        console.error(e)
+        const message =
+          // @ts-ignore
+          e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
+        setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+      }
     }
+    // @ts-ignore
+    inputRef.current.value = null
   }
 
   const classes = useStyles({ isDragActive })
@@ -580,47 +610,35 @@ const Panel = ({ model }: { model: any }) => {
           </div>
         </div>
         {dragSuccess ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="success">
-              The requested track(s) from the file have been added.
-            </Alert>
-          </div>
+          <Alert severity="success">
+            The requested track(s) from the file have been added.
+          </Alert>
         ) : null}
         {dragErrorMessage ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="error">{dragErrorMessage}</Alert>
-          </div>
+          <Alert severity="error">{dragErrorMessage}</Alert>
         ) : null}
         {fileChip ? (
-          <div>
-            <Chip
-              label={fileChip}
-              avatar={<InsertDriveFile />}
-              onDelete={handleDelete}
-            />
-          </div>
+          <Chip
+            label={fileChip}
+            avatar={<InsertDriveFile />}
+            onDelete={handleDelete}
+          />
         ) : null}
         {uploadInfoMessage ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="info">{uploadInfoMessage}</Alert>
-          </div>
+          <Alert severity="info">{uploadInfoMessage}</Alert>
         ) : null}
       </Paper>
       <Paper className={classes.paper}>
         {tokenStored ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="success">
-              Your token has been stored.
-              <br />
-              Verification of your token will be performed when you attempt to
-              access controlled data.
-            </Alert>
-          </div>
+          <Alert severity="success">
+            Your token has been stored.
+            <br />
+            Verification of your token will be performed when you attempt to
+            access controlled data.
+          </Alert>
         ) : null}
         {authErrorMessage ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="error">{authErrorMessage}</Alert>
-          </div>
+          <Alert severity="error">{authErrorMessage}</Alert>
         ) : null}
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
@@ -661,19 +679,16 @@ const Panel = ({ model }: { model: any }) => {
           Add a track by providing the UUID or URL of a file, including
           controlled data, or by providing the URL of an Exploration session.
         </Typography>
+        {trackErrorMessage ? (
+          <Alert severity="error">{trackErrorMessage}</Alert>
+        ) : null}
+        {trackInfoMessage ? (
+          <Alert severity="info">{trackInfoMessage}</Alert>
+        ) : null}
+        {success ? (
+          <Alert severity="success">The requested track has been added.</Alert>
+        ) : null}
         <div className={classes.submitContainer}>
-          {trackErrorMessage ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="error">{trackErrorMessage}</Alert>
-            </div>
-          ) : null}
-          {success ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="success">
-                The requested track has been added.
-              </Alert>
-            </div>
-          ) : null}
           <TextField
             color="primary"
             variant="outlined"
@@ -701,29 +716,27 @@ const Panel = ({ model }: { model: any }) => {
             Add additional Explore tracks to your current view by clicking this
             button.
           </Typography>
-          {exploreSuccess ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="success">
-                The requested Explore track has been added.
-              </Alert>
-            </div>
-          ) : null}
-          <div className={classes.addTrackButtonContainer}>
-            <Button
-              color="primary"
-              variant="contained"
-              size="large"
-              startIcon={<AddIcon />}
-              onClick={() => {
-                processExplorationURI(
-                  'https://portal.gdc.cancer.gov/exploration?facetTab=mutations',
-                  'explore',
-                )
-              }}
-            >
-              Add New GDC Explore Track
-            </Button>
-          </div>
+        </div>
+        {exploreSuccess ? (
+          <Alert severity="success">
+            The requested Explore track has been added.
+          </Alert>
+        ) : null}
+        <div className={classes.addTrackButtonContainer}>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              processExplorationURI(
+                'https://portal.gdc.cancer.gov/exploration?facetTab=mutations',
+                'explore',
+              )
+            }}
+          >
+            Add New GDC Explore Track
+          </Button>
         </div>
       </Paper>
     </div>

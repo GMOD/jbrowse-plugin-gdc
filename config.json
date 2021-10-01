@@ -128,7 +128,7 @@
         "id": "MiDMyyWpp",
         "type": "LinearGenomeView",
         "width": 800,
-        "displayName": "GDC demo",
+        "displayName": "GDC",
         "trackSelectorType": "hierarchical",
         "offsetPx": 12490000,
         "bpPerPx": 10,
@@ -174,7 +174,7 @@
       "internetAccountId": "GDCExternalToken",
       "name": "GDC",
       "description": "GDC External Token",
-      "validDomains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
+      "domains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
       "authHeader": "X-Auth-Token",
       "origin": "GDC",
       "customEndpoint": "http://localhost:8010/proxy"
