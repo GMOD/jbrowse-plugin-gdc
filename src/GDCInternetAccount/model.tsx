@@ -1,71 +1,14 @@
-import { ConfigurationReference } from '@jbrowse/core/configuration'
+import { ConfigurationReference, getConf } from '@jbrowse/core/configuration'
 import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
-import PluginManager from '@jbrowse/core/PluginManager'
 import { UriLocation } from '@jbrowse/core/util/types'
 import { GDCInternetAccountConfigModel } from './configSchema'
 import { Instance, types, getParent } from 'mobx-state-tree'
-import React, { useState } from 'react'
 import { RemoteFile } from 'generic-filehandle'
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-  Typography,
-  makeStyles,
-} from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
-
-const useStyles = makeStyles(theme => ({
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-  root: {
-    margin: theme.spacing(1),
-  },
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: theme.spacing(2),
-  },
-  imgContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  img: {
-    width: 100,
-    maxWidth: '100%',
-    maxHeight: '100%',
-    verticalAlign: 'middle',
-  },
-  helperTextContainer: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-  submitTokenContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  alertContainer: {
-    paddingBottom: theme.spacing(2),
-  },
-}))
+import LoginDialogue from './LoginDialogue'
 
 const inWebWorker = typeof sessionStorage === 'undefined'
 
-const stateModelFactory = (
-  pluginManager: PluginManager,
-  configSchema: GDCInternetAccountConfigModel,
-) => {
+const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
   return types
     .compose(
       'GDCInternetAccount',
@@ -80,8 +23,11 @@ const stateModelFactory = (
       needsToken: false,
     }))
     .views(self => ({
+      get authHeader(): string {
+        return getConf(self, 'authHeader') || 'Authorization'
+      },
       get internetAccountType() {
-        return 'GDCTokenInternetAccount'
+        return 'GDCInternetAccount'
       },
       handlesLocation(location: UriLocation): boolean {
         // this will probably look at something in the config which indicates that it is an OAuth pathway,
@@ -91,13 +37,14 @@ const stateModelFactory = (
           location?.uri.includes(domain),
         )
       },
-      get generateAuthInfo() {
+      generateAuthInfo() {
         return {
           internetAccountType: this.internetAccountType,
           authInfo: {
-            authHeader: self.authHeader,
+            authHeader: this.authHeader,
             tokenType: '',
             configuration: self.accountConfig,
+            token: '',
           },
         }
       },
@@ -148,7 +95,7 @@ const stateModelFactory = (
                 if (self.needsToken) {
                   const { session } = getParent(self, 2)
                   session.queueDialog((doneCallback: Function) => [
-                    GDCTokenEntryForm,
+                    LoginDialogue,
                     {
                       internetAccountId: self.internetAccountId,
                       handleClose: (token: string) => {
@@ -165,7 +112,8 @@ const stateModelFactory = (
             token = await openLocationPromise
           }
 
-          if (!preAuthInfo.authInfo.token) {
+          if (!preAuthInfo?.authInfo?.token) {
+            preAuthInfo = self.generateAuthInfo()
             preAuthInfo.authInfo.token = token
           }
           resolve()
@@ -213,7 +161,7 @@ const stateModelFactory = (
         },
         openLocation(location: UriLocation) {
           preAuthInfo =
-            location.internetAccountPreAuthorization || self.generateAuthInfo
+            location.internetAccountPreAuthorization || self.generateAuthInfo()
           return new RemoteFile(String(location.uri), {
             fetch: this.getFetcher,
           })
@@ -269,78 +217,6 @@ const stateModelFactory = (
         },
       }
     })
-}
-
-const GDCTokenEntryForm = ({
-  handleClose,
-}: {
-  handleClose: (arg?: string) => void
-}) => {
-  const [token, setToken] = useState('')
-  const classes = useStyles()
-
-  return (
-    <>
-      <Dialog open onClose={() => handleClose()} maxWidth="sm">
-        <DialogTitle>
-          Login to access controlled GDC data
-          <IconButton
-            className={classes.closeButton}
-            onClick={() => handleClose()}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <div className={classes.root}>
-            <div className={classes.paper}>
-              <div className={classes.imgContainer}>
-                <img
-                  className={classes.img}
-                  src="https://me-pedia.org/images/2/2b/NIH_logo.png"
-                ></img>
-              </div>
-              <div className={classes.helperTextContainer}>
-                <Typography variant="h6" component="h1" align="center">
-                  Login to access controlled data
-                </Typography>
-                <Typography variant="body1" align="center">
-                  An authentication token is required to access controlled data.
-                </Typography>
-                <Typography variant="body2" align="center">
-                  You will need to provide your authentication token every time
-                  you start a new session, as the token is deleted when the
-                  session expires.
-                </Typography>
-              </div>
-              <div className={classes.submitTokenContainer}>
-                <TextField
-                  color="primary"
-                  variant="outlined"
-                  label="Enter token"
-                  onChange={event => {
-                    setToken(event.target.value)
-                  }}
-                />
-                <div className={classes.buttonContainer}>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    size="large"
-                    onClick={() => {
-                      handleClose(token)
-                    }}
-                  >
-                    Login
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  )
 }
 
 export default stateModelFactory

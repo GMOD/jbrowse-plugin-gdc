@@ -9,6 +9,7 @@ import IeqFeature from './IeqFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
+import PluginManager from '@jbrowse/core/PluginManager'
 
 /**
  * Isoform Expression Quantification Adapter
@@ -20,8 +21,12 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
 
   private setupP?: Promise<Feature[]>
 
-  public constructor(config: AnyConfigurationModel) {
-    super(config)
+  public constructor(
+    config: AnyConfigurationModel,
+    pluginManager: PluginManager,
+  ) {
+    // @ts-ignore
+    super(config, pluginManager)
     this.config = config
   }
 
@@ -30,9 +35,11 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
       this.config,
       'ieqLocation',
     ) as FileLocation
-    const fileContents = (await openLocation(ieqLocation).readFile(
-      'utf8',
-    )) as string
+    const fileContents = (await openLocation(
+      ieqLocation,
+      // @ts-ignore
+      this.pluginManager,
+    ).readFile('utf8')) as string
 
     const lines = fileContents.split('\n')
     const rows: string[] = []

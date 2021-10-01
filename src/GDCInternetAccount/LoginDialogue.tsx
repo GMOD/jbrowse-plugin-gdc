@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
@@ -58,25 +58,21 @@ export default function LoginDialogue({
   setAuthErrorMessage,
   handleClose,
 }: {
-  setTokenStored: any
-  setAuthErrorMessage: any
-  handleClose: () => void
+  setTokenStored?: any
+  setAuthErrorMessage?: any
+  handleClose: (arg?: string) => void
 }) {
-  const inputRef = useRef()
+  const [token, setToken] = useState('')
   const classes = useStyles()
 
-  const handleLogin = () => {
-    //@ts-ignore
-    const token = inputRef ? inputRef.current.value : ''
-    window.sessionStorage.setItem('GDCToken', token)
-
-    setAuthErrorMessage(false)
-    setTokenStored(true)
-    handleClose()
-  }
+  // const handleLogin = () => {
+  //   setAuthErrorMessage(false)
+  //   setTokenStored(true)
+  //   handleClose()
+  // }
 
   return (
-    <Dialog open onClose={handleClose} maxWidth="sm">
+    <Dialog open onClose={() => handleClose()} maxWidth="sm">
       <DialogTitle>
         Login to access controlled GDC data
         <IconButton
@@ -113,14 +109,18 @@ export default function LoginDialogue({
                 color="primary"
                 variant="outlined"
                 label="Enter token"
-                inputRef={inputRef}
+                onChange={event => {
+                  setToken(event.target.value)
+                }}
               />
               <div className={classes.buttonContainer}>
                 <Button
                   color="primary"
                   variant="contained"
                   size="large"
-                  onClick={handleLogin}
+                  onClick={() => {
+                    handleClose(token)
+                  }}
                 >
                   Login
                 </Button>

@@ -46,6 +46,16 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
+    'tsv-Transcriptome Profiling',
+    {
+      config: {
+        type: 'IEQTrack',
+        adapter: { type: 'IeqAdapter' },
+      },
+      prefix: 'ieq',
+    },
+  ],
+  [
     'GDC Explore',
     {
       config: { type: 'GDCTrack', adapter: { type: 'GDCAdapter' } },
@@ -73,7 +83,7 @@ export function mapDataInfo(
   fileBlob?: any,
 ) {
   const configObject = mapToAdapter.get(category)
-  let token = window.sessionStorage.getItem('GDCToken')
+  let token = window.sessionStorage.getItem('GDCExternalToken-token')
 
   if (!token) token = ''
 
@@ -97,7 +107,8 @@ export function mapDataInfo(
       configObject.config.adapter[`${configObject.prefix}Location`] = {
         uri: uri,
         authHeader: 'X-Auth-Token',
-        authToken: `${token}`,
+        locationType: 'UriLocation',
+        internetAccountId: 'GDCExternalToken',
       }
       if (indexFileId) {
         //@ts-ignore
@@ -105,7 +116,8 @@ export function mapDataInfo(
           location: {
             uri: `http://localhost:8010/proxy/data/${indexFileId}`,
             authHeader: 'X-Auth-Token',
-            authToken: `${token}`,
+            locationType: 'UriLocation',
+            internetAccountId: 'GDCExternalToken',
           },
         }
       }

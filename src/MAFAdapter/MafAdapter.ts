@@ -10,6 +10,7 @@ import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import { unzip } from '@gmod/bgzf-filehandle'
+import PluginManager from '@jbrowse/core/PluginManager'
 
 export default class MafAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
@@ -18,8 +19,12 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
 
   private setupP?: Promise<Feature[]>
 
-  public constructor(config: AnyConfigurationModel) {
-    super(config)
+  public constructor(
+    config: AnyConfigurationModel,
+    pluginManager: PluginManager,
+  ) {
+    // @ts-ignore
+    super(config, pluginManager)
     this.config = config
   }
 
@@ -70,7 +75,11 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       'mafLocation',
     ) as FileLocation
 
-    let fileContents = await openLocation(mafLocation).readFile()
+    let fileContents = await openLocation(
+      mafLocation,
+      // @ts-ignore
+      this.pluginManager,
+    ).readFile()
 
     if (
       typeof fileContents[0] === 'number' &&

@@ -517,7 +517,7 @@ const Panel = ({ model }: { model: any }) => {
         const response = await fetchFileInfo(query)
         if (
           response.data.access == 'controlled' &&
-          !window.sessionStorage.getItem('GDCToken')
+          !window.sessionStorage.getItem('GDCExternalToken-token')
         ) {
           setAuthErrorMessage(
             'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',

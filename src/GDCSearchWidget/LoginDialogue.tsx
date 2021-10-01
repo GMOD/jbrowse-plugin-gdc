@@ -68,7 +68,7 @@ export default function LoginDialogue({
   const handleLogin = () => {
     //@ts-ignore
     const token = inputRef ? inputRef.current.value : ''
-    window.sessionStorage.setItem('GDCToken', token)
+    window.sessionStorage.setItem('GDCExternalToken-token', token)
 
     setAuthErrorMessage(false)
     setTokenStored(true)

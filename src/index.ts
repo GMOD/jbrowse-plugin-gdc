@@ -7,7 +7,7 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
-import { FileLocation } from '@jbrowse/core/util/types'
+// import { FileLocation } from '@jbrowse/core/util/types'
 // import {
 //   AdapterGuesser,
 //   getFileName,
@@ -25,10 +25,6 @@ import LinearMAFDisplay from './LinearMAFDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
-import {
-  configSchema as GDCJSONConfigSchema,
-  AdapterClass as GDCJSONAdapter,
-} from './GDCJSONAdapter'
 import {
   configSchema as segmentCnvConfigSchema,
   AdapterClass as SegmentCNVAdapter,
@@ -91,19 +87,10 @@ export default class GDCPlugin extends Plugin {
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
-          name: 'GDCJSONAdapter',
-          configSchema: GDCJSONConfigSchema,
-          // excludeFromTrackSelector: true,
-          AdapterClass: GDCJSONAdapter,
-        }),
-    )
-
-    pluginManager.addAdapterType(
-      () =>
-        new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
           // adapterCategoryHeader,
+          // @ts-ignore
           AdapterClass: MafAdapter,
         }),
     )
@@ -168,6 +155,7 @@ export default class GDCPlugin extends Plugin {
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
           // adapterCategoryHeader,
+          // @ts-ignore
           AdapterClass: IeqAdapter,
         }),
     )
