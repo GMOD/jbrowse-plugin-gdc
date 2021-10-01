@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { FileLocation, getSession } from '@jbrowse/core/util'
+import {
+  FileLocation,
+  getSession,
+  useDebouncedCallback,
+} from '@jbrowse/core/util'
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 import {
   Paper,
@@ -274,6 +278,9 @@ const Panel = ({ model }: { model: any }) => {
           break
         case 'txt':
           type = 'txt-Transcriptome Profiling'
+          break
+        case 'tsv':
+          type = 'tsv-Transcriptome Profiling'
           break
         case 'json':
           type = 'json'
@@ -592,15 +599,16 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
+                    session.setDialogComponent(TipDialogue)
                     // @ts-ignore
-                    session.queueDialog((doneCallback: Function) => [
-                      TipDialogue,
-                      {
-                        handleClose: () => {
-                          doneCallback()
-                        },
-                      },
-                    ])
+                    // session.queueDialog((doneCallback: Function) => [
+                    //   TipDialogue,
+                    //   {
+                    //     handleClose: () => {
+                    //       doneCallback()
+                    //     },
+                    //   },
+                    // ])
                   }}
                 >
                   <b>Learn More</b>
@@ -640,6 +648,9 @@ const Panel = ({ model }: { model: any }) => {
         {authErrorMessage ? (
           <Alert severity="error">{authErrorMessage}</Alert>
         ) : null}
+        <Alert severity="info">
+          Controlled resources are not currently available.
+        </Alert>
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
             <Typography variant="body1">
@@ -651,19 +662,20 @@ const Panel = ({ model }: { model: any }) => {
               color="primary"
               variant="contained"
               size="small"
+              disabled
               startIcon={<ExitToApp />}
               onClick={() => {
                 // @ts-ignore
-                session.queueDialog((doneCallback: Function) => [
-                  LoginDialogue,
-                  {
-                    setTokenStored,
-                    setAuthErrorMessage,
-                    handleClose: () => {
-                      doneCallback()
-                    },
-                  },
-                ])
+                // session.queueDialog((doneCallback: Function) => [
+                //   LoginDialogue,
+                //   {
+                //     setTokenStored,
+                //     setAuthErrorMessage,
+                //     handleClose: () => {
+                //       doneCallback()
+                //     },
+                //   },
+                // ])
               }}
             >
               Login
