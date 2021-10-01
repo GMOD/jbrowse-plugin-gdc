@@ -1,21 +1,32 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react'
-import { getSession } from '@jbrowse/core/util'
+import {
+  FileLocation,
+  getSession,
+  useDebouncedCallback,
+} from '@jbrowse/core/util'
+import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 import {
   Paper,
   Button,
   Typography,
   TextField,
+  Chip,
   makeStyles,
 } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import ExitToApp from '@material-ui/icons/ExitToApp'
+import AddIcon from '@material-ui/icons/Add'
+import InfoIcon from '@material-ui/icons/Info'
 import LoginDialogue from './LoginDialogue'
+import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
+const MAX_FILES = 25
 
 //@ts-ignore
 function styledBy(property, mapping) {
@@ -36,15 +47,20 @@ const useStyles = makeStyles(theme => ({
   paper: {
     display: 'flex',
     flexDirection: 'column',
+    gap: theme.spacing(2),
     padding: theme.spacing(2),
     margin: `0px 0px ${theme.spacing(1)}px 0px`,
   },
+  dragAndDropContainer: {
+    margin: `${theme.spacing(2)}px ${theme.spacing(2)}px 0px ${theme.spacing(
+      2,
+    )}px`,
+  },
   dropZone: {
     textAlign: 'center',
-    margin: theme.spacing(2),
-    padding: theme.spacing(2),
     borderWidth: 2,
     borderRadius: 2,
+    padding: theme.spacing(2),
     // borderColor: styledBy('isDragActive', {
     //   true: theme.palette.secondary.light,
     //   false: theme.palette.divider,
@@ -92,8 +108,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'flex-end',
   },
-  alertContainer: {
-    padding: `${theme.spacing(2)}px 0px ${theme.spacing(2)}px 0px`,
+  addTrackButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   loginPromptContainer: {
     display: 'flex',
@@ -102,6 +119,21 @@ const useStyles = makeStyles(theme => ({
   },
   typoContainer: {
     width: '100%',
+  },
+  tipContainer: {
+    display: 'flex',
+    paddingTop: theme.spacing(2),
+  },
+  tipPaper: {
+    display: 'flex',
+    background: theme.palette.grey[100],
+  },
+  tipMessageContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    padding: theme.spacing(2),
+    gap: theme.spacing(2),
+    alignItems: 'center',
   },
 }))
 
@@ -123,12 +155,50 @@ const Panel = ({ model }: { model: any }) => {
   const [dragErrorMessage, setDragErrorMessage] = useState<String>()
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
+  const [exploreSuccess, setExploreSuccess] = useState(false)
   const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
+  const [trackInfoMessage, setTrackInfoMessage] = useState<String>()
   const [authErrorMessage, setAuthErrorMessage] = useState<String>()
+  const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
+  const [fileChip, setFileChip] = useState<String>()
 
   const session = getSession(model)
   const inputRef = useRef()
+
+  /**
+   * uses information about the BEDPE file to display the contents in a spreadsheet view
+   * @param uri optional the uri of the BEDPE file being added to be passed to the track
+   * @param fileUUID the UUID of the file being added for the title of the view
+   * @param fileBlob optional the file being populated from the local machine
+   */
+  async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
+    session.addView('SpreadsheetView', {})
+    const xView = session.views.length - 1
+    // @ts-ignore
+    session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
+    if (uri) {
+      // @ts-ignore
+      session.views[xView].importWizard.setFileSource({
+        uri,
+        locationType: 'UriLocation',
+        authHeader: 'X-Auth-Token',
+        internetAccountId: 'GDCExternalToken',
+      })
+    }
+    if (fileBlob) {
+      // @ts-ignore
+      session.views[xView].importWizard.setFileSource(
+        storeBlobLocation({ blob: fileBlob }),
+      )
+    }
+    // @ts-ignore
+    session.views[xView].importWizard.setFileType('BEDPE')
+    // @ts-ignore
+    session.views[xView].importWizard.setSelectedAssemblyName('hg38')
+    // @ts-ignore
+    await session.views[xView].importWizard.import('hg38')
+  }
 
   /**
    * uses the provided configuration to add the track to the session and then displays it
@@ -141,14 +211,12 @@ const Panel = ({ model }: { model: any }) => {
     typeAdapterObject: any,
     trackId: string,
     name: string,
-    isFile?: boolean,
+    paper?: string,
   ) {
     if (typeAdapterObject) {
       let conf = {
         ...typeAdapterObject.config,
-        type: 'FeatureTrack',
         trackId,
-        //@ts-ignore
         name,
         assemblyNames: ['hg38'],
       }
@@ -166,13 +234,15 @@ const Panel = ({ model }: { model: any }) => {
           rendererTypeNameState: 'density',
         },
       )
-      if (isFile) {
+      if (paper === 'drag') {
         setDragSuccess(true)
+      } else if (paper === 'explore') {
+        setExploreSuccess(true)
       } else {
         setSuccess(true)
       }
     } else {
-      if (isFile) {
+      if (paper === 'drag') {
         setDragErrorMessage(
           'Failed to add track.\nThe configuration of this file is not currently supported.',
         )
@@ -198,7 +268,7 @@ const Panel = ({ model }: { model: any }) => {
     for (const e of fileNameArray) {
       switch (e) {
         case 'seg':
-          type = 'seg-Copy Number Variation'
+          type = 'txt-Copy Number Variation'
           break
         case 'vcf':
           type = 'vcf-Simple Nucleotide Variation'
@@ -209,8 +279,14 @@ const Panel = ({ model }: { model: any }) => {
         case 'txt':
           type = 'txt-Transcriptome Profiling'
           break
+        case 'tsv':
+          type = 'tsv-Transcriptome Profiling'
+          break
         case 'json':
           type = 'json'
+          break
+        case 'bedpe':
+          type = 'bedpe'
           break
         default:
           break
@@ -222,10 +298,20 @@ const Panel = ({ model }: { model: any }) => {
 
   function resetErrorMessages() {
     setTrackErrorMessage(undefined)
+    setTrackInfoMessage(undefined)
     setAuthErrorMessage(undefined)
     setDragErrorMessage(undefined)
+    setUploadInfoMessage(undefined)
     setSuccess(false)
     setDragSuccess(false)
+    setExploreSuccess(false)
+  }
+
+  const handleDelete = () => {
+    model.setTrackData(undefined)
+    model.setIndexTrackData(undefined)
+    setFileChip(undefined)
+    setUploadInfoMessage(undefined)
   }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -259,6 +345,9 @@ const Panel = ({ model }: { model: any }) => {
       if (file) {
         const type = determineFileType(file.name)
         try {
+          /**
+           * JSON files are for bulk import of files from the GDC site
+           */
           if (type == 'json') {
             const res = await new Promise(resolve => {
               const reader = new FileReader()
@@ -267,18 +356,16 @@ const Panel = ({ model }: { model: any }) => {
               )
               reader.readAsText(file)
             })
-
             // if the file is json we need to look at the properties to determine how to process it
             let propertyArray = []
             //@ts-ignore
             for (const property in res.slice(0, 1)[0]) {
               propertyArray.push(property)
             }
-
-            // key properties dictate how a file should be processed and displayed
+            // key properties dictate how a file should be processed and displayed, i.e. the file_id
             if (propertyArray.includes('file_id')) {
               //@ts-ignore
-              const ele = res.slice(0, 25)
+              const ele = res.slice(0, MAX_FILES) //TODO: it only gets the first 25 files
               ele.map(
                 (file: {
                   file_id: string
@@ -286,56 +373,136 @@ const Panel = ({ model }: { model: any }) => {
                   data_category: string
                   file_type: string
                 }) => {
-                  const category = `${file.file_type}-${file.data_category}`
-                  const uri = `https://api.gdc.cancer.gov/data/${file.file_id}`
+                  const category = determineFileType(file.file_name)
+                  const uri = `http://localhost:8010/proxy/data/${file.file_id}`
                   const typeAdapterObject = mapDataInfo(category, uri)
                   addAndShowTrack(
                     typeAdapterObject,
                     file.file_id,
                     file.file_name,
-                    true,
+                    'drag',
                   )
                 },
               )
-            } else if (
-              propertyArray.includes('gene_id') ||
-              propertyArray.includes('ssm_id')
-            ) {
-              const featureType = propertyArray.includes('ssm_id')
-                ? 'mutation'
-                : 'gene'
-
-              const trackId = `gdc_plugin_track-${Date.now()}`
-
-              const typeAdapterObject = mapGDCExploreConfig(
-                'SSM or Gene',
-                featureType,
-                JSON.stringify(res),
-              )
-              addAndShowTrack(typeAdapterObject, trackId, file.name, true)
             } else {
               const message =
-                'Failed to add track.\nThe configuration of this file is not currently supported.'
+                'Failed to add track.\nThe configuration of this file is not currently supported. Ensure that you have enabled the "File UUID" column on the GDC explore page table before exporting.'
               console.error(message)
               setDragErrorMessage(message)
             }
+          } else if (type === 'bedpe') {
+            await addBEDPEView(file.name, undefined, file)
+            setDragSuccess(true)
           } else {
-            const trackId = `gdc_plugin_track-${Date.now()}`
-            const typeAdapterObject = mapDataInfo(
-              type,
-              undefined,
-              undefined,
-              file,
-            )
-            addAndShowTrack(typeAdapterObject, trackId, file.name, true)
+            // BAM files are a special case w drag and drop that require forcing the user to upload a bai file
+            if (/\.bam$/i.test(file.name)) {
+              if (!model.indexTrackData) {
+                setUploadInfoMessage('Please upload a corresponding BAI file.')
+                setFileChip(file.name)
+              }
+              model.setTrackData(storeBlobLocation({ blob: file }))
+            }
+            if (/\.bai$/i.test(file.name)) {
+              if (!model.trackData) {
+                setUploadInfoMessage('Please upload a corresponding BAM file.')
+                setFileChip(file.name)
+              }
+              model.setIndexTrackData(storeBlobLocation({ blob: file }))
+            }
+            if (
+              (/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name)) &&
+              model.indexTrackData &&
+              model.trackData
+            ) {
+              const trackId = `gdc_plugin_track-${Date.now()}`
+
+              //TODO: update this to go through the enahancement 2135 workflow
+              const typeAdapterObject = {
+                config: {
+                  type: 'AlignmentsTrack',
+                  adapter: {
+                    type: 'BamAdapter',
+                    bamLocation: model.trackData,
+                    index: {
+                      location: model.indexTrackData,
+                      indexType: 'BAI',
+                    },
+                  },
+                },
+              }
+              addAndShowTrack(
+                typeAdapterObject,
+                trackId,
+                model.trackData.name,
+                'drag',
+              )
+              model.setTrackData(undefined)
+              model.setIndexTrackData(undefined)
+              setFileChip(undefined)
+              setUploadInfoMessage(undefined)
+            }
+            // all other files go through this channel
+            if (!(/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name))) {
+              const trackId = `gdc_plugin_track-${Date.now()}`
+              //TODO: update this to go through the enhancement 2135 workflow
+              const typeAdapterObject = mapDataInfo(
+                type,
+                undefined,
+                undefined,
+                file,
+              )
+              addAndShowTrack(typeAdapterObject, trackId, file.name, 'drag')
+            }
           }
         } catch (e) {
           console.error(e)
-          setDragErrorMessage(e.message)
+          const message =
+            // @ts-ignore
+            e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
+          setDragErrorMessage(`Failed to add track.\n ${message}.`)
         }
       }
     },
   })
+
+  function processExplorationURI(uri: string, source?: string) {
+    let featureType = uri.split('facetTab=')[1]
+    if (featureType !== undefined) {
+      featureType = featureType.split('&filters=')[0].slice(0, -1)
+    }
+    if (
+      featureType === 'case' ||
+      featureType === 'clinica' ||
+      featureType === undefined
+    ) {
+      setTrackInfoMessage(
+        'Configurations to "Cases" and "Clinical" are not currently supported. The requested Explore Track will default to displaying Mutations with your applied filters.',
+      )
+      featureType = 'mutation'
+    }
+    let filters = decodeURIComponent(
+      uri
+        .split('&facetTab=')[0]
+        .split('/')[3]
+        .split('filters=')[1],
+    )
+
+    if (filters == 'undefined') {
+      filters = '{}'
+    }
+
+    const datenow = Date.now()
+    const trackId = `gdc_plugin_track-${datenow}`
+    const trackName = `GDC Explore session-${datenow}`
+    const typeAdapterObject = mapGDCExploreConfig(
+      'GDC Explore',
+      featureType,
+      filters,
+      trackId,
+    )
+
+    addAndShowTrack(typeAdapterObject, trackId, trackName, source)
+  }
 
   const handleSubmit = async () => {
     resetErrorMessages()
@@ -345,32 +512,7 @@ const Panel = ({ model }: { model: any }) => {
       let query = inputRef ? inputRef.current.value : undefined
 
       if (query.includes('exploration?')) {
-        // @ts-ignore
-        let uri = inputRef ? inputRef.current.value : undefined
-        const featureType = uri.split('searchTableTab=')[1].slice(0, -1)
-        if (featureType != 'case') {
-          const filters = decodeURIComponent(
-            uri
-              .split('&searchTableTab=')[0]
-              .split('/')[3]
-              .split('filters=')[1],
-          )
-
-          const typeAdapterObject = mapGDCExploreConfig(
-            'GDC Explore',
-            featureType,
-            filters,
-          )
-
-          const datenow = Date.now()
-          const trackId = `gdc_plugin_track-${datenow}`
-          const trackName = `GDC-${datenow}`
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
-        } else {
-          setTrackErrorMessage(
-            'Failed to add track.\nConfiguration to "cases" is not currently supported.',
-          )
-        }
+        processExplorationURI(query)
       } else if (!query) {
         setTrackErrorMessage(
           'Failed to add track.\nUUID or URL must be provided.',
@@ -382,7 +524,7 @@ const Panel = ({ model }: { model: any }) => {
         const response = await fetchFileInfo(query)
         if (
           response.data.access == 'controlled' &&
-          !window.sessionStorage.getItem('GDCToken')
+          !window.sessionStorage.getItem('GDCExternalToken-token')
         ) {
           setAuthErrorMessage(
             'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
@@ -398,24 +540,30 @@ const Panel = ({ model }: { model: any }) => {
           const indexFileId = response.data.index_files
             ? response.data.index_files[0].file_id
             : undefined
-
           const uri = `http://localhost:8010/proxy/data/${query}`
-
           const trackId = `${response.data.file_id}`
-
           const trackName = `${response.data.file_name}`
-
-          const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
-
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
+          if (category !== 'bedpe-Structural Variation') {
+            const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
+            addAndShowTrack(typeAdapterObject, trackId, trackName)
+          } else {
+            await addBEDPEView(response.data.file_id, uri)
+            setSuccess(true)
+          }
         }
       }
     } catch (e) {
-      console.error(e)
-      const message =
-        e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-      setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+      // @ts-ignore
+      if (!e.message.includes('unable to determine size of file at')) {
+        console.error(e)
+        const message =
+          // @ts-ignore
+          e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
+        setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+      }
     }
+    // @ts-ignore
+    inputRef.current.value = null
   }
 
   const classes = useStyles({ isDragActive })
@@ -426,48 +574,83 @@ const Panel = ({ model }: { model: any }) => {
         <Typography variant="h6" component="h1" align="center">
           Drag and Drop Local GDC Files
         </Typography>
-        <div {...getRootProps({ className: classes.dropZone })}>
-          <input {...getInputProps()} />
-          <CloudUploadIcon className={classes.uploadIcon} fontSize="large" />
-          <Typography color="textSecondary" align="center" variant="body1">
-            Drag and drop files here
-          </Typography>
-          <Typography color="textSecondary" align="center" variant="body2">
-            or
-          </Typography>
-          <Button color="primary" variant="contained">
-            Browse Files
-          </Button>
+        <div className={classes.dragAndDropContainer}>
+          <div {...getRootProps({ className: classes.dropZone })}>
+            <input {...getInputProps()} />
+            <CloudUploadIcon className={classes.uploadIcon} fontSize="large" />
+            <Typography color="textSecondary" align="center" variant="body1">
+              Drag and drop files here
+            </Typography>
+            <Typography color="textSecondary" align="center" variant="body2">
+              or
+            </Typography>
+            <Button color="primary" variant="contained">
+              Browse Files
+            </Button>
+          </div>
+          <div className={classes.tipContainer}>
+            <Paper className={classes.tipPaper} elevation={0}>
+              <div className={classes.tipMessageContainer}>
+                <InfoIcon />
+                <Typography color="textSecondary" variant="caption">
+                  You can bulk import files from the GDC Repository using the
+                  JSON export button.
+                </Typography>
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    session.setDialogComponent(TipDialogue)
+                    // @ts-ignore
+                    // session.queueDialog((doneCallback: Function) => [
+                    //   TipDialogue,
+                    //   {
+                    //     handleClose: () => {
+                    //       doneCallback()
+                    //     },
+                    //   },
+                    // ])
+                  }}
+                >
+                  <b>Learn More</b>
+                </Button>
+              </div>
+            </Paper>
+          </div>
         </div>
         {dragSuccess ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="success">
-              The requested track(s) from the file have been added.
-            </Alert>
-          </div>
+          <Alert severity="success">
+            The requested track(s) from the file have been added.
+          </Alert>
         ) : null}
         {dragErrorMessage ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="error">{dragErrorMessage}</Alert>
-          </div>
+          <Alert severity="error">{dragErrorMessage}</Alert>
+        ) : null}
+        {fileChip ? (
+          <Chip
+            label={fileChip}
+            avatar={<InsertDriveFile />}
+            onDelete={handleDelete}
+          />
+        ) : null}
+        {uploadInfoMessage ? (
+          <Alert severity="info">{uploadInfoMessage}</Alert>
         ) : null}
       </Paper>
       <Paper className={classes.paper}>
         {tokenStored ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="success">
-              Your token has been stored.
-              <br />
-              Verification of your token will be performed when you attempt to
-              access controlled data.
-            </Alert>
-          </div>
+          <Alert severity="success">
+            Your token has been stored.
+            <br />
+            Verification of your token will be performed when you attempt to
+            access controlled data.
+          </Alert>
         ) : null}
         {authErrorMessage ? (
-          <div className={classes.alertContainer}>
-            <Alert severity="error">{authErrorMessage}</Alert>
-          </div>
+          <Alert severity="error">{authErrorMessage}</Alert>
         ) : null}
+        <Alert severity="info">
+          Controlled resources are not currently available.
+        </Alert>
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
             <Typography variant="body1">
@@ -479,12 +662,20 @@ const Panel = ({ model }: { model: any }) => {
               color="primary"
               variant="contained"
               size="small"
+              disabled
               startIcon={<ExitToApp />}
               onClick={() => {
-                session.setDialogComponent(LoginDialogue, {
-                  setTokenStored,
-                  setAuthErrorMessage,
-                })
+                // @ts-ignore
+                // session.queueDialog((doneCallback: Function) => [
+                //   LoginDialogue,
+                //   {
+                //     setTokenStored,
+                //     setAuthErrorMessage,
+                //     handleClose: () => {
+                //       doneCallback()
+                //     },
+                //   },
+                // ])
               }}
             >
               Login
@@ -500,19 +691,16 @@ const Panel = ({ model }: { model: any }) => {
           Add a track by providing the UUID or URL of a file, including
           controlled data, or by providing the URL of an Exploration session.
         </Typography>
+        {trackErrorMessage ? (
+          <Alert severity="error">{trackErrorMessage}</Alert>
+        ) : null}
+        {trackInfoMessage ? (
+          <Alert severity="info">{trackInfoMessage}</Alert>
+        ) : null}
+        {success ? (
+          <Alert severity="success">The requested track has been added.</Alert>
+        ) : null}
         <div className={classes.submitContainer}>
-          {trackErrorMessage ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="error">{trackErrorMessage}</Alert>
-            </div>
-          ) : null}
-          {success ? (
-            <div className={classes.alertContainer}>
-              <Alert severity="success">
-                The requested track has been added.
-              </Alert>
-            </div>
-          ) : null}
           <TextField
             color="primary"
             variant="outlined"
@@ -529,6 +717,38 @@ const Panel = ({ model }: { model: any }) => {
               Submit
             </Button>
           </div>
+        </div>
+      </Paper>
+      <Paper className={classes.paper}>
+        <div className={classes.typoContainer}>
+          <Typography variant="h6" component="h1" align="center">
+            Quick-add a GDC Explore Track
+          </Typography>
+          <Typography variant="body1" align="center">
+            Add additional Explore tracks to your current view by clicking this
+            button.
+          </Typography>
+        </div>
+        {exploreSuccess ? (
+          <Alert severity="success">
+            The requested Explore track has been added.
+          </Alert>
+        ) : null}
+        <div className={classes.addTrackButtonContainer}>
+          <Button
+            color="primary"
+            variant="contained"
+            size="large"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              processExplorationURI(
+                'https://portal.gdc.cancer.gov/exploration?facetTab=mutations',
+                'explore',
+              )
+            }}
+          >
+            Add New GDC Explore Track
+          </Button>
         </div>
       </Paper>
     </div>

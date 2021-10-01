@@ -15,13 +15,16 @@
         "adapter": {
           "type": "BgzipFastaAdapter",
           "fastaLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz",
+            "locationType": "UriLocation"
           },
           "faiLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai",
+            "locationType": "UriLocation"
           },
           "gziLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi",
+            "locationType": "UriLocation"
           }
         }
       },
@@ -29,7 +32,8 @@
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/hg38_aliases.txt"
+            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/hg38_aliases.txt",
+            "locationType": "UriLocation"
           }
         }
       }
@@ -39,7 +43,7 @@
     {
       "type": "GDCTrack",
       "trackId": "gdc_plugin_track",
-      "name": "GDC",
+      "name": "GDC Explore",
       "assemblyNames": ["hg38"],
       "category": ["Annotation"],
       "adapter": {
@@ -69,7 +73,8 @@
       "adapter": {
         "type": "NCListAdapter",
         "rootUrlTemplate": {
-          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/gencode/{refseq}/trackData.jsonz"
+          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/gencode/{refseq}/trackData.jsonz",
+          "locationType": "UriLocation"
         },
         "refNames": [
           "chr1",
@@ -123,7 +128,7 @@
         "id": "MiDMyyWpp",
         "type": "LinearGenomeView",
         "width": 800,
-        "displayName": "GDC demo",
+        "displayName": "GDC",
         "trackSelectorType": "hierarchical",
         "offsetPx": 12490000,
         "bpPerPx": 10,
@@ -162,5 +167,17 @@
         "minimumBlockWidth": 20
       }
     ]
-  }
+  },
+  "internetAccounts": [
+    {
+      "type": "ExternalTokenInternetAccount",
+      "internetAccountId": "GDCExternalToken",
+      "name": "GDC",
+      "description": "GDC External Token",
+      "domains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
+      "authHeader": "X-Auth-Token",
+      "origin": "GDC",
+      "customEndpoint": "http://localhost:8010/proxy"
+    }
+  ]
 }

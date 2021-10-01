@@ -2,7 +2,8 @@ import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const uri = 'path/to/some.uri'
 const authHeader = 'X-Auth-Token'
-const authToken = ''
+const internetAccountId = 'GDCExternalToken'
+const locationType = 'UriLocation'
 const datenow = () => Date.now()
 
 test('maps data information to CNV', async () => {
@@ -13,7 +14,12 @@ test('maps data information to CNV', async () => {
       type: 'QuantitativeTrack',
       adapter: {
         type: 'SegmentCNVAdapter',
-        segLocation: { uri, authHeader, authToken },
+        segLocation: {
+          uri,
+          authHeader,
+          internetAccountId,
+          locationType,
+        },
       },
     },
     prefix: 'seg',
@@ -32,11 +38,12 @@ test('maps data information to BAM', async () => {
           location: {
             uri: `http://localhost:8010/proxy/data/${indexId}`,
             authHeader,
-            authToken,
+            internetAccountId,
+            locationType,
           },
         },
         type: 'BamAdapter',
-        bamLocation: { uri, authHeader, authToken },
+        bamLocation: { uri, authHeader, internetAccountId, locationType },
       },
     },
     prefix: 'bam',
@@ -51,7 +58,12 @@ test('maps data information to SNV', async () => {
       type: 'VariantTrack',
       adapter: {
         type: 'VcfAdapter',
-        vcfLocation: { uri, authHeader, authToken },
+        vcfLocation: {
+          uri,
+          authHeader,
+          internetAccountId,
+          locationType,
+        },
       },
     },
     prefix: 'vcf',
@@ -67,23 +79,43 @@ test('maps data information to SNV', async () => {
 
   expect(result).toEqual({
     config: {
-      type: 'VariantTrack',
+      type: 'MAFTrack',
       adapter: {
         type: 'MafAdapter',
-        mafLocation: { uri, authHeader, authToken },
-      },
-      displays: [
-        {
-          displayId: `gdc_plugin_track_linear_basic-${datenow()}`,
-          renderer: {
-            color1: 'jexl:mafColouring(feature)',
-            type: 'SvgFeatureRenderer',
-          },
-          type: 'LinearBasicDisplay',
+        mafLocation: {
+          uri,
+          authHeader,
+          internetAccountId,
+          locationType,
         },
-      ],
+      },
     },
     prefix: 'maf',
+  })
+  global.Date.now = realDateNow
+})
+
+test('maps data information to IEQ', async () => {
+  const realDateNow = Date.now.bind(global.Date)
+  const dateNowStub = jest.fn(() => 1530518207007)
+  global.Date.now = dateNowStub
+
+  const result = mapDataInfo('txt-Transcriptome Profiling', uri)
+
+  expect(result).toEqual({
+    config: {
+      type: 'IEQTrack',
+      adapter: {
+        type: 'IeqAdapter',
+        ieqLocation: {
+          uri,
+          authHeader,
+          internetAccountId,
+          locationType,
+        },
+      },
+    },
+    prefix: 'ieq',
   })
   global.Date.now = realDateNow
 })
@@ -93,7 +125,12 @@ test('maps gdc explore to config', async () => {
   const dateNowStub = jest.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
-  const result = mapGDCExploreConfig('GDC Explore', 'gene', 'test-filters')
+  const result = mapGDCExploreConfig(
+    'GDC Explore',
+    'gene',
+    'test-filters',
+    'track-id',
+  )
 
   expect(result).toEqual({
     config: {
@@ -101,6 +138,7 @@ test('maps gdc explore to config', async () => {
         type: 'GDCAdapter',
         filters: 'test-filters',
         featureType: 'gene',
+        GDCAdapterId: 'track-id',
       },
       category: undefined,
       displays: [

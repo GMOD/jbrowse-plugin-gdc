@@ -5,7 +5,7 @@ export default ConfigurationSchema(
   {
     segLocation: {
       type: 'fileLocation',
-      defaultValue: { uri: '/path/to/myfile.seg' },
+      defaultValue: { uri: '/path/to/myfile.seg', locationType: 'UriLocation' },
     },
   },
   { explicitlyTyped: true },

@@ -29,17 +29,8 @@ const mapToAdapter: Map<string, Object> = new Map([
     'maf-Simple Nucleotide Variation',
     {
       config: {
-        type: 'VariantTrack',
+        type: 'MAFTrack',
         adapter: { type: 'MafAdapter' },
-        displays: [
-          {
-            type: 'LinearBasicDisplay',
-            renderer: {
-              color1: 'jexl:mafColouring(feature)',
-              type: 'SvgFeatureRenderer',
-            },
-          },
-        ],
       },
       prefix: 'maf',
     },
@@ -48,17 +39,18 @@ const mapToAdapter: Map<string, Object> = new Map([
     'txt-Transcriptome Profiling',
     {
       config: {
-        type: 'ReferenceSequenceTrack',
+        type: 'IEQTrack',
         adapter: { type: 'IeqAdapter' },
-        displays: [
-          {
-            type: 'LinearBasicDisplay',
-            renderer: {
-              color1: `jexl:ieqColouring(feature, 'reads_per_million_mirna_mapped')`,
-              type: 'SvgFeatureRenderer',
-            },
-          },
-        ],
+      },
+      prefix: 'ieq',
+    },
+  ],
+  [
+    'tsv-Transcriptome Profiling',
+    {
+      config: {
+        type: 'IEQTrack',
+        adapter: { type: 'IeqAdapter' },
       },
       prefix: 'ieq',
     },
@@ -91,7 +83,7 @@ export function mapDataInfo(
   fileBlob?: any,
 ) {
   const configObject = mapToAdapter.get(category)
-  let token = window.sessionStorage.getItem('GDCToken')
+  let token = window.sessionStorage.getItem('GDCExternalToken-token')
 
   if (!token) token = ''
 
@@ -115,7 +107,8 @@ export function mapDataInfo(
       configObject.config.adapter[`${configObject.prefix}Location`] = {
         uri: uri,
         authHeader: 'X-Auth-Token',
-        authToken: `${token}`,
+        locationType: 'UriLocation',
+        internetAccountId: 'GDCExternalToken',
       }
       if (indexFileId) {
         //@ts-ignore
@@ -123,7 +116,8 @@ export function mapDataInfo(
           location: {
             uri: `http://localhost:8010/proxy/data/${indexFileId}`,
             authHeader: 'X-Auth-Token',
-            authToken: `${token}`,
+            locationType: 'UriLocation',
+            internetAccountId: 'GDCExternalToken',
           },
         }
       }
@@ -133,10 +127,19 @@ export function mapDataInfo(
   return configObject
 }
 
+/**
+ * creates a specialized config for a GDC explore track using filters that have been parsed from a given url
+ * @param category 'GDC Explore' or 'SSM or Gene' indicating what kind of adapter to use
+ * @param featureType mutation or gene indicating what kind of feature is being displayed
+ * @param adapterPropertyValue filters or data indicating what kind of data has been fed to the function
+ * @param trackId the id for the track, needs to be passed in to be specified against the unique identifier
+ * @returns a configuration object that will create the track
+ */
 export function mapGDCExploreConfig(
   category: string,
   featureType: string,
   adapterPropertyValue: string,
+  trackId: string,
 ) {
   const configObject = mapToAdapter.get(category)
 
@@ -153,6 +156,7 @@ export function mapGDCExploreConfig(
       adapter: {
         // @ts-ignore
         ...configObject.config.adapter,
+        GDCAdapterId: trackId,
         [adapterProperty]: adapterPropertyValue,
         featureType,
       },

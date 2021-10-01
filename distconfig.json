@@ -123,7 +123,7 @@
         "id": "MiDMyyWpp",
         "type": "LinearGenomeView",
         "width": 800,
-        "displayName": "GDC demo",
+        "displayName": "GDC",
         "trackSelectorType": "hierarchical",
         "offsetPx": 12490000,
         "bpPerPx": 10,

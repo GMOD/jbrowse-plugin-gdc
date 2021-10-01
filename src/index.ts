@@ -7,6 +7,12 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
+// import { FileLocation } from '@jbrowse/core/util/types'
+// import {
+//   AdapterGuesser,
+//   getFileName,
+//   TrackTypeGuesser,
+// } from '@jbrowse/core/util/tracks'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import { version } from '../package.json'
 
@@ -14,13 +20,11 @@ import GDCFilterWidgetF from './GDCFilterWidget'
 import GDCFeatureWidgetF from './GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
+import LinearIEQDisplay from './LinearIEQDisplay'
+import LinearMAFDisplay from './LinearMAFDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
 import GDCAdapterClass from './GDCAdapter/GDCAdapter'
-import {
-  configSchema as GDCJSONConfigSchema,
-  AdapterClass as GDCJSONAdapter,
-} from './GDCJSONAdapter'
 import {
   configSchema as segmentCnvConfigSchema,
   AdapterClass as SegmentCNVAdapter,
@@ -34,6 +38,20 @@ import {
   AdapterClass as IeqAdapter,
 } from './IEQAdapter'
 
+import GDCInternetAccountConfigSchema from './GDCInternetAccount/configSchema'
+import GDCInternetAccountModel from './GDCInternetAccount/model'
+
+async function fetchFileInfo(query: any) {
+  const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
+    method: 'GET',
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
+  }
+  return response.json()
+}
+
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
   version = version
@@ -45,16 +63,23 @@ export default class GDCPlugin extends Plugin {
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
+    // const InternetAccountType =
+    //   pluginManager.lib[
+    //     '@jbrowse/core/pluggableElementTypes/InternetAccountType'
+    //   ]
     const LGVPlugin = pluginManager.getPlugin(
       'LinearGenomeViewPlugin',
     ) as import('@jbrowse/plugin-linear-genome-view').default
     const { BaseLinearDisplayComponent } = LGVPlugin.exports
+
+    const adapterCategoryHeader = 'GDC Plugin Adapters'
 
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
+          // excludeFromTrackSelector: true,
           AdapterClass: GDCAdapterClass,
         }),
     )
@@ -64,18 +89,191 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
+          // adapterCategoryHeader,
+          // @ts-ignore
           AdapterClass: MafAdapter,
         }),
     )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessAdapter',
+    //   (adapterGuesser: AdapterGuesser) => {
+    //     return async (
+    //       file: FileLocation,
+    //       index?: FileLocation,
+    //       adapterHint?: string,
+    //     ) => {
+    //       const regexGuess = /\.maf$/i
+    //       const adapterName = 'MafAdapter'
+    //       const fileName = getFileName(file)
+
+    //       //TODO: test this
+    //       if (fileName.includes('files/')) {
+    //         const query = fileName.split('/')[4]
+    //         const response = await fetchFileInfo(query)
+    //         const dataFormat = response.data.data_format
+    //         const dataCategory = response.data.data_category
+    //         if (
+    //           (dataFormat.toLowerCase() === 'maf' &&
+    //             dataCategory === 'Simple Nucleotide Variation') ||
+    //           regexGuess.test(fileName) ||
+    //           adapterHint === adapterName
+    //         ) {
+    //           return {
+    //             type: adapterName,
+    //             mafLocation: file,
+    //           }
+    //         }
+    //       }
+
+    //       if (regexGuess.test(fileName) || adapterHint === adapterName) {
+    //         return {
+    //           type: adapterName,
+    //           mafLocation: file,
+    //         }
+    //       }
+    //       return adapterGuesser(file, index)
+    //     }
+    //   },
+    // )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessTrackType',
+    //   (trackTypeGuesser: TrackTypeGuesser) => {
+    //     return (adapterName: string) => {
+    //       if (adapterName === 'MafAdapter') {
+    //         return 'VariantTrack' // TODO: This may need to be changed to be a special track type for MAF to utilize the renderer and display
+    //       }
+    //       return trackTypeGuesser(adapterName)
+    //     }
+    //   },
+    // )
 
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
+          // adapterCategoryHeader,
+          // @ts-ignore
           AdapterClass: IeqAdapter,
         }),
     )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessAdapter',
+    //   (adapterGuesser: AdapterGuesser) => {
+    //     return async (
+    //       file: FileLocation,
+    //       index?: FileLocation,
+    //       adapterHint?: string,
+    //     ) => {
+    //       const adapterName = 'IeqAdapter'
+    //       const fileName = getFileName(file)
+
+    //       //TODO: test this
+    //       if (fileName.includes('files/')) {
+    //         const query = fileName.split('/')[4]
+    //         const response = await fetchFileInfo(query)
+    //         const dataFormat = response.data.data_format
+    //         const dataCategory = response.data.data_category
+    //         if (
+    //           (dataFormat.toLowerCase() === 'txt' &&
+    //             dataCategory === 'Transcriptome Profiling') ||
+    //           adapterHint === adapterName
+    //         ) {
+    //           return {
+    //             type: adapterName,
+    //             ieqLocation: file,
+    //           }
+    //         }
+    //       }
+
+    //       if (adapterHint === adapterName) {
+    //         return {
+    //           type: adapterName,
+    //           ieqLocation: file,
+    //         }
+    //       }
+    //       return adapterGuesser(file, index)
+    //     }
+    //   },
+    // )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessTrackType',
+    //   (trackTypeGuesser: TrackTypeGuesser) => {
+    //     return (adapterName: string) => {
+    //       if (adapterName === 'IeqAdapter') {
+    //         return 'ReferenceSequenceTrack' // TODO: This may need to be changed to be a special track type for IEQ to utilize the renderer and display
+    //       }
+    //       return trackTypeGuesser(adapterName)
+    //     }
+    //   },
+    // )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'SegmentCNVAdapter',
+          configSchema: segmentCnvConfigSchema,
+          // adapterCategoryHeader,
+          AdapterClass: SegmentCNVAdapter,
+        }),
+    )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessAdapter',
+    //   (adapterGuesser: AdapterGuesser) => {
+    //     return async (
+    //       file: FileLocation,
+    //       index?: FileLocation,
+    //       adapterHint?: string,
+    //     ) => {
+    //       const regexGuess = /\.seg$/i
+    //       const adapterName = 'SegmentCNVAdapter'
+    //       const fileName = getFileName(file)
+
+    //       //TODO: test this
+    //       if (fileName.includes('files/')) {
+    //         const query = fileName.split('/')[4]
+    //         const response = await fetchFileInfo(query)
+    //         const dataFormat = response.data.data_format
+    //         const dataCategory = response.data.data_category
+    //         if (
+    //           (dataFormat.toLowerCase() === 'seg' &&
+    //             dataCategory === 'Copy Number Variation') ||
+    //           adapterHint === adapterName
+    //         ) {
+    //           return {
+    //             type: adapterName,
+    //             ieqLocation: file,
+    //           }
+    //         }
+    //       }
+    //       //TODO: Add in here, query the file on the GDC and get its config to guess the adapter
+    //       if (regexGuess.test(fileName) || adapterHint === adapterName) {
+    //         return {
+    //           type: adapterName,
+    //           segLocation: file,
+    //         }
+    //       }
+    //       return adapterGuesser(file, index)
+    //     }
+    //   },
+    // )
+
+    // pluginManager.addToExtensionPoint(
+    //   'extendGuessTrackType',
+    //   (trackTypeGuesser: TrackTypeGuesser) => {
+    //     return (adapterName: string) => {
+    //       if (adapterName === 'SegmentCNVAdapter') {
+    //         return 'QuantitativeTrack' // TODO: This may need to be changed to be a special track type for IEQ to utilize the renderer and display
+    //       }
+    //       return trackTypeGuesser(adapterName)
+    //     }
+    //   },
+    // )
 
     pluginManager.addTrackType(() => {
       const configSchema = ConfigurationSchema(
@@ -109,6 +307,70 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
+    pluginManager.addTrackType(() => {
+      const configSchema = ConfigurationSchema(
+        'IEQTrack',
+        {},
+        {
+          baseConfiguration: createBaseTrackConfig(pluginManager),
+          explicitIdentifier: 'trackId',
+        },
+      )
+      return new TrackType({
+        name: 'IEQTrack',
+        configSchema,
+        stateModel: createBaseTrackModel(
+          pluginManager,
+          'IEQTrack',
+          configSchema,
+        ),
+      })
+    })
+
+    pluginManager.addDisplayType(() => {
+      const { configSchema, stateModel } = pluginManager.load(LinearIEQDisplay)
+      return new DisplayType({
+        name: 'LinearIEQDisplay',
+        configSchema,
+        stateModel,
+        trackType: 'IEQTrack',
+        viewType: 'LinearGenomeView',
+        ReactComponent: BaseLinearDisplayComponent,
+      })
+    })
+
+    pluginManager.addTrackType(() => {
+      const configSchema = ConfigurationSchema(
+        'MAFTrack',
+        {},
+        {
+          baseConfiguration: createBaseTrackConfig(pluginManager),
+          explicitIdentifier: 'trackId',
+        },
+      )
+      return new TrackType({
+        name: 'MAFTrack',
+        configSchema,
+        stateModel: createBaseTrackModel(
+          pluginManager,
+          'MAFTrack',
+          configSchema,
+        ),
+      })
+    })
+
+    pluginManager.addDisplayType(() => {
+      const { configSchema, stateModel } = pluginManager.load(LinearMAFDisplay)
+      return new DisplayType({
+        name: 'LinearMAFDisplay',
+        configSchema,
+        stateModel,
+        trackType: 'MAFTrack',
+        viewType: 'LinearGenomeView',
+        ReactComponent: BaseLinearDisplayComponent,
+      })
+    })
+
     pluginManager.addWidgetType(() => {
       return new WidgetType({
         name: 'GDCFilterWidget',
@@ -132,23 +394,14 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
-    pluginManager.addAdapterType(
-      () =>
-        new AdapterType({
-          name: 'SegmentCNVAdapter',
-          configSchema: segmentCnvConfigSchema,
-          AdapterClass: SegmentCNVAdapter,
-        }),
-    )
-
-    pluginManager.addAdapterType(
-      () =>
-        new AdapterType({
-          name: 'GDCJSONAdapter',
-          configSchema: GDCJSONConfigSchema,
-          AdapterClass: GDCJSONAdapter,
-        }),
-    )
+    // pluginManager.addInternetAccountType(
+    //   () =>
+    //     new InternetAccountType({
+    //       name: 'GDCInternetAccount',
+    //       configSchema: GDCInternetAccountConfigSchema,
+    //       stateModel: GDCInternetAccountModel,
+    //     }),
+    // )
   }
 
   configure(pluginManager: PluginManager) {

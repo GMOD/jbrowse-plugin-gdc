@@ -9,6 +9,8 @@ import MafFeature from './MafFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
+import { unzip } from '@gmod/bgzf-filehandle'
+import PluginManager from '@jbrowse/core/PluginManager'
 
 export default class MafAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
@@ -17,20 +19,16 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
 
   private setupP?: Promise<Feature[]>
 
-  public constructor(config: AnyConfigurationModel) {
-    super(config)
+  public constructor(
+    config: AnyConfigurationModel,
+    pluginManager: PluginManager,
+  ) {
+    // @ts-ignore
+    super(config, pluginManager)
     this.config = config
   }
 
-  private async readMaf() {
-    const mafLocation = readConfObject(
-      this.config,
-      'mafLocation',
-    ) as FileLocation
-    const fileContents = (await openLocation(mafLocation).readFile(
-      'utf8',
-    )) as string
-
+  private async readMaf(fileContents: string) {
     const lines = fileContents.split('\n')
     const header: string[] = []
     const refNames: string[] = []
@@ -71,8 +69,45 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
     return mutationObject
   }
 
+  private async decodeFileContents() {
+    const mafLocation = readConfObject(
+      this.config,
+      'mafLocation',
+    ) as FileLocation
+
+    let fileContents = await openLocation(
+      mafLocation,
+      // @ts-ignore
+      this.pluginManager,
+    ).readFile()
+
+    if (
+      typeof fileContents[0] === 'number' &&
+      fileContents[0] === 31 &&
+      typeof fileContents[1] === 'number' &&
+      fileContents[1] === 139 &&
+      typeof fileContents[2] === 'number' &&
+      fileContents[2] === 8
+    ) {
+      fileContents = new TextDecoder().decode(await unzip(fileContents))
+    } else {
+      fileContents = fileContents.toString()
+    }
+
+    /*
+    const mafLocation = readConfObject(
+      this.config,
+      'mafLocation',
+    ) as FileLocation
+    const fileContents = (await openLocation(mafLocation).readFile(
+      'utf8',
+    )) as string
+    */
+    return this.readMaf(fileContents)
+  }
+
   private async getLines() {
-    const { columns, lines } = await this.readMaf()
+    const { columns, lines } = await this.decodeFileContents()
 
     return lines.map((line, index) => {
       return new MafFeature({
@@ -90,7 +125,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
   }
 
   public async getRefNames(_: BaseOptions = {}) {
-    const { refNames } = await this.readMaf()
+    const { refNames } = await this.decodeFileContents()
     return refNames
   }
 
