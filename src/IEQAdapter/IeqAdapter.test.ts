@@ -16,9 +16,9 @@ test('adapter can fetch features from ieq_test_data.txt', async () => {
 
   const features = adapter.getFeatures({
     assemblyName: 'volvox',
-    refName: '3',
-    start: 0,
-    end: 200000,
+    refName: 'chr9',
+    start: 94175962,
+    end: 94175981,
   })
 
   const names = await adapter.getRefNames()

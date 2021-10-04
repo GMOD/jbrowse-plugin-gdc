@@ -16,9 +16,9 @@ test('adapter can fetch features from maf_test_data.maf', async () => {
 
   const features = adapter.getFeatures({
     assemblyName: 'volvox',
-    refName: '3',
+    refName: 'chr2',
     start: 0,
-    end: 200000,
+    end: 235551314,
   })
 
   const names = await adapter.getRefNames()

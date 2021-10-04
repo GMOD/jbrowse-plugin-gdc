@@ -293,6 +293,10 @@ const Panel = ({ model }: { model: any }) => {
       }
     }
 
+    if (fileName.includes('Methylation')) {
+      type = 'txt-DNA Methylation'
+    }
+
     return type
   }
 

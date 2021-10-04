@@ -94,15 +94,6 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       fileContents = fileContents.toString()
     }
 
-    /*
-    const mafLocation = readConfObject(
-      this.config,
-      'mafLocation',
-    ) as FileLocation
-    const fileContents = (await openLocation(mafLocation).readFile(
-      'utf8',
-    )) as string
-    */
     return this.readMaf(fileContents)
   }
 

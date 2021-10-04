@@ -34,6 +34,10 @@ import {
   AdapterClass as MafAdapter,
 } from './MAFAdapter'
 import {
+  configSchema as mbvConfigSchema,
+  AdapterClass as MbvAdapter,
+} from './MBVAdapter'
+import {
   configSchema as ieqConfigSchema,
   AdapterClass as IeqAdapter,
 } from './IEQAdapter'
@@ -81,6 +85,17 @@ export default class GDCPlugin extends Plugin {
           configSchema: GDCAdapterConfigSchema,
           // excludeFromTrackSelector: true,
           AdapterClass: GDCAdapterClass,
+        }),
+    )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
+          name: 'MbvAdapter',
+          configSchema: mbvConfigSchema,
+          // adapterCategoryHeader,
+          // @ts-ignore
+          AdapterClass: MbvAdapter,
         }),
     )
 

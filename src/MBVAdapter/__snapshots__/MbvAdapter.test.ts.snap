@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`adapter can fetch features from mbv_test_data.txt 1`] = `
+Array [
+  "chr16",
+  "chr3",
+  "chr7",
+  "chr2",
+  "chr11",
+  "chr14",
+  "chr18",
+  "chr4",
+  "chr1",
+  "chr6",
+  "chr22",
+  "chr12",
+  "chr17",
+  "chr20",
+  "chr10",
+  "chrX",
+  "chr19",
+  "chr9",
+  "chr13",
+  "chr8",
+  "chr5",
+  "chr15",
+  "chr21",
+  "chrY",
+]
+`;
+
+exports[`adapter can fetch features from mbv_test_data.txt 2`] = `
+Array [
+  Object {
+    "beta_value": "0.854812485786774",
+    "cgi_coordinate": "CGI:chr3:196708-198323",
+    "chromosome": "chr3",
+    "composite element ref": "cg00903242",
+    "end": 196479,
+    "feature_type": "N_Shore",
+    "gene_symbol": "CHL1;CHL1;CHL1;CHL1;CHL1;CHL1;CHL1;CHL1-AS2;CHL1-AS2;CHL1-AS2",
+    "gene_type": "protein_coding;protein_coding;protein_coding;protein_coding;protein_coding;protein_coding;protein_coding;processed_transcript;processed_transcript;processed_transcript",
+    "name": "cg00903242",
+    "note": "0.854812485786774",
+    "position_to_tss": "-119;-294;-813;-306;-1167;-294;-1166;722;382;864",
+    "refName": "chr3",
+    "start": 196477,
+    "transcript_id": "ENST00000256509.5;ENST00000397491.5;ENST00000421198.4;ENST00000427688.4;ENST00000453040.4;ENST00000481167.4;ENST00000489224.4;ENST00000444879.4;ENST00000451839.4;ENST00000452919.1",
+    "uniqueId": "test-mbv-915",
+  },
+]
+`;
