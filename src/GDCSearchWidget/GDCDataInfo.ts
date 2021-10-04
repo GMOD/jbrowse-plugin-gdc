@@ -46,6 +46,16 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
+    'txt-DNA Methylation',
+    {
+      config: {
+        type: 'FeatureTrack',
+        adapter: { type: 'MbvAdapter' },
+      },
+      prefix: 'mbv',
+    },
+  ],
+  [
     'tsv-Transcriptome Profiling',
     {
       config: {
