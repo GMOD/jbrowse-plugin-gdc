@@ -21,29 +21,78 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     this.config = config
   }
 
-  private async getLines() {
+  private async readSeg() {
     const segLocation = readConfObject(
       this.config,
       'segLocation',
     ) as FileLocation
-    const lines = (await openLocation(segLocation).readFile('utf8')) as string
-    return lines
-      .split('\n')
-      .slice(1)
-      .filter(f => !!f)
-      .map(line => {
-        const [id, chr, start, end, nprobes, mean] = line.split('\t')
-        return new SimpleFeature({
-          uniqueId: id,
-          id,
-          start: +start,
-          end: +end,
-          refName: chr,
-          nprobes: +nprobes,
-          mean: +mean,
-          score: +mean,
-        })
+    const fileContents = (await openLocation(segLocation).readFile(
+      'utf8',
+    )) as string
+    const lines = fileContents.split('\n')
+    const refNames: string[] = []
+    const rows: string[] = []
+    let columns: string[] = []
+    let refNameColumnIndex = 0
+    lines.forEach(line => {
+      if (columns.length === 0) {
+        columns = line.split('\t')
+        const chromosome = (element: any) =>
+          element.toLowerCase() === 'chromosome'
+        refNameColumnIndex = columns.findIndex(chromosome)
+      } else {
+        if (line.split('\t')[refNameColumnIndex] !== undefined) {
+          rows.push(line)
+          refNames.push(line.split('\t')[refNameColumnIndex])
+        }
+      }
+    })
+
+    return {
+      lines: rows,
+      columns,
+      refNames: Array.from(new Set(refNames)),
+    }
+  }
+
+  private parseLine(line: string, columns: string[]) {
+    let segment: any = {}
+    line.split('\t').forEach((property: string, i: number) => {
+      if (property) {
+        if (i === 0) {
+          segment.id = property
+        } else {
+          /* some SEG files have different data, this logic is to ensure that we don't need special
+             colouring functions to accomodate for those differences...mean and copy number indicate
+             the track colouring */
+          if (
+            columns[i].toLowerCase() === 'segment_mean' ||
+            columns[i].toLowerCase() === 'copy_number'
+          ) {
+            segment.score = +property
+          }
+          segment[columns[i].toLowerCase()] = property
+        }
+      }
+    })
+    return segment
+  }
+
+  private async getLines() {
+    const { columns, lines } = await this.readSeg()
+
+    return lines.map((line, index) => {
+      const segment = this.parseLine(line, columns)
+      return new SimpleFeature({
+        uniqueId: segment.id,
+        id: segment.id,
+        start: +segment.start,
+        end: +segment.end,
+        refName: segment.chromosome,
+        score: +segment.score,
+        ...segment,
       })
+    })
   }
 
   private async setup() {
@@ -53,26 +102,8 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     return this.setupP
   }
 
-  private async determineRefNamesFromFile() {
-    const segLocation = readConfObject(
-      this.config,
-      'segLocation',
-    ) as FileLocation
-    const lines = (await openLocation(segLocation).readFile('utf8')) as string
-
-    let refNames = lines
-      .split('\n')
-      .slice(1)
-      .filter(f => !!f)
-      .map(line => {
-        return line.split('\t')[1]
-      })
-
-    return Array.from(new Set(refNames))
-  }
-
   public async getRefNames(_: BaseOptions = {}) {
-    const refNames = await this.determineRefNamesFromFile()
+    const { refNames } = await this.readSeg()
     return refNames
   }
 

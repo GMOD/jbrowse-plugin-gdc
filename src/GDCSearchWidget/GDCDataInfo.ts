@@ -12,6 +12,16 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
+    'tsv-Copy Number Variation',
+    {
+      config: {
+        type: 'QuantitativeTrack',
+        adapter: { type: 'SegmentCNVAdapter' },
+      },
+      prefix: 'seg',
+    },
+  ],
+  [
     'bam-Sequencing Reads',
     {
       config: { type: 'AlignmentsTrack', adapter: { type: 'BamAdapter' } },
