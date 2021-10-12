@@ -32,23 +32,25 @@ Array [
 exports[`adapter can fetch features from segments.txt 2`] = `
 Array [
   Object {
-    "end": 137168,
+    "chromosome": "3",
+    "end": "137168",
     "id": "0e867d2c-937c-4705-afec-c5aef316c2ba",
-    "mean": 0.0633,
-    "nprobes": 105,
+    "num_probes": "105",
     "refName": "3",
     "score": 0.0633,
-    "start": 20930,
+    "segment_mean": "0.0633",
+    "start": "20930",
     "uniqueId": "0e867d2c-937c-4705-afec-c5aef316c2ba",
   },
   Object {
-    "end": 1247886,
+    "chromosome": "3",
+    "end": "1247886",
     "id": "0e867d2c-937c-4705-afec-c5aef316c2ba",
-    "mean": -0.0747,
-    "nprobes": 916,
+    "num_probes": "916",
     "refName": "3",
     "score": -0.0747,
-    "start": 137844,
+    "segment_mean": "-0.0747",
+    "start": "137844",
     "uniqueId": "0e867d2c-937c-4705-afec-c5aef316c2ba",
   },
 ]
