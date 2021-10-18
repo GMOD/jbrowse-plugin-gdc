@@ -11,11 +11,11 @@ const inWebWorker = typeof sessionStorage === 'undefined'
 const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
   return types
     .compose(
-      'GDCInternetAccount',
+      'ExternalTokenInternetAccount',
       InternetAccount,
       types.model({
         id: 'GDCToken',
-        type: types.literal('GDCInternetAccount'),
+        type: types.literal('ExternalTokenInternetAccount'),
         configuration: ConfigurationReference(configSchema),
       }),
     )
@@ -27,7 +27,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         return getConf(self, 'authHeader') || 'Authorization'
       },
       get internetAccountType() {
-        return 'GDCInternetAccount'
+        return 'ExternalTokenInternetAccount'
       },
       handlesLocation(location: UriLocation): boolean {
         // this will probably look at something in the config which indicates that it is an OAuth pathway,

@@ -65,11 +65,11 @@ export default function LoginDialogue({
   const [token, setToken] = useState('')
   const classes = useStyles()
 
-  // const handleLogin = () => {
-  //   setAuthErrorMessage(false)
-  //   setTokenStored(true)
-  //   handleClose()
-  // }
+  const handleLogin = (token: string) => {
+    setAuthErrorMessage(false)
+    setTokenStored(true)
+    handleClose(token)
+  }
 
   return (
     <Dialog open onClose={() => handleClose()} maxWidth="sm">
@@ -119,7 +119,7 @@ export default function LoginDialogue({
                   variant="contained"
                   size="large"
                   onClick={() => {
-                    handleClose(token)
+                    handleLogin(token)
                   }}
                 >
                   Login

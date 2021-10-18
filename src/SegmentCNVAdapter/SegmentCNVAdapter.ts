@@ -8,6 +8,8 @@ import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import SimpleFeature, { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
+import PluginManager from '@jbrowse/core/PluginManager'
+import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 
 export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
@@ -16,8 +18,13 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
 
   private setupP?: Promise<Feature[]>
 
-  public constructor(config: AnyConfigurationModel) {
-    super(config)
+  public constructor(
+    config: AnyConfigurationModel,
+    getSubAdapter?: getSubAdapterType,
+    pluginManager?: PluginManager,
+  ) {
+    // @ts-ignore
+    super(config, getSubAdapter, pluginManager)
     this.config = config
   }
 
@@ -26,9 +33,11 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
       this.config,
       'segLocation',
     ) as FileLocation
-    const fileContents = (await openLocation(segLocation).readFile(
-      'utf8',
-    )) as string
+    const fileContents = (await openLocation(
+      segLocation,
+      // @ts-ignore
+      this.pluginManager,
+    ).readFile('utf8')) as string
     const lines = fileContents.split('\n')
     const refNames: string[] = []
     const rows: string[] = []

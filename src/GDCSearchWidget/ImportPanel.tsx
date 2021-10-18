@@ -21,7 +21,7 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import AddIcon from '@material-ui/icons/Add'
 import InfoIcon from '@material-ui/icons/Info'
-import LoginDialogue from './LoginDialogue'
+import LoginDialogue from '../GDCInternetAccount/LoginDialogue'
 import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
@@ -262,42 +262,32 @@ const Panel = ({ model }: { model: any }) => {
    * @returns the type of the file that coordinates with the keys in GDCDataInfo
    */
   function determineFileType(fileName: string) {
-    let type = ''
     const fileNameArray = fileName.split('.')
+
+    if (fileName.includes('Methylation')) {
+      return 'txt-DNA Methylation'
+    }
 
     for (const e of fileNameArray) {
       switch (e) {
         case 'seg':
-          type = 'txt-Copy Number Variation'
-          break
+          return 'txt-Copy Number Variation'
         case 'vcf':
-          type = 'vcf-Simple Nucleotide Variation'
-          break
+          return 'vcf-Simple Nucleotide Variation'
         case 'maf':
-          type = 'maf-Simple Nucleotide Variation'
-          break
+          return 'maf-Simple Nucleotide Variation'
         case 'txt':
-          type = 'txt-Transcriptome Profiling'
-          break
+          return 'txt-Transcriptome Profiling'
         case 'tsv':
-          type = 'tsv-Transcriptome Profiling'
-          break
+          return 'tsv-Transcriptome Profiling'
         case 'json':
-          type = 'json'
-          break
+          return 'json'
         case 'bedpe':
-          type = 'bedpe'
-          break
-        default:
-          break
+          return 'bedpe'
       }
     }
 
-    if (fileName.includes('Methylation')) {
-      type = 'txt-DNA Methylation'
-    }
-
-    return type
+    return ''
   }
 
   function resetErrorMessages() {
@@ -470,7 +460,7 @@ const Panel = ({ model }: { model: any }) => {
   })
 
   function processExplorationURI(uri: string, source?: string) {
-    let featureType = uri.split('facetTab=')[1]
+    let featureType = uri.split('searchTableTab=')[1]
     if (featureType !== undefined) {
       featureType = featureType.split('&filters=')[0].slice(0, -1)
     }
@@ -484,12 +474,20 @@ const Panel = ({ model }: { model: any }) => {
       )
       featureType = 'mutation'
     }
-    let filters = decodeURIComponent(
-      uri
-        .split('&facetTab=')[0]
-        .split('/')[3]
-        .split('filters=')[1],
-    )
+
+    let filters = ''
+    if (uri.includes('facetTab')) {
+      filters = uri.split('facetTab=')[1]
+    }
+    if (uri.includes('searchTableTab')) {
+      if (filters) {
+        filters = filters.split('searchTableTab=')[1]
+      } else {
+        filters = uri.split('searchTableTab=')[1]
+      }
+    }
+
+    filters = decodeURIComponent(filters.split('filters=')[1])
 
     if (filters == 'undefined') {
       filters = '{}'
@@ -515,7 +513,7 @@ const Panel = ({ model }: { model: any }) => {
       // @ts-ignore
       let query = inputRef ? inputRef.current.value : undefined
 
-      if (query.includes('exploration?')) {
+      if (query.includes('exploration')) {
         processExplorationURI(query)
       } else if (!query) {
         setTrackErrorMessage(
@@ -603,16 +601,16 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    session.setDialogComponent(TipDialogue)
+                    // session.setDialogComponent(TipDialogue)
                     // @ts-ignore
-                    // session.queueDialog((doneCallback: Function) => [
-                    //   TipDialogue,
-                    //   {
-                    //     handleClose: () => {
-                    //       doneCallback()
-                    //     },
-                    //   },
-                    // ])
+                    session.queueDialog((doneCallback: Function) => [
+                      TipDialogue,
+                      {
+                        handleClose: () => {
+                          doneCallback()
+                        },
+                      },
+                    ])
                   }}
                 >
                   <b>Learn More</b>
@@ -652,9 +650,9 @@ const Panel = ({ model }: { model: any }) => {
         {authErrorMessage ? (
           <Alert severity="error">{authErrorMessage}</Alert>
         ) : null}
-        <Alert severity="info">
+        {/* <Alert severity="info">
           Controlled resources are not currently available.
-        </Alert>
+        </Alert> */}
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
             <Typography variant="body1">
@@ -666,20 +664,21 @@ const Panel = ({ model }: { model: any }) => {
               color="primary"
               variant="contained"
               size="small"
-              disabled
+              // disabled
               startIcon={<ExitToApp />}
               onClick={() => {
                 // @ts-ignore
-                // session.queueDialog((doneCallback: Function) => [
-                //   LoginDialogue,
-                //   {
-                //     setTokenStored,
-                //     setAuthErrorMessage,
-                //     handleClose: () => {
-                //       doneCallback()
-                //     },
-                //   },
-                // ])
+                session.queueDialog((doneCallback: Function) => [
+                  LoginDialogue,
+                  {
+                    setTokenStored,
+                    setAuthErrorMessage,
+                    handleClose: (token: string) => {
+                      sessionStorage.setItem(`GDCExternalToken-token`, token)
+                      doneCallback()
+                    },
+                  },
+                ])
               }}
             >
               Login
