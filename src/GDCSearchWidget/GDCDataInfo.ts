@@ -12,6 +12,16 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
+    'tsv-Copy Number Variation',
+    {
+      config: {
+        type: 'QuantitativeTrack',
+        adapter: { type: 'SegmentCNVAdapter' },
+      },
+      prefix: 'seg',
+    },
+  ],
+  [
     'bam-Sequencing Reads',
     {
       config: { type: 'AlignmentsTrack', adapter: { type: 'BamAdapter' } },
@@ -95,7 +105,10 @@ export function mapDataInfo(
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCExternalToken-token')
 
-  if (!token) token = ''
+  if (!token) {
+    token = ''
+    window.sessionStorage.setItem('GDCExternalToken-token', 'undefined')
+  }
 
   if (configObject) {
     //@ts-ignore

@@ -10,6 +10,7 @@ import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import PluginManager from '@jbrowse/core/PluginManager'
+import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 
 /**
  * Isoform Expression Quantification Adapter
@@ -23,10 +24,11 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
 
   public constructor(
     config: AnyConfigurationModel,
-    pluginManager: PluginManager,
+    getSubAdapter?: getSubAdapterType,
+    pluginManager?: PluginManager,
   ) {
     // @ts-ignore
-    super(config, pluginManager)
+    super(config, getSubAdapter, pluginManager)
     this.config = config
   }
 
@@ -46,7 +48,6 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
     let columns: string[] = []
     lines.forEach(line => {
       if (line) {
-        // miRNA_ID	isoform_coords	read_count	reads_per_million_miRNA_mapped	cross-mapped	miRNA_region
         if (columns.length === 0) {
           columns = line.split('\t')
         } else {
@@ -63,8 +64,6 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
 
   private parseCoords(property: string) {
     const splitProperty = property.split(':')
-    //hg38:chr9:94175961-94175982:+
-
     return {
       chromosome: splitProperty[1],
       start: splitProperty[2].split('-')[0],

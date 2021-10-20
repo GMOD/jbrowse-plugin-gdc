@@ -41,6 +41,26 @@
   ],
   "tracks": [
     {
+      "type": "FeatureTrack",
+      "trackId": "ncbi_refseq_109_hg38_latest",
+      "name": "NCBI RefSeq (GFF3Tabix)",
+      "assemblyNames": ["hg38"],
+      "category": ["Annotation"],
+      "adapter": {
+        "type": "Gff3TabixAdapter",
+        "gffGzLocation": {
+          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/ncbi_refseq/GRCh38_latest_genomic.sort.gff.gz",
+          "locationType": "UriLocation"
+        },
+        "index": {
+          "location": {
+            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/ncbi_refseq/GRCh38_latest_genomic.sort.gff.gz.tbi",
+            "locationType": "UriLocation"
+          }
+        }
+      }
+    },
+    {
       "type": "GDCTrack",
       "trackId": "gdc_plugin_track",
       "name": "GDC Explore",
@@ -170,7 +190,7 @@
   },
   "internetAccounts": [
     {
-      "type": "ExternalTokenInternetAccount",
+      "type": "GDCInternetAccount",
       "internetAccountId": "GDCExternalToken",
       "name": "GDC",
       "description": "GDC External Token",
@@ -178,6 +198,43 @@
       "authHeader": "X-Auth-Token",
       "origin": "GDC",
       "customEndpoint": "http://localhost:8010/proxy"
+    }
+  ],
+
+  "aggregateTextSearchAdapters": [
+    {
+      "type": "TrixTextSearchAdapter",
+      "textSearchAdapterId": "hg19-index",
+      "ixFilePath": {
+        "uri": "https://jbrowse.org/genomes/hg19/trix/hg19.ix",
+        "locationType": "UriLocation"
+      },
+      "ixxFilePath": {
+        "uri": "https://jbrowse.org/genomes/hg19/trix/hg19.ixx",
+        "locationType": "UriLocation"
+      },
+      "metaFilePath": {
+        "uri": "https://jbrowse.org/genomes/hg19/trix/meta.json",
+        "locationType": "UriLocation"
+      },
+      "assemblyNames": ["hg19"]
+    },
+    {
+      "type": "TrixTextSearchAdapter",
+      "textSearchAdapterId": "hg38-index",
+      "ixFilePath": {
+        "uri": "https://jbrowse.org/genomes/GRCh38/trix/hg38.ix",
+        "locationType": "UriLocation"
+      },
+      "ixxFilePath": {
+        "uri": "https://jbrowse.org/genomes/GRCh38/trix/hg38.ixx",
+        "locationType": "UriLocation"
+      },
+      "metaFilePath": {
+        "uri": "https://jbrowse.org/genomes/GRCh38/trix/meta.json",
+        "locationType": "UriLocation"
+      },
+      "assemblyNames": ["hg38"]
     }
   ]
 }

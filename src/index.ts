@@ -2,6 +2,7 @@ import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import PluginManager from '@jbrowse/core/PluginManager'
 import Plugin from '@jbrowse/core/Plugin'
 import DisplayType from '@jbrowse/core/pluggableElementTypes/DisplayType'
+import InternetAccountType from '@jbrowse/core/pluggableElementTypes/InternetAccountType'
 import {
   createBaseTrackConfig,
   createBaseTrackModel,
@@ -13,7 +14,7 @@ import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 //   getFileName,
 //   TrackTypeGuesser,
 // } from '@jbrowse/core/util/tracks'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import { DataExploration } from './UI/Icons'
 import { version } from '../package.json'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
@@ -42,8 +43,10 @@ import {
   AdapterClass as IeqAdapter,
 } from './IEQAdapter'
 
-import GDCInternetAccountConfigSchema from './GDCInternetAccount/configSchema'
-import GDCInternetAccountModel from './GDCInternetAccount/model'
+import {
+  configSchema as GDCInternetAccountConfigSchema,
+  modelFactory as GDCInternetAccountModelFactory,
+} from './GDCInternetAccount'
 
 async function fetchFileInfo(query: any) {
   const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
@@ -68,6 +71,7 @@ export default class GDCPlugin extends Plugin {
     const WidgetType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
     // const InternetAccountType =
+    //   // @ts-ignore
     //   pluginManager.lib[
     //     '@jbrowse/core/pluggableElementTypes/InternetAccountType'
     //   ]
@@ -105,7 +109,6 @@ export default class GDCPlugin extends Plugin {
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
           // adapterCategoryHeader,
-          // @ts-ignore
           AdapterClass: MafAdapter,
         }),
     )
@@ -409,21 +412,22 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
-    // pluginManager.addInternetAccountType(
-    //   () =>
-    //     new InternetAccountType({
-    //       name: 'GDCInternetAccount',
-    //       configSchema: GDCInternetAccountConfigSchema,
-    //       stateModel: GDCInternetAccountModel,
-    //     }),
-    // )
+    pluginManager.addInternetAccountType(() => {
+      return new InternetAccountType({
+        name: 'GDCInternetAccount',
+        configSchema: GDCInternetAccountConfigSchema,
+        stateModel: GDCInternetAccountModelFactory(
+          GDCInternetAccountConfigSchema,
+        ),
+      })
+    })
   }
 
   configure(pluginManager: PluginManager) {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
-      pluginManager.rootModel.appendToMenu('File', {
-        label: 'Add GDC data',
-        icon: CloudUploadIcon,
+      pluginManager.rootModel.appendToMenu('Tools', {
+        label: 'GDC Data Import',
+        icon: DataExploration,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(
             session.addWidget('GDCSearchWidget', 'gdcSearchWidget'),

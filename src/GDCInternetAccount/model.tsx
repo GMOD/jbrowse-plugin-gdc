@@ -3,7 +3,7 @@ import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
 import { UriLocation } from '@jbrowse/core/util/types'
 import { GDCInternetAccountConfigModel } from './configSchema'
 import { Instance, types, getParent } from 'mobx-state-tree'
-import { RemoteFile } from 'generic-filehandle'
+import { RemoteFileWithRangeCache } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
 
 const inWebWorker = typeof sessionStorage === 'undefined'
@@ -162,7 +162,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         openLocation(location: UriLocation) {
           preAuthInfo =
             location.internetAccountPreAuthorization || self.generateAuthInfo()
-          return new RemoteFile(String(location.uri), {
+          return new RemoteFileWithRangeCache(String(location.uri), {
             fetch: this.getFetcher,
           })
         },
