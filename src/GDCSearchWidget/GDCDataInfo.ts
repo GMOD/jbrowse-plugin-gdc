@@ -105,7 +105,10 @@ export function mapDataInfo(
   const configObject = mapToAdapter.get(category)
   let token = window.sessionStorage.getItem('GDCExternalToken-token')
 
-  if (!token) token = ''
+  if (!token) {
+    token = ''
+    window.sessionStorage.setItem('GDCExternalToken-token', 'undefined')
+  }
 
   if (configObject) {
     //@ts-ignore

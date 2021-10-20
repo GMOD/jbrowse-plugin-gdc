@@ -601,7 +601,6 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    // session.setDialogComponent(TipDialogue)
                     // @ts-ignore
                     session.queueDialog((doneCallback: Function) => [
                       TipDialogue,
@@ -650,9 +649,6 @@ const Panel = ({ model }: { model: any }) => {
         {authErrorMessage ? (
           <Alert severity="error">{authErrorMessage}</Alert>
         ) : null}
-        {/* <Alert severity="info">
-          Controlled resources are not currently available.
-        </Alert> */}
         <div className={classes.loginPromptContainer}>
           <div className={classes.typoContainer}>
             <Typography variant="body1">
@@ -674,7 +670,12 @@ const Panel = ({ model }: { model: any }) => {
                     setTokenStored,
                     setAuthErrorMessage,
                     handleClose: (token: string) => {
-                      sessionStorage.setItem(`GDCExternalToken-token`, token)
+                      if (
+                        !sessionStorage.getItem(`GDCExternalToken-token`) ||
+                        token !== undefined
+                      ) {
+                        sessionStorage.setItem(`GDCExternalToken-token`, token)
+                      }
                       doneCallback()
                     },
                   },

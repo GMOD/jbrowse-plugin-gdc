@@ -3,7 +3,7 @@ import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
 import { UriLocation } from '@jbrowse/core/util/types'
 import { GDCInternetAccountConfigModel } from './configSchema'
 import { Instance, types, getParent } from 'mobx-state-tree'
-import { RemoteFile } from 'generic-filehandle'
+import { RemoteFileWithRangeCache } from '@jbrowse/core/util/io'
 import LoginDialogue from './LoginDialogue'
 
 const inWebWorker = typeof sessionStorage === 'undefined'
@@ -11,11 +11,11 @@ const inWebWorker = typeof sessionStorage === 'undefined'
 const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
   return types
     .compose(
-      'ExternalTokenInternetAccount',
+      'GDCInternetAccount',
       InternetAccount,
       types.model({
         id: 'GDCToken',
-        type: types.literal('ExternalTokenInternetAccount'),
+        type: types.literal('GDCInternetAccount'),
         configuration: ConfigurationReference(configSchema),
       }),
     )
@@ -27,7 +27,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         return getConf(self, 'authHeader') || 'Authorization'
       },
       get internetAccountType() {
-        return 'ExternalTokenInternetAccount'
+        return 'GDCInternetAccount'
       },
       handlesLocation(location: UriLocation): boolean {
         // this will probably look at something in the config which indicates that it is an OAuth pathway,
@@ -162,7 +162,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         openLocation(location: UriLocation) {
           preAuthInfo =
             location.internetAccountPreAuthorization || self.generateAuthInfo()
-          return new RemoteFile(String(location.uri), {
+          return new RemoteFileWithRangeCache(String(location.uri), {
             fetch: this.getFetcher,
           })
         },

@@ -85,12 +85,9 @@ export default function LoginDialogue({
       <DialogContent>
         <div className={classes.root}>
           <div className={classes.paper}>
-            <div className={classes.imgContainer}>
-              <img
-                className={classes.img}
-                src="https://me-pedia.org/images/2/2b/NIH_logo.png"
-              ></img>
-            </div>
+            <Typography variant="h4" align="center">
+              GDC Data Portal
+            </Typography>
             <div className={classes.helperTextContainer}>
               <Typography variant="h6" component="h1" align="center">
                 Login to access controlled data
