@@ -9,6 +9,6 @@ export default (jbrowse: PluginManager) => {
     configSchema: ConfigurationSchema('GDCSearchWidget', {}),
     ReactComponent,
     stateModel: jbrowse.load(ImportPanelModel),
-    HeadingComponent: () => <>GDC Data import</>,
+    HeadingComponent: () => <>GDC Data Import</>,
   }
 }

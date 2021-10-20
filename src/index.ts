@@ -425,8 +425,8 @@ export default class GDCPlugin extends Plugin {
 
   configure(pluginManager: PluginManager) {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
-      pluginManager.rootModel.appendToMenu('File', {
-        label: 'Add GDC data',
+      pluginManager.rootModel.appendToMenu('Tools', {
+        label: 'GDC Data Import',
         icon: DataExploration,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(
