@@ -8,12 +8,15 @@ import {
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
-// import { FileLocation } from '@jbrowse/core/util/types'
-// import {
-//   AdapterGuesser,
-//   getFileName,
-//   TrackTypeGuesser,
-// } from '@jbrowse/core/util/tracks'
+import { FileLocation } from '@jbrowse/core/util/types'
+import {
+  // @ts-ignore
+  AdapterGuesser,
+  // @ts-ignore
+  getFileName,
+  // @ts-ignore
+  TrackTypeGuesser,
+} from '@jbrowse/core/util/tracks'
 import { DataExploration } from './UI/Icons'
 import { version } from '../package.json'
 
@@ -70,11 +73,6 @@ export default class GDCPlugin extends Plugin {
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
     const WidgetType =
       pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
-    // const InternetAccountType =
-    //   // @ts-ignore
-    //   pluginManager.lib[
-    //     '@jbrowse/core/pluggableElementTypes/InternetAccountType'
-    //   ]
     const LGVPlugin = pluginManager.getPlugin(
       'LinearGenomeViewPlugin',
     ) as import('@jbrowse/plugin-linear-genome-view').default
@@ -87,7 +85,13 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
-          // excludeFromTrackSelector: true,
+          // @ts-ignore
+          adapterMetadata: {
+            category: null,
+            hiddenFromGUI: true,
+            displayName: null,
+            description: null,
+          },
           AdapterClass: GDCAdapterClass,
         }),
     )
@@ -97,10 +101,38 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MbvAdapter',
           configSchema: mbvConfigSchema,
-          // adapterCategoryHeader,
+          // @ts-ignore
+          adapterMetadata: {
+            category: adapterCategoryHeader,
+            hiddenFromGUI: false,
+            displayName: 'Methylation Beta Value Adapter',
+            description: '',
+          },
           // @ts-ignore
           AdapterClass: MbvAdapter,
         }),
+    )
+
+    pluginManager.addToExtensionPoint(
+      'Core-guessAdapterForLocation',
+      (adapterGuesser: AdapterGuesser) => {
+        return (
+          file: FileLocation,
+          index?: FileLocation,
+          adapterHint?: string,
+        ) => {
+          const adapterName = 'MbvAdapter'
+          const displayName = 'Methylation Beta Value Adapter'
+
+          if (adapterHint === adapterName) {
+            return {
+              type: adapterName,
+              ieqLocation: file,
+            }
+          }
+          return adapterGuesser(file, index, adapterHint)
+        }
+      },
     )
 
     pluginManager.addAdapterType(
@@ -108,190 +140,154 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
-          // adapterCategoryHeader,
+          // @ts-ignore
+          adapterMetadata: {
+            category: adapterCategoryHeader,
+            hiddenFromGUI: false,
+            displayName: null,
+            description: '',
+          },
           AdapterClass: MafAdapter,
         }),
     )
 
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessAdapter',
-    //   (adapterGuesser: AdapterGuesser) => {
-    //     return async (
-    //       file: FileLocation,
-    //       index?: FileLocation,
-    //       adapterHint?: string,
-    //     ) => {
-    //       const regexGuess = /\.maf$/i
-    //       const adapterName = 'MafAdapter'
-    //       const fileName = getFileName(file)
+    pluginManager.addToExtensionPoint(
+      'Core-guessAdapterForLocation',
+      (adapterGuesser: AdapterGuesser) => {
+        return (
+          file: FileLocation,
+          index?: FileLocation,
+          adapterHint?: string,
+        ) => {
+          const regexGuess = /\.maf$/i
+          const adapterName = 'MafAdapter'
+          const fileName = getFileName(file)
 
-    //       //TODO: test this
-    //       if (fileName.includes('files/')) {
-    //         const query = fileName.split('/')[4]
-    //         const response = await fetchFileInfo(query)
-    //         const dataFormat = response.data.data_format
-    //         const dataCategory = response.data.data_category
-    //         if (
-    //           (dataFormat.toLowerCase() === 'maf' &&
-    //             dataCategory === 'Simple Nucleotide Variation') ||
-    //           regexGuess.test(fileName) ||
-    //           adapterHint === adapterName
-    //         ) {
-    //           return {
-    //             type: adapterName,
-    //             mafLocation: file,
-    //           }
-    //         }
-    //       }
+          if (regexGuess.test(fileName) || adapterHint === adapterName) {
+            return {
+              type: adapterName,
+              mafLocation: file,
+            }
+          }
+          return adapterGuesser(file, index, adapterHint)
+        }
+      },
+    )
 
-    //       if (regexGuess.test(fileName) || adapterHint === adapterName) {
-    //         return {
-    //           type: adapterName,
-    //           mafLocation: file,
-    //         }
-    //       }
-    //       return adapterGuesser(file, index)
-    //     }
-    //   },
-    // )
-
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessTrackType',
-    //   (trackTypeGuesser: TrackTypeGuesser) => {
-    //     return (adapterName: string) => {
-    //       if (adapterName === 'MafAdapter') {
-    //         return 'VariantTrack' // TODO: This may need to be changed to be a special track type for MAF to utilize the renderer and display
-    //       }
-    //       return trackTypeGuesser(adapterName)
-    //     }
-    //   },
-    // )
+    pluginManager.addToExtensionPoint(
+      'Core-guessTrackTypeForLocation',
+      (trackTypeGuesser: TrackTypeGuesser) => {
+        return (adapterName: string) => {
+          if (adapterName === 'MafAdapter') {
+            return 'MAFTrack'
+          }
+          return trackTypeGuesser(adapterName)
+        }
+      },
+    )
 
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
-          // adapterCategoryHeader,
+          // @ts-ignore
+          adapterMetadata: {
+            category: adapterCategoryHeader,
+            hiddenFromGUI: false,
+            displayName: 'Isoform Expression Quantification Adapter',
+            description: '',
+          },
           // @ts-ignore
           AdapterClass: IeqAdapter,
         }),
     )
 
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessAdapter',
-    //   (adapterGuesser: AdapterGuesser) => {
-    //     return async (
-    //       file: FileLocation,
-    //       index?: FileLocation,
-    //       adapterHint?: string,
-    //     ) => {
-    //       const adapterName = 'IeqAdapter'
-    //       const fileName = getFileName(file)
+    pluginManager.addToExtensionPoint(
+      'Core-guessAdapterForLocation',
+      (adapterGuesser: AdapterGuesser) => {
+        return (
+          file: FileLocation,
+          index?: FileLocation,
+          adapterHint?: string,
+        ) => {
+          const adapterName = 'IeqAdapter'
+          const displayName = 'Isoform Expression Quantification Adapter'
 
-    //       //TODO: test this
-    //       if (fileName.includes('files/')) {
-    //         const query = fileName.split('/')[4]
-    //         const response = await fetchFileInfo(query)
-    //         const dataFormat = response.data.data_format
-    //         const dataCategory = response.data.data_category
-    //         if (
-    //           (dataFormat.toLowerCase() === 'txt' &&
-    //             dataCategory === 'Transcriptome Profiling') ||
-    //           adapterHint === adapterName
-    //         ) {
-    //           return {
-    //             type: adapterName,
-    //             ieqLocation: file,
-    //           }
-    //         }
-    //       }
+          if (adapterHint === adapterName) {
+            return {
+              type: adapterName,
+              ieqLocation: file,
+            }
+          }
+          return adapterGuesser(file, index, adapterHint)
+        }
+      },
+    )
 
-    //       if (adapterHint === adapterName) {
-    //         return {
-    //           type: adapterName,
-    //           ieqLocation: file,
-    //         }
-    //       }
-    //       return adapterGuesser(file, index)
-    //     }
-    //   },
-    // )
-
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessTrackType',
-    //   (trackTypeGuesser: TrackTypeGuesser) => {
-    //     return (adapterName: string) => {
-    //       if (adapterName === 'IeqAdapter') {
-    //         return 'ReferenceSequenceTrack' // TODO: This may need to be changed to be a special track type for IEQ to utilize the renderer and display
-    //       }
-    //       return trackTypeGuesser(adapterName)
-    //     }
-    //   },
-    // )
+    pluginManager.addToExtensionPoint(
+      'Core-guessTrackTypeForLocation',
+      (trackTypeGuesser: TrackTypeGuesser) => {
+        return (adapterName: string) => {
+          if (adapterName === 'IeqAdapter') {
+            return 'IEQTrack'
+          }
+          return trackTypeGuesser(adapterName)
+        }
+      },
+    )
 
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
           name: 'SegmentCNVAdapter',
           configSchema: segmentCnvConfigSchema,
-          // adapterCategoryHeader,
+          // @ts-ignore
+          adapterMetadata: {
+            category: adapterCategoryHeader,
+            hiddenFromGUI: false,
+            displayName: 'Segment Copy Number Variation Adapter',
+            description: '',
+          },
           AdapterClass: SegmentCNVAdapter,
         }),
     )
 
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessAdapter',
-    //   (adapterGuesser: AdapterGuesser) => {
-    //     return async (
-    //       file: FileLocation,
-    //       index?: FileLocation,
-    //       adapterHint?: string,
-    //     ) => {
-    //       const regexGuess = /\.seg$/i
-    //       const adapterName = 'SegmentCNVAdapter'
-    //       const fileName = getFileName(file)
+    pluginManager.addToExtensionPoint(
+      'Core-guessAdapterForLocation',
+      (adapterGuesser: AdapterGuesser) => {
+        return (
+          file: FileLocation,
+          index?: FileLocation,
+          adapterHint?: string,
+        ) => {
+          const regexGuess = /\.seg$/i
+          const adapterName = 'SegmentCNVAdapter'
+          const displayName = 'Segment Copy Number Variation Adapter'
+          const fileName = getFileName(file)
 
-    //       //TODO: test this
-    //       if (fileName.includes('files/')) {
-    //         const query = fileName.split('/')[4]
-    //         const response = await fetchFileInfo(query)
-    //         const dataFormat = response.data.data_format
-    //         const dataCategory = response.data.data_category
-    //         if (
-    //           (dataFormat.toLowerCase() === 'seg' &&
-    //             dataCategory === 'Copy Number Variation') ||
-    //           adapterHint === adapterName
-    //         ) {
-    //           return {
-    //             type: adapterName,
-    //             ieqLocation: file,
-    //           }
-    //         }
-    //       }
-    //       //TODO: Add in here, query the file on the GDC and get its config to guess the adapter
-    //       if (regexGuess.test(fileName) || adapterHint === adapterName) {
-    //         return {
-    //           type: adapterName,
-    //           segLocation: file,
-    //         }
-    //       }
-    //       return adapterGuesser(file, index)
-    //     }
-    //   },
-    // )
+          if (regexGuess.test(fileName) || adapterHint === adapterName) {
+            return {
+              type: adapterName,
+              segLocation: file,
+            }
+          }
+          return adapterGuesser(file, index, adapterHint)
+        }
+      },
+    )
 
-    // pluginManager.addToExtensionPoint(
-    //   'extendGuessTrackType',
-    //   (trackTypeGuesser: TrackTypeGuesser) => {
-    //     return (adapterName: string) => {
-    //       if (adapterName === 'SegmentCNVAdapter') {
-    //         return 'QuantitativeTrack' // TODO: This may need to be changed to be a special track type for IEQ to utilize the renderer and display
-    //       }
-    //       return trackTypeGuesser(adapterName)
-    //     }
-    //   },
-    // )
+    pluginManager.addToExtensionPoint(
+      'Core-guessTrackTypeForLocation',
+      (trackTypeGuesser: TrackTypeGuesser) => {
+        return (adapterName: string) => {
+          if (adapterName === 'SegmentCNVAdapter') {
+            return 'QuantitativeTrack'
+          }
+          return trackTypeGuesser(adapterName)
+        }
+      },
+    )
 
     pluginManager.addTrackType(() => {
       const configSchema = ConfigurationSchema(

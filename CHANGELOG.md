@@ -1,3 +1,9 @@
+# v2.1.0
+
+- Moves the widget to the 'Tools' menu with a new label 'GDC Data Import' and new icon
+- Incorporates authentication into GDC, controlled resources are now available to fetch and render
+- Adds new extension point logic to GDC adapters
+
 # v2.0.0
 
 - Adds new 'Add GDC Data' widget to the File menu which enables use of GDC files and resources

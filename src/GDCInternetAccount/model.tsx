@@ -30,8 +30,6 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         return 'GDCInternetAccount'
       },
       handlesLocation(location: UriLocation): boolean {
-        // this will probably look at something in the config which indicates that it is an OAuth pathway,
-        // also look at location, if location is set to need authentication it would reutrn true
         const validDomains = self.accountConfig.validDomains || []
         return validDomains.some((domain: string) =>
           location?.uri.includes(domain),
@@ -88,34 +86,36 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
             (!inWebWorker
               ? sessionStorage.getItem(`${self.internetAccountId}-token`)
               : null)
-          if (!token) {
-            if (!openLocationPromise) {
-              openLocationPromise = new Promise(async (r, x) => {
-                // we only need to open the dialog if this resource requires a token
-                if (self.needsToken) {
+          if (!token || token === 'undefined') {
+            if (self.needsToken) {
+              if (!openLocationPromise) {
+                openLocationPromise = new Promise(async (r, x) => {
+                  // we only need to open the dialog if this resource requires a token
                   const { session } = getParent(self, 2)
                   session.queueDialog((doneCallback: Function) => [
                     LoginDialogue,
                     {
-                      internetAccountId: self.internetAccountId,
+                      setTokenStored: (param: any) => {},
+                      setAuthErrorMessage: (param: any) => {},
                       handleClose: (token: string) => {
                         this.handleClose(token)
                         doneCallback()
                       },
                     },
                   ])
-                }
-                resolve = r
-                reject = x
-              })
+                  resolve = r
+                  reject = x
+                })
+              }
+              token = await openLocationPromise
+            } else {
+              token = 'undefined'
+              this.handleClose(token)
             }
-            token = await openLocationPromise
           }
 
-          if (!preAuthInfo?.authInfo?.token) {
-            preAuthInfo = self.generateAuthInfo()
-            preAuthInfo.authInfo.token = token
-          }
+          preAuthInfo = self.generateAuthInfo()
+          preAuthInfo.authInfo.token = token
           resolve()
           openLocationPromise = undefined
           return token
@@ -160,9 +160,14 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           })
         },
         openLocation(location: UriLocation) {
+          let query = location.uri
+          if (location.uri.includes('files/')) {
+            query = location.uri.split('/')[4]
+          }
+          const uri = `${self.accountConfig.customEndpoint}/data/${query}`
           preAuthInfo =
             location.internetAccountPreAuthorization || self.generateAuthInfo()
-          return new RemoteFileWithRangeCache(String(location.uri), {
+          return new RemoteFileWithRangeCache(String(uri), {
             fetch: this.getFetcher,
           })
         },
