@@ -45,23 +45,15 @@ import {
   configSchema as ieqConfigSchema,
   AdapterClass as IeqAdapter,
 } from './IEQAdapter'
+import {
+  configSchema as sjqConfigSchema,
+  AdapterClass as SjqAdapter,
+} from './SJQAdapter'
 
 import {
   configSchema as GDCInternetAccountConfigSchema,
   modelFactory as GDCInternetAccountModelFactory,
 } from './GDCInternetAccount'
-
-async function fetchFileInfo(query: any) {
-  const response = await fetch(`http://localhost:8010/proxy/files/${query}`, {
-    method: 'GET',
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
-  }
-  return response.json()
-}
-
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
   version = version
@@ -99,6 +91,23 @@ export default class GDCPlugin extends Plugin {
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
+          name: 'SjqAdapter',
+          configSchema: sjqConfigSchema,
+          // @ts-ignore
+          adapterMetadata: {
+            category: adapterCategoryHeader,
+            hiddenFromGUI: false,
+            displayName: 'Splice Junction Quantification Adapter',
+            description: '',
+          },
+          // @ts-ignore
+          AdapterClass: SjqAdapter,
+        }),
+    )
+
+    pluginManager.addAdapterType(
+      () =>
+        new AdapterType({
           name: 'MbvAdapter',
           configSchema: mbvConfigSchema,
           // @ts-ignore
@@ -122,7 +131,6 @@ export default class GDCPlugin extends Plugin {
           adapterHint?: string,
         ) => {
           const adapterName = 'MbvAdapter'
-          const displayName = 'Methylation Beta Value Adapter'
 
           if (adapterHint === adapterName) {
             return {
@@ -212,7 +220,6 @@ export default class GDCPlugin extends Plugin {
           adapterHint?: string,
         ) => {
           const adapterName = 'IeqAdapter'
-          const displayName = 'Isoform Expression Quantification Adapter'
 
           if (adapterHint === adapterName) {
             return {
@@ -263,7 +270,6 @@ export default class GDCPlugin extends Plugin {
         ) => {
           const regexGuess = /\.seg$/i
           const adapterName = 'SegmentCNVAdapter'
-          const displayName = 'Segment Copy Number Variation Adapter'
           const fileName = getFileName(file)
 
           if (regexGuess.test(fileName) || adapterHint === adapterName) {

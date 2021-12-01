@@ -3,6 +3,10 @@
     {
       "name": "GDC",
       "url": "http://localhost:9000/dist/jbrowse-plugin-gdc.umd.development.js"
+    },
+    {
+      "name": "Ideogram",
+      "url": "http://localhost:9080/dist/jbrowse-plugin-ideogram.umd.development.js"
     }
   ],
   "assemblies": [
@@ -15,31 +19,53 @@
         "adapter": {
           "type": "BgzipFastaAdapter",
           "fastaLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz",
-            "locationType": "UriLocation"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz"
           },
           "faiLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai",
-            "locationType": "UriLocation"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai"
           },
           "gziLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi",
-            "locationType": "UriLocation"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi"
           }
+        },
+        "rendering": {
+          "type": "DivSequenceRenderer"
         }
       },
       "refNameAliases": {
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/GRCh38/hg38_aliases.txt",
-            "locationType": "UriLocation"
+            "uri": "https://jbrowse.org/genomes/GRCh38/hg38_aliases.txt"
           }
         }
       }
     }
   ],
   "tracks": [
+    {
+      "type": "FeatureTrack",
+      "trackId": "dbsuper",
+      "name": "dbSUPER adipose enhancers",
+      "assemblyNames": ["hg38"],
+      "adapter": {
+        "type": "BedTabixAdapter",
+        "bedGzLocation": {
+          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/hg19/dbSUPER/adipose_interactions.sorted.bed.gz"
+        },
+        "index": {
+          "location": {
+            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/hg19/dbSUPER/adipose_interactions.sorted.bed.gz.tbi"
+          }
+        }
+      },
+      "displays": [
+        {
+          "type": "LinearArcDisplay",
+          "displayId": "LinearBasicDisplay"
+        }
+      ]
+    },
     {
       "type": "FeatureTrack",
       "trackId": "ncbi_refseq_109_hg38_latest",
@@ -188,6 +214,46 @@
       }
     ]
   },
+  "savedSessions": [
+    {
+      "name": "Human Example (hg38)",
+      "width": 1850,
+      "drawerWidth": 384,
+      "views": [
+        {
+          "id": "MiDMyyWpp",
+          "type": "LinearGenomeView",
+          "width": 800,
+          "displayName": "Arc renderer demo",
+          "trackSelectorType": "hierarchical",
+          "offsetPx": 0,
+          "bpPerPx": 7798.966735482216,
+          "displayedRegions": [
+            {
+              "refName": "1",
+              "start": 0,
+              "end": 186700647,
+              "assemblyName": "hg38"
+            }
+          ],
+          "tracks": [
+            {
+              "type": "BasicTrack",
+              "configuration": "gencode_nclist_hg38",
+              "height": 100
+            },
+            {
+              "type": "BasicTrack",
+              "configuration": "genehancer_ucsc",
+              "height": 100
+            }
+          ],
+          "controlsWidth": 120,
+          "minimumBlockWidth": 20
+        }
+      ]
+    }
+  ],
   "internetAccounts": [
     {
       "type": "GDCInternetAccount",

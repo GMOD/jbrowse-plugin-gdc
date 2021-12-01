@@ -1,62 +1,46 @@
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 
+export interface FileInfo {
+  [key: string]: unknown
+  type: string
+  category: string
+  format: string
+}
+
 const mapToAdapter: Map<string, Object> = new Map([
   [
-    'txt-Copy Number Variation',
-    {
-      config: {
-        type: 'QuantitativeTrack',
-        adapter: { type: 'SegmentCNVAdapter' },
-      },
-      prefix: 'seg',
-    },
-  ],
-  [
-    'tsv-Copy Number Variation',
-    {
-      config: {
-        type: 'QuantitativeTrack',
-        adapter: { type: 'SegmentCNVAdapter' },
-      },
-      prefix: 'seg',
-    },
-  ],
-  [
-    'bam-Sequencing Reads',
+    'bam',
     {
       config: { type: 'AlignmentsTrack', adapter: { type: 'BamAdapter' } },
       prefix: 'bam',
     },
   ],
   [
-    'vcf-Simple Nucleotide Variation',
+    'maf',
+    {
+      config: { type: 'MAFTrack', adapter: { type: 'MafAdapter' } },
+      prefix: 'maf',
+    },
+  ],
+  [
+    'vcf',
     {
       config: { type: 'VariantTrack', adapter: { type: 'VcfAdapter' } },
       prefix: 'vcf',
     },
   ],
   [
-    'maf-Simple Nucleotide Variation',
+    'Copy Number Variation',
     {
       config: {
-        type: 'MAFTrack',
-        adapter: { type: 'MafAdapter' },
+        type: 'QuantitativeTrack',
+        adapter: { type: 'SegmentCNVAdapter' },
       },
-      prefix: 'maf',
+      prefix: 'seg',
     },
   ],
   [
-    'txt-Transcriptome Profiling',
-    {
-      config: {
-        type: 'IEQTrack',
-        adapter: { type: 'IeqAdapter' },
-      },
-      prefix: 'ieq',
-    },
-  ],
-  [
-    'txt-DNA Methylation',
+    'Methylation Beta Value',
     {
       config: {
         type: 'FeatureTrack',
@@ -66,13 +50,24 @@ const mapToAdapter: Map<string, Object> = new Map([
     },
   ],
   [
-    'tsv-Transcriptome Profiling',
+    'Isoform Expression Quantification',
     {
       config: {
         type: 'IEQTrack',
         adapter: { type: 'IeqAdapter' },
       },
       prefix: 'ieq',
+    },
+  ],
+  [
+    'Splice Junction Quantification',
+    {
+      config: {
+        type: 'FeatureTrack',
+        adapter: { type: 'SjqAdapter' },
+        displays: [{ type: 'LinearArcDisplay' }],
+      },
+      prefix: 'sjq',
     },
   ],
   [
@@ -89,20 +84,32 @@ const mapToAdapter: Map<string, Object> = new Map([
   ],
 ])
 
+function getPriorityProperty(fileInfo: FileInfo) {
+  if (mapToAdapter.has(fileInfo.type)) {
+    return fileInfo.type
+  } else if (mapToAdapter.has(fileInfo.category)) {
+    return fileInfo.category
+  } else if (mapToAdapter.has(fileInfo.format)) {
+    return fileInfo.format
+  } else {
+    return ''
+  }
+}
+
 /**
- * maps the data info to an appropriate data adapter
- * @param category the data category of the file
+ * retrieves the config object with appropriate adapter using file info
+ * @param fileInfo an array of the format, category, and type of the file
  * @param uri the uri of the data
  * @param indexFileId the fileId of the index file that the data may require (BAM)
  * @returns an object containing the config type and the adapter object
  */
 export function mapDataInfo(
-  category: string,
+  fileInfo: FileInfo,
   uri?: any,
   indexFileId?: string,
   fileBlob?: any,
 ) {
-  const configObject = mapToAdapter.get(category)
+  const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
   let token = window.sessionStorage.getItem('GDCExternalToken-token')
 
   if (!token) {
