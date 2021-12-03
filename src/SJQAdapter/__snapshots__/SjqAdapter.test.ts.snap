@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`adapter can fetch features from sjq_test_data.txt 1`] = `
+Array [
+  "chr1",
+  "chr2",
+  "chr3",
+  "chr4",
+  "chr5",
+  "chr6",
+  "chr7",
+  "chr8",
+  "chr9",
+  "chr10",
+  "chr11",
+  "chr12",
+  "chr13",
+  "chr14",
+  "chr15",
+  "chr16",
+  "chr17",
+  "chr18",
+  "chr19",
+  "chr20",
+  "chr21",
+  "chr22",
+  "chrX",
+  "chrY",
+]
+`;
+
+exports[`adapter can fetch features from sjq_test_data.txt 2`] = `
+Array [
+  Object {
+    "annotation": "1",
+    "chromosome": "chr9",
+    "end": 94175981,
+    "intron_end": "94175981",
+    "intron_motif": "1",
+    "intron_start": "94175962",
+    "max_splice_overhang": "1",
+    "n_multi_map": "1",
+    "n_unique_map": "0",
+    "name": "unique: 0, multi: 1",
+    "refName": "chr9",
+    "score": 1,
+    "start": 94175961,
+    "strand": "1",
+    "uniqueId": "test-sjq-0",
+  },
+]
+`;
