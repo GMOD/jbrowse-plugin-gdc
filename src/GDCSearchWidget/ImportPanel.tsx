@@ -216,7 +216,6 @@ const Panel = ({ model }: { model: any }) => {
         name,
         assemblyNames: ['hg38'],
       }
-      console.log(conf)
       //@ts-ignore
       session.addTrackConf({
         ...conf,

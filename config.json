@@ -3,10 +3,6 @@
     {
       "name": "GDC",
       "url": "http://localhost:9000/dist/jbrowse-plugin-gdc.umd.development.js"
-    },
-    {
-      "name": "Ideogram",
-      "url": "http://localhost:9080/dist/jbrowse-plugin-ideogram.umd.development.js"
     }
   ],
   "assemblies": [
@@ -107,6 +103,23 @@
             },
             "type": "SvgFeatureRenderer"
           }
+        }
+      ]
+    },
+    {
+      "type": "ICGCTrack",
+      "trackId": "icgc_plugin_track",
+      "name": "ICGC Browser",
+      "assemblyNames": ["hg38"],
+      "category": ["Annotation"],
+      "adapter": {
+        "ICGCAdapterId": "DefaultICGCAdapter",
+        "type": "ICGCAdapter"
+      },
+      "displays": [
+        {
+          "type": "LinearICGCDisplay",
+          "displayId": "icgc_plugin_track_linear"
         }
       ]
     },

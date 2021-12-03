@@ -57,22 +57,31 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
   }
 
   private async decodeFileContents() {
-    const buffer = await openLocation(
-      readConfObject(this.config, 'sjqLocation'),
+    const sjqLocation = readConfObject(
+      this.config,
+      'sjqLocation',
+    ) as FileLocation
+
+    let fileContents = await openLocation(
+      sjqLocation,
+      // @ts-ignore
       this.pluginManager,
     ).readFile()
 
-    const buf = isGzip(buffer as Buffer)
-      ? await unzip(buffer)
-      : buffer.toString()
-    // 512MB  max chrome string length is 512MB
-    if (buf && buf.length > 536_870_888) {
-      throw new Error('Data exceeds maximum string length (512MB)')
+    if (
+      typeof fileContents[0] === 'number' &&
+      fileContents[0] === 31 &&
+      typeof fileContents[1] === 'number' &&
+      fileContents[1] === 139 &&
+      typeof fileContents[2] === 'number' &&
+      fileContents[2] === 8
+    ) {
+      fileContents = new TextDecoder().decode(await unzip(fileContents))
+    } else {
+      fileContents = fileContents.toString()
     }
-    const data = new TextDecoder('utf8', { fatal: true }).decode(
-      buf as BufferSource,
-    )
-    return this.readSjq(data)
+
+    return this.readSjq(fileContents)
   }
 
   private parseLine(line: string, columns: string[]) {
