@@ -26,9 +26,6 @@
             "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi",
             "locationType": "UriLocation"
           }
-        },
-        "rendering": {
-          "type": "DivSequenceRenderer"
         }
       },
       "refNameAliases": {
@@ -191,46 +188,6 @@
       }
     ]
   },
-  "savedSessions": [
-    {
-      "name": "Human Example (hg38)",
-      "width": 1850,
-      "drawerWidth": 384,
-      "views": [
-        {
-          "id": "MiDMyyWpp",
-          "type": "LinearGenomeView",
-          "width": 800,
-          "displayName": "Arc renderer demo",
-          "trackSelectorType": "hierarchical",
-          "offsetPx": 0,
-          "bpPerPx": 7798.966735482216,
-          "displayedRegions": [
-            {
-              "refName": "1",
-              "start": 0,
-              "end": 186700647,
-              "assemblyName": "hg38"
-            }
-          ],
-          "tracks": [
-            {
-              "type": "BasicTrack",
-              "configuration": "gencode_nclist_hg38",
-              "height": 100
-            },
-            {
-              "type": "BasicTrack",
-              "configuration": "genehancer_ucsc",
-              "height": 100
-            }
-          ],
-          "controlsWidth": 120,
-          "minimumBlockWidth": 20
-        }
-      ]
-    }
-  ],
   "internetAccounts": [
     {
       "type": "GDCInternetAccount",
