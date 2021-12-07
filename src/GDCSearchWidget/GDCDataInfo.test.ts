@@ -7,7 +7,14 @@ const locationType = 'UriLocation'
 const datenow = () => Date.now()
 
 test('maps data information to CNV', async () => {
-  const result = mapDataInfo('txt-Copy Number Variation', uri)
+  const result = mapDataInfo(
+    {
+      type: 'Copy Number Segment',
+      category: 'Copy Number Variation',
+      format: 'txt',
+    },
+    uri,
+  )
 
   expect(result).toEqual({
     config: {
@@ -28,7 +35,11 @@ test('maps data information to CNV', async () => {
 
 test('maps data information to BAM', async () => {
   const indexId = 'some-unique-id'
-  const result = mapDataInfo('bam-Sequencing Reads', uri, indexId)
+  const result = mapDataInfo(
+    { type: 'Aligned Reads', category: 'Sequencing Reads', format: 'bam' },
+    uri,
+    indexId,
+  )
 
   expect(result).toEqual({
     config: {
@@ -51,7 +62,14 @@ test('maps data information to BAM', async () => {
 })
 
 test('maps data information to SNV', async () => {
-  const result = mapDataInfo('vcf-Simple Nucleotide Variation', uri)
+  const result = mapDataInfo(
+    {
+      type: 'Raw Simple Somatic Mutation',
+      category: 'Simple Nucleotide Variation',
+      format: 'vcf',
+    },
+    uri,
+  )
 
   expect(result).toEqual({
     config: {
@@ -75,7 +93,14 @@ test('maps data information to SNV', async () => {
   const dateNowStub = jest.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
-  const result = mapDataInfo('maf-Simple Nucleotide Variation', uri)
+  const result = mapDataInfo(
+    {
+      type: 'Masked Somatic Mutation',
+      category: 'Simple Nucleotide Variation',
+      format: 'maf',
+    },
+    uri,
+  )
 
   expect(result).toEqual({
     config: {
@@ -100,7 +125,14 @@ test('maps data information to IEQ', async () => {
   const dateNowStub = jest.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
-  const result = mapDataInfo('txt-Transcriptome Profiling', uri)
+  const result = mapDataInfo(
+    {
+      type: 'Isoform Expression Quantification',
+      category: 'Transcriptome Profiling',
+      format: 'txt',
+    },
+    uri,
+  )
 
   expect(result).toEqual({
     config: {

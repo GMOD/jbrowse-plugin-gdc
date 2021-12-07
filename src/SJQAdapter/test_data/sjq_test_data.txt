@@ -1,0 +1,2 @@
+#chromosome	intron_start	intron_end	strand	intron_motif	annotation	n_unique_map	n_multi_map	max_splice_overhang
+chr9	94175962	94175981	1	1	1	0	1	1

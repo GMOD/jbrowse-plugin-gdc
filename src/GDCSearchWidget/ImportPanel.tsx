@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { observer } from 'mobx-react'
-import {
-  FileLocation,
-  getSession,
-  useDebouncedCallback,
-} from '@jbrowse/core/util'
+import { getSession } from '@jbrowse/core/util'
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 import {
   Paper,
@@ -256,38 +252,30 @@ const Panel = ({ model }: { model: any }) => {
 
   /**
    * helper function to determine the file type of a dragged file. needed because files like BAM and VCF do not
-   * have inherent types to extract from the File object. this function needs to be modified whenever new file
-   * types are to be supported. files with several extensions can be supported in the future
+   * have inherent types to extract from the File object
    * @param fileName the name of the file to determine the extension
-   * @returns the type of the file that coordinates with the keys in GDCDataInfo
+   * @returns an object of type fileInfo that contains the file format, type, and/or category of the file based on its name
    */
-  function determineFileType(fileName: string) {
-    const fileNameArray = fileName.split('.')
+  function determineFileInfo(fileName: string) {
+    const format = fileName.split('.')[-1]
 
     if (fileName.includes('Methylation')) {
-      return 'txt-DNA Methylation'
-    }
-
-    for (const e of fileNameArray) {
-      switch (e) {
-        case 'seg':
-          return 'txt-Copy Number Variation'
-        case 'vcf':
-          return 'vcf-Simple Nucleotide Variation'
-        case 'maf':
-          return 'maf-Simple Nucleotide Variation'
-        case 'txt':
-          return 'txt-Transcriptome Profiling'
-        case 'tsv':
-          return 'tsv-Transcriptome Profiling'
-        case 'json':
-          return 'json'
-        case 'bedpe':
-          return 'bedpe'
+      return {
+        format,
+        type: 'Methylation Beta Value',
+        category: 'DNA Methylation',
       }
     }
 
-    return ''
+    if (fileName.includes('splice')) {
+      return {
+        format,
+        type: 'Splice Junction Quantification',
+        category: 'Transcriptome Profiling',
+      }
+    }
+
+    return { format, type: '', category: '' }
   }
 
   function resetErrorMessages() {
@@ -337,12 +325,12 @@ const Panel = ({ model }: { model: any }) => {
 
       const [file] = acceptedFiles
       if (file) {
-        const type = determineFileType(file.name)
+        const fileInfo = determineFileInfo(file.name)
         try {
           /**
            * JSON files are for bulk import of files from the GDC site
            */
-          if (type == 'json') {
+          if (fileInfo.format == 'json') {
             const res = await new Promise(resolve => {
               const reader = new FileReader()
               reader.addEventListener('load', event =>
@@ -367,9 +355,9 @@ const Panel = ({ model }: { model: any }) => {
                   data_category: string
                   file_type: string
                 }) => {
-                  const category = determineFileType(file.file_name)
+                  const iterFileInfo = determineFileInfo(file.file_name)
                   const uri = `http://localhost:8010/proxy/data/${file.file_id}`
-                  const typeAdapterObject = mapDataInfo(category, uri)
+                  const typeAdapterObject = mapDataInfo(iterFileInfo, uri)
                   addAndShowTrack(
                     typeAdapterObject,
                     file.file_id,
@@ -384,7 +372,7 @@ const Panel = ({ model }: { model: any }) => {
               console.error(message)
               setDragErrorMessage(message)
             }
-          } else if (type === 'bedpe') {
+          } else if (fileInfo.type === 'bedpe') {
             await addBEDPEView(file.name, undefined, file)
             setDragSuccess(true)
           } else {
@@ -438,9 +426,8 @@ const Panel = ({ model }: { model: any }) => {
             // all other files go through this channel
             if (!(/\.bam$/i.test(file.name) || /\.bai$/i.test(file.name))) {
               const trackId = `gdc_plugin_track-${Date.now()}`
-              //TODO: update this to go through the enhancement 2135 workflow
               const typeAdapterObject = mapDataInfo(
-                type,
+                fileInfo,
                 undefined,
                 undefined,
                 file,
@@ -535,9 +522,11 @@ const Panel = ({ model }: { model: any }) => {
             'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
           )
         } else {
-          const category = `${response.data.data_format.toLowerCase()}-${
-            response.data.data_category
-          }`
+          const fileInfo = {
+            category: response.data.data_category,
+            format: response.data.data_format.toLowerCase(),
+            type: response.data.data_type,
+          }
           // BAM files require an index file, if the response contains index_files, then we want to utilize it
           const indexFileId = response.data.index_files
             ? response.data.index_files[0].file_id
@@ -545,8 +534,8 @@ const Panel = ({ model }: { model: any }) => {
           const uri = `http://localhost:8010/proxy/data/${query}`
           const trackId = `${response.data.file_id}`
           const trackName = `${response.data.file_name}`
-          if (category !== 'bedpe-Structural Variation') {
-            const typeAdapterObject = mapDataInfo(category, uri, indexFileId)
+          if (fileInfo.type !== 'bedpe') {
+            const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
             addAndShowTrack(typeAdapterObject, trackId, trackName)
           } else {
             await addBEDPEView(response.data.file_id, uri)

@@ -5,7 +5,7 @@ import {
 import { FileLocation, Region } from '@jbrowse/core/util/types'
 import { openLocation } from '@jbrowse/core/util/io'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
-import MbvFeature from './MbvFeature'
+import SjqFeature from './SjqFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
@@ -13,7 +13,10 @@ import PluginManager from '@jbrowse/core/PluginManager'
 import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 import pako from 'pako'
 
-export default class MbvAdapter extends BaseFeatureDataAdapter {
+/**
+ * Splice Junction Quantification Adapter
+ */
+export default class SjqAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
   public config: any
@@ -22,34 +25,24 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
 
   public constructor(
     config: AnyConfigurationModel,
-    getSubAdapter: getSubAdapterType,
-    pluginManager: PluginManager,
+    getSubAdapter?: getSubAdapterType,
+    pluginManager?: PluginManager,
   ) {
     // @ts-ignore
     super(config, getSubAdapter, pluginManager)
-    // super(config)
     this.config = config
   }
 
-  private async readMbv(fileContents: string) {
+  private async readSjq(fileContents: string) {
     const lines = fileContents.split('\n')
-    const refNames: string[] = []
     const rows: string[] = []
     let columns: string[] = []
-    let refNameColumnIndex = 0
     lines.forEach(line => {
-      if (columns.length === 0) {
-        columns = line.split('\t')
-        const chromosome = (element: any) =>
-          element.toLowerCase() === 'chromosome'
-        refNameColumnIndex = columns.findIndex(chromosome)
-      } else {
-        if (
-          line.split('\t')[refNameColumnIndex] !== '*' &&
-          line.split('\t')[refNameColumnIndex] !== undefined
-        ) {
+      if (line) {
+        if (columns.length === 0) {
+          columns = line.split('\t')
+        } else {
           rows.push(line)
-          refNames.push(line.split('\t')[refNameColumnIndex])
         }
       }
     })
@@ -57,28 +50,17 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     return {
       lines: rows,
       columns,
-      refNames: Array.from(new Set(refNames)),
     }
   }
 
-  private parseLine(line: string, columns: string[]) {
-    let mutationObject: any = {}
-    line.split('\t').forEach((property: string, i: number) => {
-      if (property) {
-        mutationObject[columns[i].toLowerCase()] = property
-      }
-    })
-    return mutationObject
-  }
-
   private async decodeFileContents() {
-    const mbvLocation = readConfObject(
+    const sjqLocation = readConfObject(
       this.config,
-      'mbvLocation',
+      'sjqLocation',
     ) as FileLocation
 
     let fileContents = await openLocation(
-      mbvLocation,
+      sjqLocation,
       // @ts-ignore
       this.pluginManager,
     ).readFile()
@@ -96,16 +78,28 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
       fileContents = fileContents.toString()
     }
 
-    return this.readMbv(fileContents)
+    return this.readSjq(fileContents)
+  }
+
+  private parseLine(line: string, columns: string[]) {
+    let sjq: any = {}
+    line.split('\t').forEach((property: string, i: number) => {
+      // Source: https://stackoverflow.com/questions/4374822/remove-all-special-characters-with-regexp
+      columns[i] = columns[i].toLowerCase().replace(/[^\w\s]/gi, '')
+      if (property) {
+        sjq[columns[i].toLowerCase()] = property
+      }
+    })
+    return sjq
   }
 
   private async getLines() {
     const { columns, lines } = await this.decodeFileContents()
 
     return lines.map((line, index) => {
-      return new MbvFeature({
-        value: this.parseLine(line, columns),
-        id: `${this.id}-mbv-${index}`,
+      return new SjqFeature({
+        sjq: this.parseLine(line, columns),
+        id: `${this.id}-sjq-${index}`,
       })
     })
   }
@@ -118,8 +112,32 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
   }
 
   public async getRefNames(_: BaseOptions = {}) {
-    const { refNames } = await this.decodeFileContents()
-    return refNames
+    return [
+      'chr1',
+      'chr2',
+      'chr3',
+      'chr4',
+      'chr5',
+      'chr6',
+      'chr7',
+      'chr8',
+      'chr9',
+      'chr10',
+      'chr11',
+      'chr12',
+      'chr13',
+      'chr14',
+      'chr15',
+      'chr16',
+      'chr17',
+      'chr18',
+      'chr19',
+      'chr20',
+      'chr21',
+      'chr22',
+      'chrX',
+      'chrY',
+    ]
   }
 
   public getFeatures(region: Region, opts: BaseOptions = {}) {
