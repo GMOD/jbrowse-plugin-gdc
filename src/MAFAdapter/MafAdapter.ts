@@ -9,10 +9,9 @@ import MafFeature from './MafFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import { unzip } from '@gmod/bgzf-filehandle'
 import PluginManager from '@jbrowse/core/PluginManager'
 import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
-
+import pako from 'pako'
 export default class MafAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
@@ -91,7 +90,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      fileContents = new TextDecoder().decode(await unzip(fileContents))
+      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
       fileContents = fileContents.toString()
     }
