@@ -15,13 +15,16 @@
         "adapter": {
           "type": "BgzipFastaAdapter",
           "fastaLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz",
+            "locationType": "UriLocation"
           },
           "faiLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.fai",
+            "locationType": "UriLocation"
           },
           "gziLocation": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi"
+            "uri": "https://jbrowse.org/genomes/GRCh38/fasta/hg38.prefix.fa.gz.gzi",
+            "locationType": "UriLocation"
           }
         },
         "rendering": {
@@ -32,36 +35,14 @@
         "adapter": {
           "type": "RefNameAliasAdapter",
           "location": {
-            "uri": "https://jbrowse.org/genomes/GRCh38/hg38_aliases.txt"
+            "uri": "https://jbrowse.org/genomes/GRCh38/hg38_aliases.txt",
+            "locationType": "UriLocation"
           }
         }
       }
     }
   ],
   "tracks": [
-    {
-      "type": "FeatureTrack",
-      "trackId": "dbsuper",
-      "name": "dbSUPER adipose enhancers",
-      "assemblyNames": ["hg38"],
-      "adapter": {
-        "type": "BedTabixAdapter",
-        "bedGzLocation": {
-          "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/hg19/dbSUPER/adipose_interactions.sorted.bed.gz"
-        },
-        "index": {
-          "location": {
-            "uri": "https://s3.amazonaws.com/jbrowse.org/genomes/hg19/dbSUPER/adipose_interactions.sorted.bed.gz.tbi"
-          }
-        }
-      },
-      "displays": [
-        {
-          "type": "LinearArcDisplay",
-          "displayId": "LinearBasicDisplay"
-        }
-      ]
-    },
     {
       "type": "FeatureTrack",
       "trackId": "ncbi_refseq_109_hg38_latest",
@@ -103,23 +84,6 @@
             },
             "type": "SvgFeatureRenderer"
           }
-        }
-      ]
-    },
-    {
-      "type": "ICGCTrack",
-      "trackId": "icgc_plugin_track",
-      "name": "ICGC Browser",
-      "assemblyNames": ["hg38"],
-      "category": ["Annotation"],
-      "adapter": {
-        "ICGCAdapterId": "DefaultICGCAdapter",
-        "type": "ICGCAdapter"
-      },
-      "displays": [
-        {
-          "type": "LinearICGCDisplay",
-          "displayId": "icgc_plugin_track_linear"
         }
       ]
     },
