@@ -10,12 +10,9 @@ import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import PluginManager from '@jbrowse/core/PluginManager'
-import { unzip } from '@gmod/bgzf-filehandle'
 import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
+import pako from 'pako'
 
-function isGzip(buf: Buffer) {
-  return buf[0] === 31 && buf[1] === 139 && buf[2] === 8
-}
 /**
  * Splice Junction Quantification Adapter
  */
@@ -76,7 +73,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      fileContents = new TextDecoder().decode(await unzip(fileContents))
+      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
       fileContents = fileContents.toString()
     }
