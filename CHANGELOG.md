@@ -1,3 +1,6 @@
+# v2.1.1
+- Adds compatibility with Splice Junction Quantification files from the GDC
+
 # v2.1.0
 
 - Moves the widget to the 'Tools' menu with a new label 'GDC Data Import' and new icon
