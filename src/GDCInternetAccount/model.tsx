@@ -1,5 +1,5 @@
 import { ConfigurationReference, getConf } from '@jbrowse/core/configuration'
-import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
+import { InternetAccount } from '@jbrowse/core/pluggableElementTypes'
 import { UriLocation } from '@jbrowse/core/util/types'
 import { GDCInternetAccountConfigModel } from './configSchema'
 import { Instance, types, getParent } from 'mobx-state-tree'

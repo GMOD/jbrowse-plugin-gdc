@@ -9,7 +9,7 @@ import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import GDCFeature from '../GDCAdapter/GDCFeature'
 import AbortablePromiseCache from 'abortable-promise-cache'
-import LRU from '@jbrowse/core/util/QuickLRU'
+import LRU from 'quick-lru'
 
 export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
@@ -23,6 +23,10 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
   private setupP?: Promise<GDCFeature[]>
 
   private featureCache = new AbortablePromiseCache({
+    // can remove this ts-ignore when
+    // https://github.com/rbuels/abortable-promise-cache/pull/21 or similar
+    // is released
+    // @ts-ignore
     cache: new LRU({ maxSize: 200 }),
     fill: async (query: any, abortSignal?: AbortSignal) => {
       return this.fetchFeatures(query, abortSignal)

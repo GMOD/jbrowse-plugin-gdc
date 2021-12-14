@@ -9,8 +9,6 @@ import MbvFeature from './MbvFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 import pako from 'pako'
 
 export default class MbvAdapter extends BaseFeatureDataAdapter {
@@ -20,14 +18,8 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
 
   private setupP?: Promise<Feature[]>
 
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter: getSubAdapterType,
-    pluginManager: PluginManager,
-  ) {
-    // @ts-ignore
-    super(config, getSubAdapter, pluginManager)
-    // super(config)
+  public constructor(config: AnyConfigurationModel) {
+    super(config)
     this.config = config
   }
 

@@ -8,7 +8,7 @@ import { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
 import GDCFeature from './GDCFeature'
 import MyConfigSchema from './configSchema'
 import AbortablePromiseCache from 'abortable-promise-cache'
-import LRU from '@jbrowse/core/util/QuickLRU'
+import LRU from 'quick-lru'
 
 export default class GDCAdapter extends BaseFeatureDataAdapter {
   private filters: string
@@ -21,7 +21,11 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
 
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  private featureCache = new AbortablePromiseCache({
+  private featureCache = new AbortablePromiseCache<any, any>({
+    // can remove this ts-ignore when
+    // https://github.com/rbuels/abortable-promise-cache/pull/21 or similar
+    // is released
+    // @ts-ignore
     cache: new LRU({ maxSize: 200 }),
     fill: async (query: any, abortSignal?: AbortSignal) => {
       return this.fetchFeatures(query, abortSignal)

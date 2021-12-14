@@ -1,6 +1,6 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import { Instance } from 'mobx-state-tree'
-import { BaseInternetAccountConfig } from '@jbrowse/core/pluggableElementTypes/models'
+import { BaseInternetAccountConfig } from '@jbrowse/core/pluggableElementTypes'
 
 const GDCConfigSchema = ConfigurationSchema(
   'GDCInternetAccount',
