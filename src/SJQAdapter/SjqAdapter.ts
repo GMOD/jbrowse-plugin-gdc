@@ -65,6 +65,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       this.pluginManager,
     ).readFile()
 
+    let stringifiedFileContents: string
     if (
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
@@ -73,12 +74,14 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
+      stringifiedFileContents = new TextDecoder().decode(
+        pako.inflate(fileContents),
+      )
     } else {
-      fileContents = fileContents.toString()
+      stringifiedFileContents = fileContents.toString()
     }
 
-    return this.readSjq(fileContents)
+    return this.readSjq(stringifiedFileContents)
   }
 
   private parseLine(line: string, columns: string[]) {
