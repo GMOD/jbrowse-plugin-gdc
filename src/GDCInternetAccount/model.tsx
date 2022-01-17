@@ -187,6 +187,10 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
             },
           )
 
+          if (response.status === 404) {
+            return
+          }
+
           if (!response.ok) {
             const errorText = await response.text()
             throw new Error(
