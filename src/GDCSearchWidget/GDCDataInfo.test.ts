@@ -47,7 +47,7 @@ test('maps data information to BAM', async () => {
       adapter: {
         index: {
           location: {
-            uri: `http://localhost:8010/proxy/data/${indexId}`,
+            uri: `${indexId}`,
             authHeader,
             internetAccountId,
             locationType,
