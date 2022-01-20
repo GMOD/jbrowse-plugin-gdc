@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import {
   MenuItem,
   FormControl,
-  FormLabel,
+  Button,
   Select,
   Input,
   Checkbox,
@@ -24,11 +24,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,
-    overflowX: 'hidden',
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 150,
   },
 }))
 
@@ -36,7 +31,6 @@ const useStyles = makeStyles(theme => ({
  * An element representing an individual filter with a category and set of applied values
  */
 const Filter = observer(props => {
-  const classes = useStyles()
   const { schema, filterModel, facets } = props
 
   const [categoryValue, setCategoryValue] = useState(
@@ -93,18 +87,15 @@ const Filter = observer(props => {
   return (
     <>
       <List>
-        <ListItem>
-          <FormControl className={classes.formControl}>
+        <ListItem style={{ gap: '4px' }}>
+          <FormControl fullWidth>
             <Select
               labelId="category-select-label"
               id="category-select"
               value={categoryValue}
               onChange={handleChangeCategory}
-              displayEmpty
+              label="Category"
             >
-              <MenuItem disabled value="">
-                <em>Category</em>
-              </MenuItem>
               {facets.map(filterOption => {
                 return (
                   <MenuItem value={filterOption} key={filterOption.name}>
@@ -114,7 +105,7 @@ const Filter = observer(props => {
               })}
             </Select>
           </FormControl>
-          <FormControl className={classes.formControl}>
+          <FormControl fullWidth>
             <Select
               labelId="demo-mutiple-checkbox-label"
               id="demo-mutiple-checkbox"
@@ -166,10 +157,6 @@ const FilterList = observer(({ schema, type, facets }) => {
 
   return (
     <>
-      <div>
-        <FormLabel>{type} filters</FormLabel>
-      </div>
-
       {schema.filters.map(filterModel => {
         if (filterModel.type === type) {
           return (
@@ -183,11 +170,9 @@ const FilterList = observer(({ schema, type, facets }) => {
         }
         return null
       })}
-      <Tooltip title="Add a new filter" aria-label="add" placement="right">
-        <IconButton aria-label="add" onClick={handleClick}>
-          <AddIcon />
-        </IconButton>
-      </Tooltip>
+      <Button variant="outlined" onClick={handleClick} startIcon={<AddIcon />}>
+        Add Filter
+      </Button>
     </>
   )
 })

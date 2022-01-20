@@ -179,7 +179,7 @@ export function mapGDCExploreConfig(
     const datenow = Date.now()
     const color1 =
       featureType == 'mutation'
-        ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'orange', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+        ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'green', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
         : "jexl:cast('goldenrod')"
     // @ts-ignore
     configObject.config = {

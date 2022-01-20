@@ -430,7 +430,7 @@ export const mutationHighlightFeatures = [
     values: [
       { name: 'LOW', colour: 'blue' },
       { name: 'MODIFIER', colour: 'goldenrod' },
-      { name: 'MODERATE', colour: 'orange' },
+      { name: 'MODERATE', colour: 'green' },
       { name: 'HIGH', colour: 'red' },
       { name: '', colour: 'lightgrey' },
     ],
@@ -487,7 +487,7 @@ export const mutationHighlightFeatures = [
     description: 'Frequency of mutation occurrence across the current cohort.',
     attributeName: 'percentage',
     values: [
-      { name: 'Percentage', colour1: 'dark green', colour2: 'light green' },
+      { name: 'Percentage', colour1: 'darkgreen', colour2: 'lightgreen' },
     ],
   },
 ]

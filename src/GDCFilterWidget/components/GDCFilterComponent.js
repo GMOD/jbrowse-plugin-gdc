@@ -7,15 +7,32 @@ import TrackType from './TrackType'
 
 import { ssmFacets, geneFacets, caseFacets } from './Utility'
 
-import { makeStyles, Typography, Tooltip } from '@material-ui/core'
+import {
+  makeStyles,
+  Typography,
+  Tooltip,
+  Paper,
+  Grid,
+  Box,
+  Tabs,
+  Tab,
+  IconButton,
+} from '@material-ui/core'
+import UndoIcon from '@material-ui/icons/Undo'
+
 import { observer } from 'mobx-react'
 import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(1, 3, 1, 1),
-    background: theme.palette.background.default,
-    overflowX: 'hidden',
+    margin: theme.spacing(1),
+  },
+  paper: {
+    padding: theme.spacing(2),
+  },
+  tabRoot: {
+    width: '33%',
+    minWidth: '100px',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -30,6 +47,22 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box style={{ padding: 3 }}>{children}</Box>}
+    </div>
+  )
+}
+
 /**
  * Creates the form for interacting with the track filters
  */
@@ -38,6 +71,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
   const [isValidColourBy, setIsValidColourBy] = useState(true)
   const [validationMessage, setFilterValidationMessage] = useState('')
   const [colourValidationMessage, setColourValidationMessage] = useState('')
+  const [value, setValue] = useState(0)
 
   schema.clearFilters()
   useEffect(() => {
@@ -75,7 +109,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
         'The current filters are not in the expected format. Any changes on this panel will overwrite invalid filters.',
       )
     }
-  }, [schema])
+  }, [schema, value, schema.target.adapter.featureType.value])
   useEffect(() => {
     try {
       const colourBy = JSON.parse(schema.target.adapter.colourBy.value)
@@ -109,24 +143,57 @@ const GDCQueryBuilder = observer(({ schema }) => {
     }
   }, [schema])
 
+  const handleChangeTab = (event, val) => {
+    setValue(val)
+  }
+
+  const handleFilterClear = () => {
+    schema.clearFilters()
+    schema.target.adapter.filters.set('{}')
+  }
+
   const classes = useStyles()
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {!isValidGDCFilter && <Alert severity="info">{validationMessage}</Alert>}
       <TrackType schema={schema} />
-      <Typography variant="h6" className={classes.text}>
-        Filters
-        <Tooltip
-          title="Apply filters to the current track"
-          aria-label="help"
-          placement="right"
-        >
-          <HelpIcon />
-        </Tooltip>
-      </Typography>
-      <FilterList schema={schema} type="case" facets={caseFacets} />
-      <FilterList schema={schema} type="gene" facets={geneFacets} />
-      <FilterList schema={schema} type="ssm" facets={ssmFacets} />
+      <Paper className={classes.paper}>
+        <Grid container style={{ gap: '4px' }}>
+          <Typography variant="h6">Filters</Typography>
+          <Tooltip
+            title="Clear all filters"
+            aria-label="clear all filters"
+            onClick={handleFilterClear}
+          >
+            <IconButton
+              color="primary"
+              data-testid="clear_all_filters_icon_button"
+            >
+              <UndoIcon />
+            </IconButton>
+          </Tooltip>
+        </Grid>
+        <Box>
+          <Tabs
+            value={value}
+            onChange={handleChangeTab}
+            aria-label="filtering tabs"
+          >
+            <Tab classes={{ root: classes.tabRoot }} label="Cases" />
+            <Tab classes={{ root: classes.tabRoot }} label="Genes" />
+            <Tab classes={{ root: classes.tabRoot }} label="Mutations" />
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <FilterList schema={schema} type="case" facets={caseFacets} />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <FilterList schema={schema} type="gene" facets={geneFacets} />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <FilterList schema={schema} type="ssm" facets={ssmFacets} />
+        </TabPanel>
+      </Paper>
       {!isValidColourBy && (
         <Alert severity="info">{colourValidationMessage}</Alert>
       )}
@@ -137,7 +204,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
       {schema.target.adapter.featureType.value === 'gene' && (
         <HighlightFeature schema={schema} type="gene" />
       )}
-    </>
+    </div>
   )
 })
 

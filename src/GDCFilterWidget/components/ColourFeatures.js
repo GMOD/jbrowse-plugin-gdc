@@ -6,14 +6,16 @@ import {
   MenuItem,
   FormControl,
   Select,
-  Tooltip,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Paper,
+  FormHelperText,
+  InputLabel,
+  Chip,
 } from '@material-ui/core'
-import HelpIcon from '@material-ui/icons/Help'
 import { mutationHighlightFeatures, geneHighlightFeatures } from './Utility'
 
 const useStyles = makeStyles(theme => ({
@@ -30,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  paper: {
+    padding: theme.spacing(2),
+  },
 }))
 
 /**
@@ -37,7 +42,11 @@ const useStyles = makeStyles(theme => ({
  */
 const HighlightFeature = observer(({ schema, type }) => {
   const classes = useStyles()
-  const [colourBy, setColourBy] = useState(schema.getColourBy())
+  const [colourBy, setColourBy] = useState(
+    Object.keys(schema.getColourBy()).length !== 0
+      ? JSON.parse(schema.getColourBy())
+      : '',
+  )
   const highlightFeatures =
     type === 'mutation' ? mutationHighlightFeatures : geneHighlightFeatures
 
@@ -66,144 +75,196 @@ const HighlightFeature = observer(({ schema, type }) => {
 
   return (
     <>
-      <Typography variant="h6" className={classes.text}>
-        Colour Features
-        <Tooltip
-          title="Colour features on track based on feature attributes"
-          aria-label="help"
-          placement="right"
-        >
-          <HelpIcon />
-        </Tooltip>
-      </Typography>
-      <FormControl className={classes.formControl}>
-        <Select
-          labelId="category-select-label"
-          id="category-select"
-          value={colourBy}
-          onChange={handleChangeHighlightBy}
-        >
-          <MenuItem disabled value="">
-            <em>Attribute</em>
-          </MenuItem>
-          {highlightFeatures.map(element => {
-            return (
-              <MenuItem value={element} key={element.name}>
-                {element.name}
-              </MenuItem>
-            )
-          })}
-        </Select>
-      </FormControl>
-      {colourBy && colourBy.values && (
-        <div>
-          <Typography variant="subtitle2" className={classes.text}>
-            {colourBy.symbol}
-          </Typography>
-          {colourBy.values && colourBy.type === 'category' && (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Value</TableCell>
-                  <TableCell>Colour</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {colourBy.values &&
-                  colourBy.values.map(value => {
-                    return (
-                      <TableRow key={value.name}>
-                        <TableCell>
-                          {value.name !== '' ? value.name : 'n/a'}
-                        </TableCell>
-                        <TableCell>{value.colour}</TableCell>
-                      </TableRow>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          )}
+      <Paper className={classes.paper}>
+        <Typography variant="h6">Colour Features</Typography>
+        <FormControl>
+          <InputLabel>Attribute</InputLabel>
+          <Select
+            labelId="track-type-select-label"
+            id="track-type-select"
+            value={colourBy}
+            onChange={handleChangeHighlightBy}
+            renderValue={selected => selected.name}
+          >
+            {highlightFeatures.map(element => {
+              return (
+                <MenuItem value={element} key={element.name}>
+                  {element.name}
+                </MenuItem>
+              )
+            })}
+          </Select>
+          <FormHelperText>
+            Select how to colour features on the track based on feature
+            attributes.
+          </FormHelperText>
+        </FormControl>
+        {colourBy && colourBy.values && (
+          <div>
+            <Typography variant="subtitle2" className={classes.text}>
+              {colourBy.symbol}
+            </Typography>
+            {colourBy.values && colourBy.type === 'category' && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Value</TableCell>
+                    <TableCell>Corresponding colour</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {colourBy.values &&
+                    colourBy.values.map(value => {
+                      return (
+                        <TableRow key={value.name}>
+                          <TableCell>
+                            {value.name !== '' ? value.name : 'n/a'}
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour}
+                              style={{
+                                backgroundColor: value.colour,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            )}
 
-          {colourBy.values && colourBy.type === 'threshold' && (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Value</TableCell>
-                  <TableCell>Threshold</TableCell>
-                  <TableCell>Below</TableCell>
-                  <TableCell>Equal or Above</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {colourBy.values &&
-                  colourBy.values.map(value => {
-                    return (
-                      <TableRow key={value.name}>
-                        <TableCell>
-                          {value.name !== '' ? value.name : 'n/a'}
-                        </TableCell>
-                        <TableCell>{value.threshold}</TableCell>
-                        <TableCell>{value.colour2}</TableCell>
-                        <TableCell>{value.colour1}</TableCell>
-                      </TableRow>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          )}
+            {colourBy.values && colourBy.type === 'threshold' && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Value</TableCell>
+                    <TableCell>Threshold</TableCell>
+                    <TableCell>Below</TableCell>
+                    <TableCell>Equal or Above</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {colourBy.values &&
+                    colourBy.values.map(value => {
+                      return (
+                        <TableRow key={value.name}>
+                          <TableCell>
+                            {value.name !== '' ? value.name : 'n/a'}
+                          </TableCell>
+                          <TableCell>{value.threshold}</TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour2}
+                              style={{
+                                backgroundColor: value.colour2,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour1}
+                              style={{
+                                backgroundColor: value.colour1,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            )}
 
-          {colourBy.values && colourBy.type === 'boolean' && (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Value</TableCell>
-                  <TableCell>True</TableCell>
-                  <TableCell>False</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {colourBy.values &&
-                  colourBy.values.map(value => {
-                    return (
-                      <TableRow key={value.name}>
-                        <TableCell>
-                          {value.name !== '' ? value.name : 'n/a'}
-                        </TableCell>
-                        <TableCell>{value.colour1}</TableCell>
-                        <TableCell>{value.colour2}</TableCell>
-                      </TableRow>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          )}
-          {colourBy.values && colourBy.type === 'percentage' && (
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Value</TableCell>
-                  <TableCell>Low</TableCell>
-                  <TableCell>High</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {colourBy.values &&
-                  colourBy.values.map(value => {
-                    return (
-                      <TableRow key={value.name}>
-                        <TableCell>
-                          {value.name !== '' ? value.name : 'n/a'}
-                        </TableCell>
-                        <TableCell>{value.colour1}</TableCell>
-                        <TableCell>{value.colour2}</TableCell>
-                      </TableRow>
-                    )
-                  })}
-              </TableBody>
-            </Table>
-          )}
-        </div>
-      )}
+            {colourBy.values && colourBy.type === 'boolean' && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Value</TableCell>
+                    <TableCell>True</TableCell>
+                    <TableCell>False</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {colourBy.values &&
+                    colourBy.values.map(value => {
+                      return (
+                        <TableRow key={value.name}>
+                          <TableCell>
+                            {value.name !== '' ? value.name : 'n/a'}
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour1}
+                              style={{
+                                backgroundColor: value.colour1,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour2}
+                              style={{
+                                backgroundColor: value.colour2,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            )}
+            {colourBy.values && colourBy.type === 'percentage' && (
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Value</TableCell>
+                    <TableCell>Low</TableCell>
+                    <TableCell>High</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {colourBy.values &&
+                    colourBy.values.map(value => {
+                      return (
+                        <TableRow key={value.name}>
+                          <TableCell>
+                            {value.name !== '' ? value.name : 'n/a'}
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour1}
+                              style={{
+                                backgroundColor: value.colour1,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={value.colour2}
+                              style={{
+                                backgroundColor: value.colour2,
+                                color: 'white',
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      )
+                    })}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+        )}
+      </Paper>
     </>
   )
 })
