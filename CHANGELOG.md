@@ -1,7 +1,10 @@
+# v2.1.2
+
+- Updates filtering UI
+
 # v2.1.1
 
 - Adds compatibility with Splice Junction Quantification files from the GDC
-- Updates filtering UI
 
 # v2.1.0
 
