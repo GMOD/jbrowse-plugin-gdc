@@ -195,8 +195,6 @@
       "name": "GDC",
       "description": "GDC External Token",
       "domains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
-      "authHeader": "X-Auth-Token",
-      "origin": "GDC",
       "customEndpoint": "http://localhost:8010/proxy"
     }
   ],
