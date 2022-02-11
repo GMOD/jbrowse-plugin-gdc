@@ -67,19 +67,21 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           init?: RequestInit,
         ): Promise<Response> => {
           const authToken = await self.getToken(location)
-          const newInit = self.addAuthHeaderToInit(init, authToken)
+          let newInit = init
+          if (authToken !== 'none') {
+            newInit = self.addAuthHeaderToInit(init, authToken)
+          }
           let query = String(input)
           if (query.includes('files/')) {
-            query = query.split('/')[4]
+            query = `${self.customEndpoint}/data/${query.split('/')[4]}`
           }
-          const newInput = `${self.customEndpoint}/data/${query}`
-          return fetch(newInput, newInit)
+          return fetch(query, newInit)
         }
       },
     }))
     .actions(self => {
       const superGetToken = self.getToken
-      let needsToken: boolean
+      const needsToken = new Map()
       return {
         /**
          * uses the location of the resource to fetch the 'metadata' of the file, which contains the index files (if applicable)
@@ -88,11 +90,12 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
          * @param location the uri location of the resource to be fetched
          */
         async getToken(location?: UriLocation) {
-          if (needsToken === true) {
-            return superGetToken(location)
-          }
-          if (needsToken === false) {
-            return ''
+          if (location && needsToken.has(location.uri)) {
+            if (needsToken.get(location.uri)) {
+              return superGetToken(location)
+            } else {
+              return 'none'
+            }
           }
           // determine if the resource requires a token
           const query = location?.uri.split('/').pop()
@@ -116,11 +119,11 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
 
           const metadata = await response.json()
           if (metadata && metadata.data.access === 'controlled') {
-            needsToken = true
+            needsToken.set(location?.uri, true)
             return superGetToken(location)
           }
-          needsToken = false
-          return ''
+          needsToken.set(location?.uri, false)
+          return 'none'
         },
       }
     })

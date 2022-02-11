@@ -110,12 +110,6 @@ export function mapDataInfo(
   fileBlob?: any,
 ) {
   const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
-  let token = window.sessionStorage.getItem('GDCExternalToken-token')
-
-  if (!token) {
-    token = ''
-    window.sessionStorage.setItem('GDCExternalToken-token', 'undefined')
-  }
 
   if (configObject) {
     //@ts-ignore

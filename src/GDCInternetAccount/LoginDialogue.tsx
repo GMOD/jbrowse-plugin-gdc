@@ -61,8 +61,6 @@ export default function LoginDialogue({
   const [token, setToken] = useState('')
   const classes = useStyles()
 
-  handleClose(token)
-
   return (
     <Dialog open onClose={() => handleClose()} maxWidth="sm">
       <DialogTitle>
