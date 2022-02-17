@@ -138,7 +138,7 @@ export function mapDataInfo(
         //@ts-ignore
         configObject.config.adapter['index'] = {
           location: {
-            uri: `${indexFileId}`,
+            uri: `http://localhost:8010/proxy/data/${indexFileId}`,
             authHeader: 'X-Auth-Token',
             locationType: 'UriLocation',
             internetAccountId: 'GDCExternalToken',

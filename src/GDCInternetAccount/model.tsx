@@ -66,9 +66,11 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           input: RequestInfo,
           init?: RequestInit,
         ): Promise<Response> => {
+          // @ts-ignore
           const authToken = await self.getToken(location)
           let newInit = init
           if (authToken !== 'none') {
+            // @ts-ignore
             newInit = self.addAuthHeaderToInit(init, authToken)
           }
           let query = String(input)
@@ -80,6 +82,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
       },
     }))
     .actions(self => {
+      // @ts-ignore
       const superGetToken = self.getToken
       const needsToken = new Map()
       return {
@@ -99,28 +102,25 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           }
           // determine if the resource requires a token
           const query = location?.uri.split('/').pop()
-          const response = await fetch(
-            `${self.customEndpoint}/files/${query}?expand=index_files`,
-          )
+          const response = await fetch(`${self.customEndpoint}/data/${query}`)
 
-          if (!response.ok) {
-            let errorMessage
-            try {
-              errorMessage = await response.text()
-            } catch (error) {
-              errorMessage = ''
-            }
-            throw new Error(
-              `Network response failure — ${response.status} (${
-                response.statusText
-              }) ${errorMessage ? ` (${errorMessage})` : ''}`,
-            )
-          }
-
-          const metadata = await response.json()
-          if (metadata && metadata.data.access === 'controlled') {
+          if (response.status === 403) {
             needsToken.set(location?.uri, true)
             return superGetToken(location)
+          } else {
+            if (!response.ok) {
+              let errorMessage
+              try {
+                errorMessage = await response.text()
+              } catch (error) {
+                errorMessage = ''
+              }
+              throw new Error(
+                `Network response failure — ${response.status} (${
+                  response.statusText
+                }) ${errorMessage ? ` (${errorMessage})` : ''}`,
+              )
+            }
           }
           needsToken.set(location?.uri, false)
           return 'none'
