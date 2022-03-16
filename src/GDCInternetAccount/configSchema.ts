@@ -5,16 +5,10 @@ import { BaseInternetAccountConfig } from '@jbrowse/core/pluggableElementTypes/m
 const GDCConfigSchema = ConfigurationSchema(
   'GDCInternetAccount',
   {
-    validDomains: {
-      description:
-        'array of valid domains the url can contain to use this account. Empty = all domains',
-      type: 'stringArray',
-      defaultValue: [],
-    },
     authHeader: {
       description: 'custom auth header for authorization',
       type: 'string',
-      defaultValue: 'Authorization',
+      defaultValue: 'X-Auth-Token',
     },
     customEndpoint: {
       description: 'custom endpoint for the external token resource',

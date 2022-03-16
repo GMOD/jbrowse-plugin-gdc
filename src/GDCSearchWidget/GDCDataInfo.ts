@@ -110,12 +110,6 @@ export function mapDataInfo(
   fileBlob?: any,
 ) {
   const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
-  let token = window.sessionStorage.getItem('GDCExternalToken-token')
-
-  if (!token) {
-    token = ''
-    window.sessionStorage.setItem('GDCExternalToken-token', 'undefined')
-  }
 
   if (configObject) {
     //@ts-ignore
@@ -144,7 +138,7 @@ export function mapDataInfo(
         //@ts-ignore
         configObject.config.adapter['index'] = {
           location: {
-            uri: `${indexFileId}`,
+            uri: `http://localhost:8010/proxy/data/${indexFileId}`,
             authHeader: 'X-Auth-Token',
             locationType: 'UriLocation',
             internetAccountId: 'GDCExternalToken',

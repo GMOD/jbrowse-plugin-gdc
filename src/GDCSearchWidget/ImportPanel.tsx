@@ -14,10 +14,8 @@ import { Alert } from '@material-ui/lab'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
-import ExitToApp from '@material-ui/icons/ExitToApp'
 import AddIcon from '@material-ui/icons/Add'
 import InfoIcon from '@material-ui/icons/Info'
-import LoginDialogue from '../GDCInternetAccount/LoginDialogue'
 import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
@@ -152,10 +150,8 @@ const Panel = ({ model }: { model: any }) => {
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
   const [exploreSuccess, setExploreSuccess] = useState(false)
-  const [tokenStored, setTokenStored] = useState(false)
   const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
   const [trackInfoMessage, setTrackInfoMessage] = useState<String>()
-  const [authErrorMessage, setAuthErrorMessage] = useState<String>()
   const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
   const [fileChip, setFileChip] = useState<String>()
 
@@ -281,7 +277,6 @@ const Panel = ({ model }: { model: any }) => {
   function resetErrorMessages() {
     setTrackErrorMessage(undefined)
     setTrackInfoMessage(undefined)
-    setAuthErrorMessage(undefined)
     setDragErrorMessage(undefined)
     setUploadInfoMessage(undefined)
     setSuccess(false)
@@ -511,36 +506,24 @@ const Panel = ({ model }: { model: any }) => {
           query = query.split('/')[4]
         }
         const response = await fetchFileInfo(query)
-        if (
-          response.data.access == 'controlled' &&
-          !window.sessionStorage.getItem('GDCExternalToken-token')
-        ) {
-          setAuthErrorMessage(
-            'Authentication failed.\nPlease enter your token in the GDC Login to access controlled data.',
-          )
-          setTrackErrorMessage(
-            'Failed to add track.\nThis is a controlled resource that requires an authenticated token provided to the GDC Login to access.',
-          )
+        const fileInfo = {
+          category: response.data.data_category,
+          format: response.data.data_format.toLowerCase(),
+          type: response.data.data_type,
+        }
+        // BAM files require an index file, if the response contains index_files, then we want to utilize it
+        const indexFileId = response.data.index_files
+          ? response.data.index_files[0].file_id
+          : undefined
+        const uri = `http://localhost:8010/proxy/data/${query}`
+        const trackId = `${response.data.file_id}`
+        const trackName = `${response.data.file_name}`
+        if (fileInfo.type !== 'bedpe') {
+          const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
+          addAndShowTrack(typeAdapterObject, trackId, trackName)
         } else {
-          const fileInfo = {
-            category: response.data.data_category,
-            format: response.data.data_format.toLowerCase(),
-            type: response.data.data_type,
-          }
-          // BAM files require an index file, if the response contains index_files, then we want to utilize it
-          const indexFileId = response.data.index_files
-            ? response.data.index_files[0].file_id
-            : undefined
-          const uri = `http://localhost:8010/proxy/data/${query}`
-          const trackId = `${response.data.file_id}`
-          const trackName = `${response.data.file_name}`
-          if (fileInfo.type !== 'bedpe') {
-            const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
-            addAndShowTrack(typeAdapterObject, trackId, trackName)
-          } else {
-            await addBEDPEView(response.data.file_id, uri)
-            setSuccess(true)
-          }
+          await addBEDPEView(response.data.file_id, uri)
+          setSuccess(true)
         }
       }
     } catch (e) {
@@ -625,56 +608,6 @@ const Panel = ({ model }: { model: any }) => {
         {uploadInfoMessage ? (
           <Alert severity="info">{uploadInfoMessage}</Alert>
         ) : null}
-      </Paper>
-      <Paper className={classes.paper}>
-        {tokenStored ? (
-          <Alert severity="success">
-            Your token has been stored.
-            <br />
-            Verification of your token will be performed when you attempt to
-            access controlled data.
-          </Alert>
-        ) : null}
-        {authErrorMessage ? (
-          <Alert severity="error">{authErrorMessage}</Alert>
-        ) : null}
-        <div className={classes.loginPromptContainer}>
-          <div className={classes.typoContainer}>
-            <Typography variant="body1">
-              Login to access controlled data
-            </Typography>
-          </div>
-          <div className={classes.buttonContainer}>
-            <Button
-              color="primary"
-              variant="contained"
-              size="small"
-              // disabled
-              startIcon={<ExitToApp />}
-              onClick={() => {
-                // @ts-ignore
-                session.queueDialog((doneCallback: Function) => [
-                  LoginDialogue,
-                  {
-                    setTokenStored,
-                    setAuthErrorMessage,
-                    handleClose: (token: string) => {
-                      if (
-                        !sessionStorage.getItem(`GDCExternalToken-token`) ||
-                        token !== undefined
-                      ) {
-                        sessionStorage.setItem(`GDCExternalToken-token`, token)
-                      }
-                      doneCallback()
-                    },
-                  },
-                ])
-              }}
-            >
-              Login
-            </Button>
-          </div>
-        </div>
       </Paper>
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h1" align="center">
