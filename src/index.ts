@@ -105,6 +105,27 @@ export default class GDCPlugin extends Plugin {
         }),
     )
 
+    pluginManager.addToExtensionPoint(
+      'Core-guessAdapterForLocation',
+      (adapterGuesser: AdapterGuesser) => {
+        return (
+          file: FileLocation,
+          index?: FileLocation,
+          adapterHint?: string,
+        ) => {
+          const adapterName = 'SjqAdapter'
+
+          if (adapterHint === adapterName) {
+            return {
+              type: adapterName,
+              sjqLocation: file,
+            }
+          }
+          return adapterGuesser(file, index, adapterHint)
+        }
+      },
+    )
+
     pluginManager.addAdapterType(
       () =>
         new AdapterType({
