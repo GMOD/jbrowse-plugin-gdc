@@ -88,9 +88,13 @@ function Consequence(props) {
                           aria-label="help"
                           placement="left"
                         >
-                          <Chip
-                            label={value.node.transcript.annotation.vep_impact}
-                          />
+                          <div>
+                            <Chip
+                              label={
+                                value.node.transcript.annotation.vep_impact
+                              }
+                            />
+                          </div>
                         </Tooltip>
                       )}
                       {value.node.transcript.annotation.sift_impact && (
@@ -99,9 +103,13 @@ function Consequence(props) {
                           aria-label="help"
                           placement="left"
                         >
-                          <Chip
-                            label={value.node.transcript.annotation.sift_impact}
-                          />
+                          <div>
+                            <Chip
+                              label={
+                                value.node.transcript.annotation.sift_impact
+                              }
+                            />
+                          </div>
                         </Tooltip>
                       )}
                       {value.node.transcript.annotation.polyphen_impact && (
@@ -110,11 +118,13 @@ function Consequence(props) {
                           aria-label="help"
                           placement="left"
                         >
-                          <Chip
-                            label={
-                              value.node.transcript.annotation.polyphen_impact
-                            }
-                          />
+                          <div>
+                            <Chip
+                              label={
+                                value.node.transcript.annotation.polyphen_impact
+                              }
+                            />
+                          </div>
                         </Tooltip>
                       )}
                     </TableCell>
@@ -141,7 +151,9 @@ function Consequence(props) {
                           aria-label="help"
                           placement="right"
                         >
-                          <Chip label="C" />
+                          <div>
+                            <Chip label="C" />
+                          </div>
                         </Tooltip>
                       )}
                     </TableCell>
@@ -158,7 +170,7 @@ function Consequence(props) {
 /**
  * Render a single table row for an external link
  */
-const ExternalLink = observer(props => {
+const ExternalLink = observer((props) => {
   const classes = useStyles()
   const { id, name, link } = props
   return (
@@ -255,7 +267,7 @@ function removeCosmicPrefix(cosmicId) {
 /**
  * Render a row with cosmic links for a mutation
  */
-const CosmicLinks = observer(props => {
+const CosmicLinks = observer((props) => {
   const classes = useStyles()
   const { cosmicId } = props
   return (
@@ -264,7 +276,7 @@ const CosmicLinks = observer(props => {
         <TableCell>Cosmic</TableCell>
         <TableCell>
           {cosmicId &&
-            cosmicId.map(value => (
+            cosmicId.map((value) => (
               <Link
                 className={classes.link}
                 target="_blank"
@@ -324,9 +336,11 @@ function SSMProject(props) {
   const classes = useStyles()
   const { projectId, docCount, projectsInformation, gdcProjectsCounts } = props
   const projectInfo = projectsInformation.find(
-    x => x.node.project_id === projectId,
+    (x) => x.node.project_id === projectId,
   )
-  const gdcProjectCount = gdcProjectsCounts.find(x => x.projectId === projectId)
+  const gdcProjectCount = gdcProjectsCounts.find(
+    (x) => x.projectId === projectId,
+  )
 
   return (
     <>
@@ -365,7 +379,7 @@ function SSMProjects(props) {
   const [gdcProjectsCounts, setGdcProjectsCounts] = useState([]) // Case counts for projects across the GDC
 
   useEffect(() => {
-    getMutationProjectsAsync(featureId).then(data => {
+    getMutationProjectsAsync(featureId).then((data) => {
       setProjectsInformation(data.data.projects.hits.edges)
       setGdcProjectsCounts(
         data.data.viewer.explore.cases.total.project__project_id.buckets,
@@ -416,19 +430,19 @@ function GeneProject(props) {
   const { projectId, docCount, projectsInformation, cases } = props
 
   const projectInfo = projectsInformation.find(
-    x => x.node.project_id === projectId,
+    (x) => x.node.project_id === projectId,
   )
   const totalProjectCaseCount = cases.total.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvGainCaseCount = cases.gain.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvLossCaseCount = cases.loss.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvTotalCaseCount = cases.cnvTotal.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
 
   return (
@@ -456,7 +470,7 @@ function GeneProject(props) {
         </TableCell>
         <TableCell>
           {cnvLossCaseCount ? cnvLossCaseCount.docCount : '0'} /{' '}
-          {cnvTotalCaseCount ? cnvTotalCaseCount.docCount: '0'}
+          {cnvTotalCaseCount ? cnvTotalCaseCount.docCount : '0'}
         </TableCell>
       </TableRow>
     </>
@@ -476,7 +490,7 @@ function GeneProjects(props) {
   const [cases, setCases] = useState([]) // Case counts for various projects and filters
 
   useEffect(() => {
-    getGeneProjectsAsync(featureId).then(data => {
+    getGeneProjectsAsync(featureId).then((data) => {
       setProjectsInformation(data.data.projects.hits.edges)
       setCases(data.data.viewer.explore.cases)
       setGeneProjectsCounts(
