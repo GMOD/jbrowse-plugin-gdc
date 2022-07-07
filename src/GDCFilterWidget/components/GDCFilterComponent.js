@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import HelpIcon from '@material-ui/icons/Help'
+import HelpIcon from '@mui/icons-material/Help'
 import FilterList from './Filters'
 import HighlightFeature from './ColourFeatures'
 import TrackType from './TrackType'
@@ -8,7 +8,7 @@ import TrackType from './TrackType'
 import { ssmFacets, geneFacets, caseFacets } from './Utility'
 
 import {
-  makeStyles,
+  Alert,
   Typography,
   Tooltip,
   Paper,
@@ -17,13 +17,14 @@ import {
   Tabs,
   Tab,
   IconButton,
-} from '@material-ui/core'
-import UndoIcon from '@material-ui/icons/Undo'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
+
+import UndoIcon from '@mui/icons-material/Undo'
 
 import { observer } from 'mobx-react'
-import { Alert } from '@material-ui/lab'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     margin: theme.spacing(1),
   },
@@ -152,7 +153,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
     schema.target.adapter.filters.set('{}')
   }
 
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {!isValidGDCFilter && <Alert severity="info">{validationMessage}</Alert>}
@@ -209,7 +210,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
 })
 
 const ConfigurationEditor = observer(({ model }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <div className={classes.root} data-testid="configEditor">
       {!model.target ? (

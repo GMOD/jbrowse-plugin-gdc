@@ -3,24 +3,28 @@ import { observer } from 'mobx-react'
 import { getSession } from '@jbrowse/core/util'
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
 import {
+  Alert,
   Paper,
   Button,
   Typography,
   TextField,
   Chip,
-  makeStyles,
-} from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+  useTheme,
+} from '@mui/material'
 import { useDropzone } from 'react-dropzone'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
-import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
-import AddIcon from '@material-ui/icons/Add'
-import InfoIcon from '@material-ui/icons/Info'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
+import AddIcon from '@mui/icons-material/Add'
+import InfoIcon from '@mui/icons-material/Info'
 import TipDialogue from './TipDialogue'
+import { makeStyles } from 'tss-react/mui'
+
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 const MAX_FILES = 25
+const THEME_SPACING_A = 8 // theme.spacing(2)
+const THEME_SPACING_B = 10 // theme.spacing(4)
 
 //@ts-ignore
 function styledBy(property, mapping) {
@@ -28,42 +32,32 @@ function styledBy(property, mapping) {
   return props => mapping[props[property]]
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles()(theme => ({
   container: {
-    margin: theme.spacing(2),
+    margin: THEME_SPACING_A,
   },
   fileInput: {
-    marginBottom: theme.spacing(2),
+    marginBottom: THEME_SPACING_A,
   },
   root: {
-    margin: theme.spacing(1),
+    margin: 2,
   },
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    gap: theme.spacing(2),
-    padding: theme.spacing(2),
-    margin: `0px 0px ${theme.spacing(1)}px 0px`,
+    gap: THEME_SPACING_B,
+    padding: THEME_SPACING_A,
+    margin: `2px 4px ${THEME_SPACING_A}px 4px`,
   },
   dragAndDropContainer: {
-    margin: `${theme.spacing(2)}px ${theme.spacing(2)}px 0px ${theme.spacing(
-      2,
-    )}px`,
+    margin: `${THEME_SPACING_A}px ${THEME_SPACING_A}px 0px ${THEME_SPACING_A}px`,
   },
   dropZone: {
     textAlign: 'center',
     borderWidth: 2,
     borderRadius: 2,
-    padding: theme.spacing(2),
-    // borderColor: styledBy('isDragActive', {
-    //   true: theme.palette.secondary.light,
-    //   false: theme.palette.divider,
-    // }),
+    padding: THEME_SPACING_A,
     borderStyle: 'dashed',
-    // backgroundColor: styledBy('isDragActive', {
-    //   true: fade(theme.palette.text.primary, theme.palette.action.hoverOpacity),
-    //   false: theme.palette.background.default,
-    // }),
     outline: 'none',
     transition: 'border .24s ease-in-out',
     '&:focus': {
@@ -74,25 +68,25 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary,
   },
   rejectedFiles: {
-    marginTop: theme.spacing(4),
+    marginTop: THEME_SPACING_B,
   },
   listItem: {
-    padding: theme.spacing(0, 4),
+    padding: THEME_SPACING_B,
   },
   expandIcon: {
     color: '#FFFFFF',
   },
   error: {
-    margin: theme.spacing(2),
+    margin: THEME_SPACING_A,
   },
   errorHeader: {
     background: theme.palette.error.light,
     color: theme.palette.error.contrastText,
-    padding: theme.spacing(2),
+    padding: THEME_SPACING_A,
     textAlign: 'center',
   },
   errorMessage: {
-    padding: theme.spacing(2),
+    padding: THEME_SPACING_A,
   },
   submitContainer: {
     display: 'flex',
@@ -101,6 +95,7 @@ const useStyles = makeStyles(theme => ({
   buttonContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
+    marginTop: '4px',
   },
   addTrackButtonContainer: {
     display: 'flex',
@@ -116,7 +111,7 @@ const useStyles = makeStyles(theme => ({
   },
   tipContainer: {
     display: 'flex',
-    paddingTop: theme.spacing(2),
+    paddingTop: THEME_SPACING_A,
   },
   tipPaper: {
     display: 'flex',
@@ -125,8 +120,8 @@ const useStyles = makeStyles(theme => ({
   tipMessageContainer: {
     display: 'flex',
     flexDirection: 'row',
-    padding: theme.spacing(2),
-    gap: theme.spacing(2),
+    padding: THEME_SPACING_A,
+    gap: THEME_SPACING_A,
     alignItems: 'center',
   },
 }))
@@ -216,6 +211,9 @@ const Panel = ({ model }: { model: any }) => {
       session.addTrackConf({
         ...conf,
       })
+      if (session.views.length === 0) {
+        session.addView('LinearGenomeView', {})
+      }
       //@ts-ignore
       session.views[0].showTrack(
         trackId,
@@ -446,11 +444,7 @@ const Panel = ({ model }: { model: any }) => {
     if (featureType !== undefined) {
       featureType = featureType.split('&filters=')[0].slice(0, -1)
     }
-    if (
-      featureType === 'case' ||
-      featureType === 'clinica' ||
-      featureType === undefined
-    ) {
+    if (featureType === 'case' || featureType === 'clinica') {
       setTrackInfoMessage(
         'Configurations to "Cases" and "Clinical" are not currently supported. The requested Explore Track will default to displaying Mutations with your applied filters.',
       )
@@ -540,11 +534,11 @@ const Panel = ({ model }: { model: any }) => {
     inputRef.current.value = null
   }
 
-  const classes = useStyles({ isDragActive })
+  const { classes } = useStyles()
 
   return (
     <div className={classes.root}>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={3}>
         <Typography variant="h6" component="h1" align="center">
           Drag and Drop Local GDC Files
         </Typography>
@@ -609,7 +603,7 @@ const Panel = ({ model }: { model: any }) => {
           <Alert severity="info">{uploadInfoMessage}</Alert>
         ) : null}
       </Paper>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={3}>
         <Typography variant="h6" component="h1" align="center">
           Import File or Exploration by UUID or URL
         </Typography>
@@ -645,7 +639,7 @@ const Panel = ({ model }: { model: any }) => {
           </div>
         </div>
       </Paper>
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper} elevation={3}>
         <div className={classes.typoContainer}>
           <Typography variant="h6" component="h1" align="center">
             Quick-add a GDC Explore Track
@@ -664,7 +658,7 @@ const Panel = ({ model }: { model: any }) => {
           <Button
             color="primary"
             variant="contained"
-            size="large"
+            size="small"
             startIcon={<AddIcon />}
             onClick={() => {
               processExplorationURI(

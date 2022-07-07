@@ -7,25 +7,28 @@ import {
   IconButton,
   Typography,
   Paper,
-  makeStyles,
-} from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(theme => ({
+import CloseIcon from '@mui/icons-material/Close'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+
+const THEME_SPACING_A = 8 // theme.spacing(2)
+const THEME_SPACING_B = 6 // theme.spacing(1)
+
+const useStyles = makeStyles()(theme => ({
   closeButton: {
     position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
+    left: '80px',
     color: theme.palette.grey[500],
   },
   root: {
-    margin: theme.spacing(1),
+    margin: THEME_SPACING_B,
   },
   paper: {
     display: 'flex',
     flexDirection: 'column',
-    padding: theme.spacing(2),
+    padding: THEME_SPACING_A,
   },
   imgContainer: {
     display: 'flex',
@@ -37,18 +40,18 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'middle',
   },
   helperTextContainer: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: THEME_SPACING_A,
+    paddingBottom: THEME_SPACING_A,
   },
   textContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: theme.spacing(2),
+    gap: THEME_SPACING_A,
     alignItems: 'center',
     background: theme.palette.grey[100],
-    padding: theme.spacing(1),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+    padding: THEME_SPACING_B,
+    marginTop: THEME_SPACING_A,
+    marginBottom: THEME_SPACING_A,
   },
   buttonContainer: {
     display: 'flex',
@@ -61,7 +64,7 @@ export default function TipDialogue({
 }: {
   handleClose: () => void
 }) {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Dialog open onClose={handleClose} maxWidth="sm">

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { observer } from 'mobx-react'
 import {
-  makeStyles,
   Typography,
   MenuItem,
   FormControl,
@@ -15,10 +14,11 @@ import {
   FormHelperText,
   InputLabel,
   Chip,
-} from '@material-ui/core'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 import { mutationHighlightFeatures, geneHighlightFeatures } from './Utility'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,
@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
  * Render a highlight/colour by element for colouring features
  */
 const HighlightFeature = observer(({ schema, type }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
+
   const [colourBy, setColourBy] = useState(
     Object.keys(schema.getColourBy()).length !== 0
       ? JSON.parse(schema.getColourBy())

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
-import AddIcon from '@material-ui/icons/Add'
-import ClearIcon from '@material-ui/icons/Clear'
+import AddIcon from '@mui/icons-material/Add'
+import ClearIcon from '@mui/icons-material/Clear'
 
 import { observer } from 'mobx-react'
 import React, { useState } from 'react'
@@ -17,10 +17,10 @@ import {
   List,
   ListItem,
   Tooltip,
-  makeStyles,
-} from '@material-ui/core'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,

@@ -1,7 +1,7 @@
 import { ConfigurationReference } from '@jbrowse/core/configuration'
 import { getParentRenderProps } from '@jbrowse/core/util/tracks'
 import { getSession } from '@jbrowse/core/util'
-import FilterListIcon from '@material-ui/icons/FilterList'
+import FilterListIcon from '@mui/icons-material/FilterList'
 import configSchemaF from './configSchema'
 import { types } from 'mobx-state-tree'
 

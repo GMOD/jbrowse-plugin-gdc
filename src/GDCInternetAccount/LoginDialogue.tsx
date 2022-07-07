@@ -7,11 +7,12 @@ import {
   IconButton,
   TextField,
   Typography,
-  makeStyles,
-} from '@material-ui/core'
-import CloseIcon from '@material-ui/icons/Close'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(theme => ({
+import CloseIcon from '@mui/icons-material/Close'
+
+const useStyles = makeStyles()(theme => ({
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
@@ -59,7 +60,7 @@ export default function LoginDialogue({
   handleClose: (arg?: string) => void
 }) {
   const [token, setToken] = useState('')
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <Dialog open onClose={() => handleClose()} maxWidth="sm">

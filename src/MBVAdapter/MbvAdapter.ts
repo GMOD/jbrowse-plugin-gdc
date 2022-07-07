@@ -91,11 +91,14 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
+      // @ts-ignore
       fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
+      // @ts-ignore
       fileContents = fileContents.toString()
     }
 
+    // @ts-ignore
     return this.readMbv(fileContents)
   }
 

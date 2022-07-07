@@ -1,17 +1,18 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import {
-  makeStyles,
   Typography,
   MenuItem,
   FormControl,
   FormHelperText,
   Select,
   Paper,
-} from '@material-ui/core'
-import HelpIcon from '@material-ui/icons/Help'
+} from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(theme => ({
+import HelpIcon from '@mui/icons-material/Help'
+
+const useStyles = makeStyles()(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -26,7 +27,7 @@ const useStyles = makeStyles(theme => ({
  * A component for changing the track type
  */
 export default observer(schema => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [trackType, setTrackType] = React.useState(
     schema.schema.target.adapter.featureType.value,
   )
