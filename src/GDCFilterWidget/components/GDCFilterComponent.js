@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import HelpIcon from '@mui/icons-material/Help'
 import FilterList from './Filters'
 import HighlightFeature from './ColourFeatures'
 import TrackType from './TrackType'

@@ -24,8 +24,7 @@ describe('GDCTrack widget', () => {
               edges: [
                 {
                   node: {
-                    id:
-                      'U1NNQ29uc2VxdWVuY2U6MDIwOGVmZWItZjFlOC01N2U0LTg0NDctMjk5YzVmMDUwMzgwOjZkYmQ5M2M2LWYwZWYtNTdhZS1iZmQxLWYxM2RlNmM5ZWI0Ng==',
+                    id: 'U1NNQ29uc2VxdWVuY2U6MDIwOGVmZWItZjFlOC01N2U0LTg0NDctMjk5YzVmMDUwMzgwOjZkYmQ5M2M2LWYwZWYtNTdhZS1iZmQxLWYxM2RlNmM5ZWI0Ng==',
                     transcript: {
                       aa_change: 'D618N',
                       annotation: {
@@ -64,7 +63,6 @@ describe('GDCTrack widget', () => {
         }),
       })
       .create()
-    /* eslint-enable @typescript-eslint/camelcase */
 
     const { container } = render(<GDCFeatureDetails model={f} />)
     expect(container.firstChild).toMatchSnapshot()
@@ -99,8 +97,7 @@ describe('GDCTrack widget', () => {
           // geneId: 'ENSG00000134121',
           geneStart: 196596,
           geneStrand: 1,
-          id:
-            'R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj',
+          id: 'R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj',
           isCancerGeneCensus: null,
           name: 'cell adhesion molecule L1-like',
           symbol: 'CHL1',

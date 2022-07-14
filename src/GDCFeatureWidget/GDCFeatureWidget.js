@@ -13,15 +13,15 @@ import {
   Link,
 } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
-import AddIcon from '@mui/material/icons/Add'
-import RemoveIcon from '@mui/material/icons/Remove'
+import AddIcon from '@mui/icons-material/Add'
+import RemoveIcon from '@mui/icons-material/Remove'
 import {
   FeatureDetails,
   BaseCard,
 } from '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail'
 import { getGeneProjectsAsync, getMutationProjectsAsync } from './Utility'
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   table: {
     padding: 0,
   },
@@ -59,106 +59,101 @@ function Consequence(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.entries(consequences).map(
-              ([key, value]) =>
-                value && (
-                  <TableRow key={key}>
-                    <TableCell>
-                      <Link
-                        className={classes.link}
-                        target="_blank"
-                        rel="noopener"
-                        href={`https://portal.gdc.cancer.gov/genes/${value.node.transcript.gene.gene_id}`}
-                        underline="always"
+            {Object.entries(consequences).map(([key, value]) =>
+              value ? (
+                <TableRow key={key}>
+                  <TableCell>
+                    <Link
+                      className={classes.link}
+                      target="_blank"
+                      rel="noopener"
+                      href={`https://portal.gdc.cancer.gov/genes/${value.node.transcript.gene.gene_id}`}
+                      underline="always"
+                    >
+                      {value.node.transcript.gene.symbol}
+                    </Link>
+                  </TableCell>
+                  <TableCell>{value.node.transcript.aa_change}</TableCell>
+                  <TableCell>
+                    {value.node.transcript.consequence_type}
+                  </TableCell>
+                  <TableCell>
+                    {value.node.transcript.annotation.hgvsc}
+                  </TableCell>
+                  <TableCell>
+                    {value.node.transcript.annotation.vep_impact ? (
+                      <Tooltip
+                        title={`VEP ${value.node.transcript.annotation.vep_impact}`}
+                        aria-label="help"
+                        placement="left"
                       >
-                        {value.node.transcript.gene.symbol}
-                      </Link>
-                    </TableCell>
-                    <TableCell>{value.node.transcript.aa_change}</TableCell>
-                    <TableCell>
-                      {value.node.transcript.consequence_type}
-                    </TableCell>
-                    <TableCell>
-                      {value.node.transcript.annotation.hgvsc}
-                    </TableCell>
-                    <TableCell>
-                      {value.node.transcript.annotation.vep_impact && (
-                        <Tooltip
-                          title={`VEP ${value.node.transcript.annotation.vep_impact}`}
-                          aria-label="help"
-                          placement="left"
-                        >
-                          <div>
-                            <Chip
-                              label={
-                                value.node.transcript.annotation.vep_impact
-                              }
-                            />
-                          </div>
-                        </Tooltip>
-                      )}
-                      {value.node.transcript.annotation.sift_impact && (
-                        <Tooltip
-                          title={`SIFT ${value.node.transcript.annotation.sift_impact} (${value.node.transcript.annotation.sift_score})`}
-                          aria-label="help"
-                          placement="left"
-                        >
-                          <div>
-                            <Chip
-                              label={
-                                value.node.transcript.annotation.sift_impact
-                              }
-                            />
-                          </div>
-                        </Tooltip>
-                      )}
-                      {value.node.transcript.annotation.polyphen_impact && (
-                        <Tooltip
-                          title={`PolyPhen ${value.node.transcript.annotation.polyphen_impact} (${value.node.transcript.annotation.polyphen_score})`}
-                          aria-label="help"
-                          placement="left"
-                        >
-                          <div>
-                            <Chip
-                              label={
-                                value.node.transcript.annotation.polyphen_impact
-                              }
-                            />
-                          </div>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {value.node.transcript.gene.gene_strand === 1 ? (
-                        <AddIcon />
-                      ) : (
-                        <RemoveIcon />
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Link
-                        className={classes.link}
-                        target="_blank"
-                        rel="noopener"
-                        href={`http://may2015.archive.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=${value.node.transcript.transcript_id}`}
-                        underline="always"
+                        <div>
+                          <Chip
+                            label={value.node.transcript.annotation.vep_impact}
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                    {value.node.transcript.annotation.sift_impact ? (
+                      <Tooltip
+                        title={`SIFT ${value.node.transcript.annotation.sift_impact} (${value.node.transcript.annotation.sift_score})`}
+                        aria-label="help"
+                        placement="left"
                       >
-                        {value.node.transcript.transcript_id}
-                      </Link>
-                      {value.node.transcript.is_canonical && (
-                        <Tooltip
-                          title="Canonical transcript"
-                          aria-label="help"
-                          placement="right"
-                        >
-                          <div>
-                            <Chip label="C" />
-                          </div>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ),
+                        <div>
+                          <Chip
+                            label={value.node.transcript.annotation.sift_impact}
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                    {value.node.transcript.annotation.polyphen_impact ? (
+                      <Tooltip
+                        title={`PolyPhen ${value.node.transcript.annotation.polyphen_impact} (${value.node.transcript.annotation.polyphen_score})`}
+                        aria-label="help"
+                        placement="left"
+                      >
+                        <div>
+                          <Chip
+                            label={
+                              value.node.transcript.annotation.polyphen_impact
+                            }
+                          />
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
+                    {value.node.transcript.gene.gene_strand === 1 ? (
+                      <AddIcon />
+                    ) : (
+                      <RemoveIcon />
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <Link
+                      className={classes.link}
+                      target="_blank"
+                      rel="noopener"
+                      href={`http://may2015.archive.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=${value.node.transcript.transcript_id}`}
+                      underline="always"
+                    >
+                      {value.node.transcript.transcript_id}
+                    </Link>
+                    {value.node.transcript.is_canonical ? (
+                      <Tooltip
+                        title="Canonical transcript"
+                        aria-label="help"
+                        placement="right"
+                      >
+                        <div>
+                          <Chip label="C" />
+                        </div>
+                      </Tooltip>
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              ) : null,
             )}
           </TableBody>
         </Table>
@@ -170,7 +165,7 @@ function Consequence(props) {
 /**
  * Render a single table row for an external link
  */
-const ExternalLink = observer(props => {
+const ExternalLink = observer((props) => {
   const { classes } = useStyles()
   const { id, name, link } = props
   return (
@@ -265,28 +260,29 @@ function removeCosmicPrefix(cosmicId) {
 /**
  * Render a row with cosmic links for a mutation
  */
-const CosmicLinks = observer(props => {
+const CosmicLinks = observer((props) => {
   const { classes } = useStyles()
   const { cosmicId } = props
   return (
     <TableRow key="0">
       <TableCell>Cosmic</TableCell>
       <TableCell>
-        {cosmicId &&
-          cosmicId.map(value => (
-            <Link
-              className={classes.link}
-              target="_blank"
-              rel="noopener"
-              href={`https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=${removeCosmicPrefix(
-                value,
-              )}`}
-              key={value}
-              underline="always"
-            >
-              {value}
-            </Link>
-          ))}
+        {cosmicId
+          ? cosmicId.map((value) => (
+              <Link
+                className={classes.link}
+                target="_blank"
+                rel="noopener"
+                href={`https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=${removeCosmicPrefix(
+                  value,
+                )}`}
+                key={value}
+                underline="always"
+              >
+                {value}
+              </Link>
+            ))
+          : null}
       </TableCell>
     </TableRow>
   )
@@ -316,7 +312,9 @@ function SSMExternalLinks(props) {
             {externalLinkArray.map((externalLink, key) => (
               <ExternalLink {...externalLink} key={key} />
             ))}
-            {feature.cosmicId && <CosmicLinks cosmicId={feature.cosmicId} />}
+            {feature.cosmicId ? (
+              <CosmicLinks cosmicId={feature.cosmicId} />
+            ) : null}
           </TableBody>
         </Table>
       </div>
@@ -332,9 +330,11 @@ function SSMProject(props) {
   const { classes } = useStyles()
   const { projectId, docCount, projectsInformation, gdcProjectsCounts } = props
   const projectInfo = projectsInformation.find(
-    x => x.node.project_id === projectId,
+    (x) => x.node.project_id === projectId,
   )
-  const gdcProjectCount = gdcProjectsCounts.find(x => x.projectId === projectId)
+  const gdcProjectCount = gdcProjectsCounts.find(
+    (x) => x.projectId === projectId,
+  )
 
   return (
     <TableRow key={projectId}>
@@ -371,7 +371,7 @@ function SSMProjects(props) {
   const [gdcProjectsCounts, setGdcProjectsCounts] = useState([]) // Case counts for projects across the GDC
 
   useEffect(() => {
-    getMutationProjectsAsync(featureId).then(data => {
+    getMutationProjectsAsync(featureId).then((data) => {
       setProjectsInformation(data.data.projects.hits.edges)
       setGdcProjectsCounts(
         data.data.viewer.explore.cases.total.project__project_id.buckets,
@@ -422,19 +422,19 @@ function GeneProject(props) {
   const { projectId, docCount, projectsInformation, cases } = props
 
   const projectInfo = projectsInformation.find(
-    x => x.node.project_id === projectId,
+    (x) => x.node.project_id === projectId,
   )
   const totalProjectCaseCount = cases.total.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvGainCaseCount = cases.gain.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvLossCaseCount = cases.loss.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
   const cnvTotalCaseCount = cases.cnvTotal.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x) => x.projectId === projectId,
   )
 
   return (
@@ -482,7 +482,7 @@ function GeneProjects(props) {
   const [cases, setCases] = useState([]) // Case counts for various projects and filters
 
   useEffect(() => {
-    getGeneProjectsAsync(featureId).then(data => {
+    getGeneProjectsAsync(featureId).then((data) => {
       setProjectsInformation(data.data.projects.hits.edges)
       setCases(data.data.viewer.explore.cases)
       setGeneProjectsCounts(
@@ -547,13 +547,15 @@ function GDCFeatureDetails(props) {
     <Paper className={classes.root} data-testid="variant-widget">
       <FeatureDetails feature={rest} {...props} />
       <Divider />
-      {/* {feat.geneId && <GeneExternalLinks feature={feat} />} */}
-      {feat.ssmId && <SSMExternalLinks feature={feat} />}
+      {feat.geneId !== undefined ? <GeneExternalLinks feature={feat} /> : null}
+      {feat.ssmId !== undefined ? <SSMExternalLinks feature={feat} /> : null}
       <Divider />
-      {/* {feat.ssmId && <Consequence feature={feat} />} */}
+      {feat.ssmId !== undefined ? <Consequence feature={feat} /> : null}
       <Divider />
-      {/* {feat.geneId && <GeneProjects featureId={feat.geneId} />} */}
-      {/* {feat.ssmId && <SSMProjects featureId={feat.ssmId} />} */}
+      {feat.geneId !== undefined ? (
+        <GeneProjects featureId={feat.geneId} />
+      ) : null}
+      {feat.ssmId !== undefined ? <SSMProjects featureId={feat.ssmId} /> : null}
     </Paper>
   )
 }

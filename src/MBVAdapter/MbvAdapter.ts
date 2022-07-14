@@ -22,8 +22,8 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
 
   public constructor(
     config: AnyConfigurationModel,
-    getSubAdapter: getSubAdapterType,
-    pluginManager: PluginManager,
+    getSubAdapter?: getSubAdapterType,
+    pluginManager?: PluginManager,
   ) {
     // @ts-ignore
     super(config, getSubAdapter, pluginManager)
@@ -37,7 +37,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     const rows: string[] = []
     let columns: string[] = []
     let refNameColumnIndex = 0
-    lines.forEach(line => {
+    lines.forEach((line) => {
       if (columns.length === 0) {
         columns = line.split('\t')
         const chromosome = (element: any) =>
@@ -126,9 +126,9 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
   }
 
   public getFeatures(region: Region, opts: BaseOptions = {}) {
-    return ObservableCreate<Feature>(async observer => {
+    return ObservableCreate<Feature>(async (observer) => {
       const feats = await this.setup()
-      feats.forEach(f => {
+      feats.forEach((f) => {
         if (
           f.get('refName') === region.refName &&
           f.get('end') > region.start &&
