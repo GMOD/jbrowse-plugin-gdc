@@ -12,7 +12,7 @@ import { makeStyles } from 'tss-react/mui'
 
 import HelpIcon from '@mui/icons-material/Help'
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -26,13 +26,13 @@ const useStyles = makeStyles()(theme => ({
 /**
  * A component for changing the track type
  */
-export default observer(schema => {
+export default observer((schema) => {
   const { classes } = useStyles()
   const [trackType, setTrackType] = React.useState(
     schema.schema.target.adapter.featureType.value,
   )
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setTrackType(event.target.value)
     schema.schema.target.adapter.featureType.set(event.target.value)
 
@@ -50,7 +50,7 @@ export default observer(schema => {
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <Typography variant="h6">Track Type</Typography>
-        <FormControl>
+        <FormControl size="small">
           <Select
             labelId="track-type-select-label"
             id="track-type-select"

@@ -20,7 +20,7 @@ import {
 } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,
@@ -30,25 +30,25 @@ const useStyles = makeStyles()(theme => ({
 /**
  * An element representing an individual filter with a category and set of applied values
  */
-const Filter = observer(props => {
+const Filter = observer((props) => {
   const { schema, filterModel, facets } = props
 
   const [categoryValue, setCategoryValue] = useState(
     filterModel.category
-      ? facets.find(f => f.name === filterModel.category)
+      ? facets.find((f) => f.name === filterModel.category)
       : facets[0],
   )
   const [filterValue, setFilterValue] = useState(
     filterModel.filter ? filterModel.filter.split(',') : [],
   )
 
-  const handleChangeCategory = event => {
+  const handleChangeCategory = (event) => {
     setCategoryValue(event.target.value)
     setFilterValue([])
     filterModel.setCategory(event.target.value.name)
   }
 
-  const handleChangeFilter = event => {
+  const handleChangeFilter = (event) => {
     setFilterValue(event.target.value)
     filterModel.setFilter(event.target.value.join(','))
     updateTrack(schema.filters, schema.target)
@@ -88,7 +88,7 @@ const Filter = observer(props => {
     <>
       <List>
         <ListItem style={{ gap: '4px' }}>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <Select
               labelId="category-select-label"
               id="category-select"
@@ -96,7 +96,7 @@ const Filter = observer(props => {
               onChange={handleChangeCategory}
               label="Category"
             >
-              {facets.map(filterOption => {
+              {facets.map((filterOption) => {
                 return (
                   <MenuItem value={filterOption} key={filterOption.name}>
                     {filterOption.prettyName}
@@ -105,7 +105,7 @@ const Filter = observer(props => {
               })}
             </Select>
           </FormControl>
-          <FormControl fullWidth>
+          <FormControl fullWidth size="small">
             <Select
               labelId="demo-mutiple-checkbox-label"
               id="demo-mutiple-checkbox"
@@ -114,7 +114,7 @@ const Filter = observer(props => {
               onChange={handleChangeFilter}
               input={<Input />}
               displayEmpty
-              renderValue={selected => {
+              renderValue={(selected) => {
                 if (selected.length === 0) {
                   return <em>Filters</em>
                 }
@@ -125,7 +125,7 @@ const Filter = observer(props => {
               <MenuItem disabled value="">
                 <em>Filters</em>
               </MenuItem>
-              {categoryValue.values.map(name => (
+              {categoryValue.values.map((name) => (
                 <MenuItem key={name} value={name}>
                   <Checkbox checked={filterValue.indexOf(name) > -1} />
                   <ListItemText primary={name} />
@@ -157,7 +157,7 @@ const FilterList = observer(({ schema, type, facets }) => {
 
   return (
     <>
-      {schema.filters.map(filterModel => {
+      {schema.filters.map((filterModel) => {
         if (filterModel.type === type) {
           return (
             <Filter

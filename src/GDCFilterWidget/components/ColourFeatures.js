@@ -18,7 +18,7 @@ import {
 import { makeStyles } from 'tss-react/mui'
 import { mutationHighlightFeatures, geneHighlightFeatures } from './Utility'
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,
@@ -51,7 +51,7 @@ const HighlightFeature = observer(({ schema, type }) => {
   const highlightFeatures =
     type === 'mutation' ? mutationHighlightFeatures : geneHighlightFeatures
 
-  const handleChangeHighlightBy = event => {
+  const handleChangeHighlightBy = (event) => {
     const hlBy = event.target.value
     setColourBy(hlBy)
     let colourFunction = ''
@@ -78,16 +78,16 @@ const HighlightFeature = observer(({ schema, type }) => {
     <>
       <Paper className={classes.paper}>
         <Typography variant="h6">Colour Features</Typography>
-        <FormControl>
+        <FormControl size="small">
           <InputLabel>Attribute</InputLabel>
           <Select
             labelId="track-type-select-label"
             id="track-type-select"
             value={colourBy}
             onChange={handleChangeHighlightBy}
-            renderValue={selected => selected.name}
+            renderValue={(selected) => selected.name}
           >
-            {highlightFeatures.map(element => {
+            {highlightFeatures.map((element) => {
               return (
                 <MenuItem value={element} key={element.name}>
                   {element.name}
@@ -115,7 +115,7 @@ const HighlightFeature = observer(({ schema, type }) => {
                 </TableHead>
                 <TableBody>
                   {colourBy.values &&
-                    colourBy.values.map(value => {
+                    colourBy.values.map((value) => {
                       return (
                         <TableRow key={value.name}>
                           <TableCell>
@@ -149,7 +149,7 @@ const HighlightFeature = observer(({ schema, type }) => {
                 </TableHead>
                 <TableBody>
                   {colourBy.values &&
-                    colourBy.values.map(value => {
+                    colourBy.values.map((value) => {
                       return (
                         <TableRow key={value.name}>
                           <TableCell>
@@ -192,7 +192,7 @@ const HighlightFeature = observer(({ schema, type }) => {
                 </TableHead>
                 <TableBody>
                   {colourBy.values &&
-                    colourBy.values.map(value => {
+                    colourBy.values.map((value) => {
                       return (
                         <TableRow key={value.name}>
                           <TableCell>
@@ -233,7 +233,7 @@ const HighlightFeature = observer(({ schema, type }) => {
                 </TableHead>
                 <TableBody>
                   {colourBy.values &&
-                    colourBy.values.map(value => {
+                    colourBy.values.map((value) => {
                       return (
                         <TableRow key={value.name}>
                           <TableCell>
