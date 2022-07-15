@@ -1,4 +1,3 @@
-import { lazy } from 'react'
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import PluginManager from '@jbrowse/core/PluginManager'
 import Plugin from '@jbrowse/core/Plugin'
@@ -26,6 +25,7 @@ import {
   configSchema as gdcFeatureWidgetConfigSchema,
   stateModelFactory as gdcFeatureWidgetStateModelFactory,
 } from './GDCFeatureWidget'
+import GDCFeatureWidgetComponent from './GDCFeatureWidget/GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 import LinearIEQDisplay from './LinearIEQDisplay'
@@ -429,9 +429,7 @@ export default class GDCPlugin extends Plugin {
         heading: 'Feature Details',
         configSchema: gdcFeatureWidgetConfigSchema,
         stateModel: gdcFeatureWidgetStateModelFactory(pluginManager),
-        ReactComponent: lazy(
-          () => import('./GDCFeatureWidget/GDCFeatureWidget'),
-        ),
+        ReactComponent: GDCFeatureWidgetComponent,
       })
     })
 
