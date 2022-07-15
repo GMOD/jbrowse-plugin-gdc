@@ -2,7 +2,7 @@
 
 exports[`GDCTrack widget renders gene with just the required model elements 1`] = `
 <div
-  class="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
+  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1ps6pg7-MuiPaper-root"
   data-testid="variant-widget"
 >
   <div
@@ -35,7 +35,7 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
         >
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root makeStyles-expandIcon-13"
+            class="MuiSvgIcon-root makeStyles-expandIcon-9"
             focusable="false"
             viewBox="0 0 24 24"
           >
@@ -63,7 +63,7 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
             role="region"
           >
             <div
-              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-12"
+              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-8"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -71,15 +71,15 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 Core details
               </p>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   Position
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     3:196,596..409,417 
@@ -87,15 +87,15 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   Description
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
@@ -103,15 +103,15 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   Name
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     cell adhesion molecule L1-like
@@ -119,15 +119,15 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   Length
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     212,822
@@ -135,15 +135,15 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   Type
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     protein_coding
@@ -159,15 +159,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 Attributes
               </p>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   biotype
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     protein_coding
@@ -175,15 +176,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   geneChromosome
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     3
@@ -191,15 +193,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   geneEnd
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     409417
@@ -207,15 +210,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   geneStart
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     196596
@@ -223,15 +227,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   geneStrand
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     1
@@ -239,15 +244,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   id
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj
@@ -255,15 +261,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
+                  style="width: 128px;"
                 >
                   symbol
                 </div>
                 <div
-                  class="makeStyles-fieldValue-17"
+                  class="makeStyles-fieldValue-13"
                 >
                   <div>
                     CHL1
@@ -271,18 +278,18 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 </div>
               </div>
               <div
-                class="makeStyles-field-14"
+                class="makeStyles-field-10"
               >
                 <div
-                  class="makeStyles-fieldName-16"
+                  class="makeStyles-fieldName-12"
                 >
                   synonyms
                 </div>
                 <div
-                  class="makeStyles-fieldSubvalue-18"
+                  class="makeStyles-fieldSubvalue-14"
                 >
                   <div
-                    class="makeStyles-fieldValue-17"
+                    class="makeStyles-fieldValue-13"
                   >
                     <div>
                       CALL
@@ -290,10 +297,10 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                   </div>
                 </div>
                 <div
-                  class="makeStyles-fieldSubvalue-18"
+                  class="makeStyles-fieldSubvalue-14"
                 >
                   <div
-                    class="makeStyles-fieldValue-17"
+                    class="makeStyles-fieldValue-13"
                   >
                     <div>
                       FLJ44930
@@ -301,10 +308,10 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                   </div>
                 </div>
                 <div
-                  class="makeStyles-fieldSubvalue-18"
+                  class="makeStyles-fieldSubvalue-14"
                 >
                   <div
-                    class="makeStyles-fieldValue-17"
+                    class="makeStyles-fieldValue-13"
                   >
                     <div>
                       L1CAM2
@@ -312,10 +319,10 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                   </div>
                 </div>
                 <div
-                  class="makeStyles-fieldSubvalue-18"
+                  class="makeStyles-fieldSubvalue-14"
                 >
                   <div
-                    class="makeStyles-fieldValue-17"
+                    class="makeStyles-fieldValue-13"
                   >
                     <div>
                       MGC132578
@@ -330,20 +337,20 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
     </div>
   </div>
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
 </div>
 `;
 
 exports[`GDCTrack widget renders mutation with just the required model elements 1`] = `
 <div
-  class="MuiPaper-root MuiPaper-elevation1 MuiPaper-rounded"
+  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1ps6pg7-MuiPaper-root"
   data-testid="variant-widget"
 >
   <div
@@ -376,7 +383,7 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
         >
           <svg
             aria-hidden="true"
-            class="MuiSvgIcon-root makeStyles-expandIcon-4"
+            class="MuiSvgIcon-root makeStyles-expandIcon-2"
             focusable="false"
             viewBox="0 0 24 24"
           >
@@ -404,7 +411,7 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
             role="region"
           >
             <div
-              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-3"
+              class="MuiAccordionDetails-root makeStyles-expansionPanelDetails-1"
             >
               <p
                 class="MuiTypography-root MuiTypography-body1"
@@ -412,15 +419,15 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 Core details
               </p>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
                 >
                   Position
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     chr3:377,918..377,918 
@@ -428,15 +435,15 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
                 >
                   Length
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     1
@@ -444,15 +451,15 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
                 >
                   Type
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     Simple Somatic Mutation
@@ -468,15 +475,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 Attributes
               </p>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   chromosome
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     chr3
@@ -484,15 +492,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   endPosition
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     377918
@@ -500,15 +509,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   genomicDnaChange
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     chr3:g.377918G&gt;A
@@ -516,15 +526,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   mutationSubtype
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     Single base substitution
@@ -532,15 +543,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   mutationType
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     Simple Somatic Mutation
@@ -548,15 +560,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   ncbiBuild
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     GRCh38
@@ -564,15 +577,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   referenceAllele
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     G
@@ -580,15 +594,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   score
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     3
@@ -596,15 +611,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 </div>
               </div>
               <div
-                class="makeStyles-field-5"
+                class="makeStyles-field-3"
               >
                 <div
-                  class="makeStyles-fieldName-7"
+                  class="makeStyles-fieldName-5"
+                  style="width: 120px;"
                 >
                   startPosition
                 </div>
                 <div
-                  class="makeStyles-fieldValue-8"
+                  class="makeStyles-fieldValue-6"
                 >
                   <div>
                     377918
@@ -618,13 +634,13 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
     </div>
   </div>
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
   <hr
-    class="MuiDivider-root"
+    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
   />
 </div>
 `;

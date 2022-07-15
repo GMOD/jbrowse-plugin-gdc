@@ -1,3 +1,4 @@
+import { lazy } from 'react'
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import PluginManager from '@jbrowse/core/PluginManager'
 import Plugin from '@jbrowse/core/Plugin'
@@ -21,7 +22,10 @@ import { DataExploration } from './UI/Icons'
 import { version } from '../package.json'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
-import GDCFeatureWidgetF from './GDCFeatureWidget'
+import {
+  configSchema as gdcFeatureWidgetConfigSchema,
+  stateModelFactory as gdcFeatureWidgetStateModelFactory,
+} from './GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplay from './LinearGDCDisplay'
 import LinearIEQDisplay from './LinearIEQDisplay'
@@ -423,7 +427,11 @@ export default class GDCPlugin extends Plugin {
       return new WidgetType({
         name: 'GDCFeatureWidget',
         heading: 'Feature Details',
-        ...GDCFeatureWidgetF(pluginManager),
+        configSchema: gdcFeatureWidgetConfigSchema,
+        stateModel: gdcFeatureWidgetStateModelFactory(pluginManager),
+        ReactComponent: lazy(
+          () => import('./GDCFeatureWidget/GDCFeatureWidget'),
+        ),
       })
     })
 
@@ -450,6 +458,7 @@ export default class GDCPlugin extends Plugin {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
       pluginManager.rootModel.appendToMenu('Tools', {
         label: 'GDC Data Import',
+        // @ts-ignore
         icon: DataExploration,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(
