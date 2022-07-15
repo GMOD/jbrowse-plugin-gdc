@@ -4,15 +4,17 @@ on: push
 
 jobs:
   test:
-    name: Test on node 12.x and ubuntu-latest
+    name: Test on node 14.x and ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: 14.x
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+      - name: Get latest JBrowse
+        run: mkdir .jbrowse && yarn run jbrowse create --force .jbrowse
       - name: Run tests
         run: yarn test

@@ -10,8 +10,6 @@ import {
 } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-import HelpIcon from '@mui/icons-material/Help'
-
 const useStyles = makeStyles()((theme) => ({
   root: {
     display: 'flex',
