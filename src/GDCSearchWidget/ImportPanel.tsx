@@ -29,10 +29,10 @@ const THEME_SPACING_B = 10 // theme.spacing(4)
 //@ts-ignore
 function styledBy(property, mapping) {
   // @ts-ignore
-  return props => mapping[props[property]]
+  return (props) => mapping[props[property]]
 }
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()((theme) => ({
   container: {
     margin: THEME_SPACING_A,
   },
@@ -324,9 +324,9 @@ const Panel = ({ model }: { model: any }) => {
            * JSON files are for bulk import of files from the GDC site
            */
           if (fileInfo.format == 'json') {
-            const res = await new Promise(resolve => {
+            const res = await new Promise((resolve) => {
               const reader = new FileReader()
-              reader.addEventListener('load', event =>
+              reader.addEventListener('load', (event) =>
                 resolve(JSON.parse(event.target?.result as string)),
               )
               reader.readAsText(file)
@@ -440,34 +440,21 @@ const Panel = ({ model }: { model: any }) => {
   })
 
   function processExplorationURI(uri: string, source?: string) {
-    let featureType = uri.split('searchTableTab=')[1]
-    if (featureType !== undefined) {
-      featureType = featureType.split('&filters=')[0].slice(0, -1)
-    }
-    if (featureType === 'case' || featureType === 'clinica') {
-      setTrackInfoMessage(
-        'Configurations to "Cases" and "Clinical" are not currently supported. The requested Explore Track will default to displaying Mutations with your applied filters.',
-      )
-      featureType = 'mutation'
-    }
+    const query = uri.split('?')[1]
 
-    let filters = ''
-    if (uri.includes('facetTab')) {
-      filters = uri.split('facetTab=')[1]
-    }
-    if (uri.includes('searchTableTab')) {
-      if (filters) {
-        filters = filters.split('searchTableTab=')[1]
-      } else {
-        filters = uri.split('searchTableTab=')[1]
-      }
-    }
+    const queryParams = new URLSearchParams(query)
 
-    filters = decodeURIComponent(filters.split('filters=')[1])
-
-    if (filters == 'undefined') {
-      filters = '{}'
-    }
+    const featureType =
+      queryParams.get('searchTableTab') === 'genes' ||
+      queryParams.get('searchTableTab') === 'mutations'
+        ? // @ts-ignore
+          queryParams.get('searchTableTab').slice(0, -1)
+        : 'mutation'
+    const filterString = queryParams.get('filters')
+      ? queryParams.get('filters')
+      : '{}'
+    // @ts-ignore
+    const filters = decodeURIComponent(filterString)
 
     const datenow = Date.now()
     const trackId = `gdc_plugin_track-${datenow}`

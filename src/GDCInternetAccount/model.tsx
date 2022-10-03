@@ -19,7 +19,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
     .volatile(() => ({
       needsToken: false,
     }))
-    .views(self => ({
+    .views((self) => ({
       get authHeader(): string {
         return getConf(self, 'authHeader')
       },
@@ -30,12 +30,12 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         return 'GDCInternetAccount'
       },
     }))
-    .actions(self => ({
+    .actions((self) => ({
       setNeedsToken(bool: boolean) {
         self.needsToken = bool
       },
     }))
-    .actions(self => ({
+    .actions((self) => ({
       getTokenFromUser(
         resolve: (token: string) => void,
         reject: (error: Error) => void,
@@ -81,7 +81,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         }
       },
     }))
-    .actions(self => {
+    .actions((self) => {
       // @ts-ignore
       const superGetToken = self.getToken
       const needsToken = new Map()
