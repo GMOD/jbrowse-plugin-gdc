@@ -50,6 +50,21 @@ Add to the "plugins" of your JBrowse Web config:
 }
 ```
 
+You must manually add to the "internetAccounts" of your JBrowse Web config, and run locally to access controlled resources:
+
+```json
+  "internetAccounts": [
+    {
+      "type": "GDCInternetAccount",
+      "internetAccountId": "GDCExternalToken",
+      "name": "GDC",
+      "description": "GDC External Token",
+      "domains": ["portal.gdc.cancer.gov", "api.gdc.cancer.gov"],
+      "customEndpoint": "http://localhost:8010/proxy"
+    }
+  ],
+```
+
 ### In [`@jbrowse/react-linear-view`](https://www.npmjs.com/package/@jbrowse/react-linear-genome-view)
 
 ```tsx
