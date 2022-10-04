@@ -58,6 +58,8 @@ import {
   configSchema as GDCInternetAccountConfigSchema,
   modelFactory as GDCInternetAccountModelFactory,
 } from './GDCInternetAccount'
+
+import GDCAddTrackWidget from './GDCAddTrackWidget'
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
   version = version
@@ -440,6 +442,8 @@ export default class GDCPlugin extends Plugin {
         ...GDCSearchWidgetF(pluginManager),
       })
     })
+
+    GDCAddTrackWidget(pluginManager)
 
     pluginManager.addInternetAccountType(() => {
       return new InternetAccountType({

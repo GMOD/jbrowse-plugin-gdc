@@ -500,7 +500,9 @@ const Panel = ({ model }: { model: any }) => {
         const trackId = `${response.data.file_id}`
         const trackName = `${response.data.file_name}`
         if (fileInfo.type !== 'bedpe') {
+          console.log(fileInfo, uri, indexFileId)
           const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
+          console.log(typeAdapterObject)
           addAndShowTrack(typeAdapterObject, trackId, trackName)
         } else {
           await addBEDPEView(response.data.file_id, uri)

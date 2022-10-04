@@ -85,6 +85,8 @@ const mapToAdapter: Map<string, Object> = new Map([
 ])
 
 function getPriorityProperty(fileInfo: FileInfo) {
+  console.log(mapToAdapter.has(fileInfo.type))
+  console.log(fileInfo.type)
   if (mapToAdapter.has(fileInfo.type)) {
     return fileInfo.type
   } else if (mapToAdapter.has(fileInfo.category)) {
@@ -110,7 +112,7 @@ export function mapDataInfo(
   fileBlob?: any,
 ) {
   const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
-
+  console.log(configObject, getPriorityProperty(fileInfo))
   if (configObject) {
     //@ts-ignore
     if (configObject.config.displays) {
@@ -134,6 +136,8 @@ export function mapDataInfo(
         locationType: 'UriLocation',
         internetAccountId: 'GDCExternalToken',
       }
+
+      console.log(configObject)
       if (indexFileId) {
         //@ts-ignore
         configObject.config.adapter['index'] = {
