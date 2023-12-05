@@ -5,7 +5,7 @@ import { types } from 'mobx-state-tree'
 
 export const configSchema = ConfigurationSchema('GDCFeatureWidget', {})
 
-export function stateModelFactory(pluginManager: PluginManager) {
+export function stateModelFactory(_pluginManager: PluginManager) {
   const stateModel = types
     .model('GDCFeatureWidget', {
       id: ElementId,

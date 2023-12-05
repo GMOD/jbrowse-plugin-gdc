@@ -1,16 +1,8 @@
 import React from 'react'
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Typography,
-  Paper,
-} from '@mui/material'
+import { Button, DialogContent, Typography, Paper } from '@mui/material'
+import { Dialog } from '@jbrowse/core/ui'
 import { makeStyles } from 'tss-react/mui'
 
-import CloseIcon from '@mui/icons-material/Close'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 const THEME_SPACING_A = 8 // theme.spacing(2)
@@ -67,16 +59,12 @@ export default function TipDialogue({
   const { classes } = useStyles()
 
   return (
-    <Dialog open onClose={handleClose} maxWidth="sm">
-      <DialogTitle>
-        How to upload bulk files from the GDC to JBrowse
-        <IconButton
-          className={classes.closeButton}
-          onClick={() => handleClose()}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+    <Dialog
+      open
+      onClose={handleClose}
+      maxWidth="sm"
+      title="How to upload bulk files from the GDC to JBrowse"
+    >
       <DialogContent>
         <div className={classes.root}>
           <div className={classes.paper}>
@@ -101,7 +89,7 @@ export default function TipDialogue({
                   <b>Step 2</b>
                 </Typography>
                 <Typography variant="body2" align="center">
-                  Enable column for 'File UUID'
+                  Enable column for &apos;File UUID&apos;
                 </Typography>
               </div>
               <ArrowForwardIcon />

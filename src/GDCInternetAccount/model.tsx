@@ -1,8 +1,11 @@
 import { ConfigurationReference, getConf } from '@jbrowse/core/configuration'
 import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
 import { UriLocation } from '@jbrowse/core/util/types'
+import { Instance, types } from 'mobx-state-tree'
+import { getSession } from '@jbrowse/core/util'
+
+// locals
 import { GDCInternetAccountConfigModel } from './configSchema'
-import { Instance, types, getRoot } from 'mobx-state-tree'
 import LoginDialogue from './LoginDialogue'
 
 const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
@@ -40,8 +43,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         resolve: (token: string) => void,
         reject: (error: Error) => void,
       ) {
-        const { session } = getRoot(self)
-        session.queueDialog((doneCallback: Function) => [
+        getSession(self).queueDialog(doneCallback => [
           LoginDialogue,
           {
             handleClose: (token: string) => {
@@ -80,14 +82,17 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
       },
     }))
     .actions(self => {
-      // @typescript-eslint/unbound-method
+      // eslint-disable-next-line @typescript-eslint/unbound-method
       const superGetToken = self.getToken
       const needsToken = new Map()
       return {
         /**
-         * uses the location of the resource to fetch the 'metadata' of the file, which contains the index files (if applicable)
-         *  and the property 'controlled' which determines whether the user needs a token to be checked against the resource or
-         *  not. if controlled = false, then the user will not be prompted with a token dialogue
+         * uses the location of the resource to fetch the 'metadata' of the
+         * file, which contains the index files (if applicable) and the
+         * property 'controlled' which determines whether the user needs a
+         * token to be checked against the resource or not. if controlled =
+         * false, then the user will not be prompted with a token dialogue
+         *
          * @param location the uri location of the resource to be fetched
          */
         async getToken(location?: UriLocation) {
@@ -107,16 +112,8 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
             return superGetToken(location)
           } else {
             if (!response.ok) {
-              let errorMessage
-              try {
-                errorMessage = await response.text()
-              } catch (error) {
-                errorMessage = ''
-              }
               throw new Error(
-                `Network response failure — ${response.status} (${
-                  response.statusText
-                }) ${errorMessage ? ` (${errorMessage})` : ''}`,
+                `HTTP ${response.status} (${await response.text()})`,
               )
             }
           }

@@ -7,7 +7,7 @@ export interface FileInfo {
   format: string
 }
 
-const mapToAdapter = new Map<string, Object>([
+const mapToAdapter = new Map([
   [
     'bam',
     {
@@ -98,9 +98,14 @@ function getPriorityProperty(fileInfo: FileInfo) {
 
 /**
  * retrieves the config object with appropriate adapter using file info
+ *
  * @param fileInfo an array of the format, category, and type of the file
+ *
  * @param uri the uri of the data
- * @param indexFileId the fileId of the index file that the data may require (BAM)
+ *
+ * @param indexFileId the fileId of the index file that the data may require
+ * (BAM)
+ *
  * @returns an object containing the config type and the adapter object
  */
 export function mapDataInfo(
@@ -112,18 +117,15 @@ export function mapDataInfo(
   const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
 
   if (configObject) {
-    //@ts-expect-error
     if (configObject.config.displays) {
       const datenow = Date.now()
       //@ts-expect-error
       configObject.config.displays[0].displayId = `gdc_plugin_track_linear_basic-${datenow}`
     }
     if (fileBlob) {
-      //@ts-expect-error
-      configObject.config.adapter[
-        //@ts-expect-error
-        `${configObject.prefix}Location`
-      ] = storeBlobLocation({ blob: fileBlob })
+      // @ts-expect-error
+      configObject.config.adapter[`${configObject.prefix}Location`] =
+        storeBlobLocation({ blob: fileBlob })
     } else {
       //@ts-expect-error
       configObject.config.adapter[`${configObject.prefix}Location`] = {
@@ -150,11 +152,21 @@ export function mapDataInfo(
 }
 
 /**
- * creates a specialized config for a GDC explore track using filters that have been parsed from a given url
- * @param category 'GDC Explore' or 'SSM or Gene' indicating what kind of adapter to use
- * @param featureType mutation or gene indicating what kind of feature is being displayed
- * @param adapterPropertyValue filters or data indicating what kind of data has been fed to the function
- * @param trackId the id for the track, needs to be passed in to be specified against the unique identifier
+ * creates a specialized config for a GDC explore track using filters that have
+ * been parsed from a given url
+ *
+ * @param category 'GDC Explore' or 'SSM or Gene' indicating what kind of
+ * adapter to use
+ *
+ * @param featureType mutation or gene indicating what kind of feature is being
+ * displayed
+ *
+ * @param adapterPropertyValue filters or data indicating what kind of data has
+ * been fed to the function
+ *
+ * @param trackId the id for the track, needs to be passed in to be specified
+ * against the unique identifier
+ *
  * @returns a configuration object that will create the track
  */
 export function mapGDCExploreConfig(
@@ -173,11 +185,10 @@ export function mapGDCExploreConfig(
       featureType == 'mutation'
         ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'green', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
         : "jexl:cast('goldenrod')"
-    // @ts-expect-error
     configObject.config = {
       adapter: {
-        // @ts-expect-error
         ...configObject.config.adapter,
+        // @ts-expect-error
         GDCAdapterId: trackId,
         [adapterProperty]: adapterPropertyValue,
         featureType,
@@ -185,6 +196,7 @@ export function mapGDCExploreConfig(
       category: undefined,
       displays: [
         {
+          // @ts-expect-error
           displayId: `gdc_plugin_track_linear-${datenow}`,
           renderer: {
             color1,
@@ -196,7 +208,6 @@ export function mapGDCExploreConfig(
           type: 'LinearGDCDisplay',
         },
       ],
-      // @ts-expect-error
       type: configObject.config.type,
     }
   }

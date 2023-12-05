@@ -47,7 +47,11 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-function TabPanel(props) {
+function TabPanel(props: {
+  children: React.ReactNode
+  value: number
+  index: number
+}) {
   const { children, value, index, ...other } = props
 
   return (
@@ -66,7 +70,7 @@ function TabPanel(props) {
 /**
  * Creates the form for interacting with the track filters
  */
-const GDCQueryBuilder = observer(({ schema }) => {
+const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
   const [isValidGDCFilter, setIsValidGDCFilter] = useState(true)
   const [isValidColourBy, setIsValidColourBy] = useState(true)
   const [validationMessage, setFilterValidationMessage] = useState('')
@@ -209,7 +213,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
   )
 })
 
-const ConfigurationEditor = observer(({ model }) => {
+const ConfigurationEditor = observer(({ model }: { model: any }) => {
   const { classes } = useStyles()
   return (
     <div className={classes.root} data-testid="configEditor">

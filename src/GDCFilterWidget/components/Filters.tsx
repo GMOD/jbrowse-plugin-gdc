@@ -18,19 +18,12 @@ import {
   ListItem,
   Tooltip,
 } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()(theme => ({
-  root: {
-    padding: theme.spacing(1, 3, 1, 1),
-    background: theme.palette.background.default,
-  },
-}))
 
 /**
- * An element representing an individual filter with a category and set of applied values
+ * An element representing an individual filter with a category and set of
+ * applied values
  */
-const Filter = observer(props => {
+const Filter = observer((props: any) => {
   const { schema, filterModel, facets } = props
 
   const [categoryValue, setCategoryValue] = useState(
@@ -42,25 +35,13 @@ const Filter = observer(props => {
     filterModel.filter ? filterModel.filter.split(',') : [],
   )
 
-  const handleChangeCategory = event => {
-    setCategoryValue(event.target.value)
-    setFilterValue([])
-    filterModel.setCategory(event.target.value.name)
-  }
-
-  const handleChangeFilter = event => {
-    setFilterValue(event.target.value)
-    filterModel.setFilter(event.target.value.join(','))
-    updateTrack(schema.filters, schema.target)
-  }
-
   /**
    * Converts filter model objects to a GDC filter query and updates the track
    * @param {*} filters Array of filter model objects
    * @param {*} target Track target
    */
   function updateTrack(filters, target) {
-    let gdcFilters = { op: 'and', content: [] }
+    let gdcFilters: Record<string, unknown> = { op: 'and', content: [] }
     if (filters.length > 0) {
       for (const filter of filters) {
         if (filter.filter !== '') {
@@ -93,7 +74,11 @@ const Filter = observer(props => {
               labelId="category-select-label"
               id="category-select"
               value={categoryValue}
-              onChange={handleChangeCategory}
+              onChange={event => {
+                setCategoryValue(event.target.value)
+                setFilterValue([])
+                filterModel.setCategory(event.target.value.name)
+              }}
               label="Category"
             >
               {facets.map(filterOption => {
@@ -111,7 +96,11 @@ const Filter = observer(props => {
               id="demo-mutiple-checkbox"
               multiple
               value={filterValue}
-              onChange={handleChangeFilter}
+              onChange={event => {
+                setFilterValue(event.target.value)
+                filterModel.setFilter(event.target.value.join(','))
+                updateTrack(schema.filters, schema.target)
+              }}
               input={<Input />}
               displayEmpty
               renderValue={selected => {
@@ -148,7 +137,7 @@ const Filter = observer(props => {
 /**
  * A collection of filters along with a button to add new filters
  */
-const FilterList = observer(({ schema, type, facets }) => {
+const FilterList = observer(({ schema, type, facets }: Record<string, any>) => {
   const initialFilterSelection = facets[0].name
 
   const handleClick = () => {

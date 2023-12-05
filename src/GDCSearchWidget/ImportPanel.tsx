@@ -26,12 +26,6 @@ const MAX_FILES = 25
 const THEME_SPACING_A = 8 // theme.spacing(2)
 const THEME_SPACING_B = 10 // theme.spacing(4)
 
-//@ts-expect-error
-function styledBy(property, mapping) {
-  // @ts-expect-error
-  return props => mapping[props[property]]
-}
-
 const useStyles = makeStyles()(theme => ({
   container: {
     margin: THEME_SPACING_A,
@@ -251,7 +245,8 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
    * the File object
    *
    * @param fileName the name of the file to determine the extension
-   * @returns an object of type fileInfo that contains the file format, type, and/or category of the file based on its name
+   * @returns an object of type fileInfo that contains the file format, type,
+   * and/or category of the file based on its name
    */
   function determineFileInfo(fileName: string) {
     const format = fileName.split('.')[-1]
@@ -292,9 +287,10 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
     setUploadInfoMessage(undefined)
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     maxSize: MAX_FILE_SIZE,
     multiple: false,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onDrop: async (acceptedFiles, rejectedFiles) => {
       resetErrorMessages()
 
@@ -314,7 +310,6 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
           console.error(message)
           setDragErrorMessage(message)
         }
-        return
       }
 
       const [file] = acceptedFiles
@@ -437,7 +432,7 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
           const message =
             // @ts-expect-error
             e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-          setDragErrorMessage(`Failed to add track.\n ${message}.`)
+          setDragErrorMessage(`Failed to add track.\n ${message as string}.`)
         }
       }
     },
@@ -471,58 +466,6 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
     )
 
     addAndShowTrack(typeAdapterObject, trackId, trackName, source)
-  }
-
-  const handleSubmit = async () => {
-    resetErrorMessages()
-
-    try {
-      // @ts-expect-error
-      let query = inputRef ? inputRef.current.value : undefined
-
-      if (query.includes('exploration')) {
-        processExplorationURI(query)
-      } else if (!query) {
-        setTrackErrorMessage(
-          'Failed to add track.\nUUID or URL must be provided.',
-        )
-      } else {
-        if (query.includes('files/')) {
-          query = query.split('/')[4]
-        }
-        const response = await fetchFileInfo(query)
-        const fileInfo = {
-          category: response.data.data_category,
-          format: response.data.data_format.toLowerCase(),
-          type: response.data.data_type,
-        }
-        // BAM files require an index file, if the response contains index_files, then we want to utilize it
-        const indexFileId = response.data.index_files
-          ? response.data.index_files[0].file_id
-          : undefined
-        const uri = `http://localhost:8010/proxy/data/${query}`
-        const trackId = `${response.data.file_id}`
-        const trackName = `${response.data.file_name}`
-        if (fileInfo.type !== 'bedpe') {
-          const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
-        } else {
-          await addBEDPEView(response.data.file_id, uri)
-          setSuccess(true)
-        }
-      }
-    } catch (e) {
-      // @ts-expect-error
-      if (!e.message.includes('unable to determine size of file at')) {
-        console.error(e)
-        const message =
-          // @ts-expect-error
-          e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-        setTrackErrorMessage(`Failed to add track.\n ${message}.`)
-      }
-    }
-    // @ts-expect-error
-    inputRef.current.value = null
   }
 
   const { classes } = useStyles()
@@ -622,7 +565,63 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
               color="primary"
               variant="contained"
               size="large"
-              onClick={handleSubmit}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={async () => {
+                resetErrorMessages()
+
+                try {
+                  // @ts-expect-error
+                  let query = inputRef ? inputRef.current.value : undefined
+
+                  if (query.includes('exploration')) {
+                    processExplorationURI(query)
+                  } else if (!query) {
+                    setTrackErrorMessage(
+                      'Failed to add track.\nUUID or URL must be provided.',
+                    )
+                  } else {
+                    if (query.includes('files/')) {
+                      query = query.split('/')[4]
+                    }
+                    const response = await fetchFileInfo(query)
+                    const fileInfo = {
+                      category: response.data.data_category,
+                      format: response.data.data_format.toLowerCase(),
+                      type: response.data.data_type,
+                    }
+                    // BAM files require an index file, if the response
+                    // contains index_files, then we want to utilize it
+                    const indexFileId = response.data.index_files
+                      ? response.data.index_files[0].file_id
+                      : undefined
+                    const uri = `http://localhost:8010/proxy/data/${query}`
+                    const trackId = `${response.data.file_id}`
+                    const trackName = `${response.data.file_name}`
+                    if (fileInfo.type !== 'bedpe') {
+                      const typeAdapterObject = mapDataInfo(
+                        fileInfo,
+                        uri,
+                        indexFileId,
+                      )
+                      addAndShowTrack(typeAdapterObject, trackId, trackName)
+                    } else {
+                      await addBEDPEView(response.data.file_id, uri)
+                      setSuccess(true)
+                    }
+                  }
+                } catch (e) {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  const err = `${e}`
+                  if (!err.includes('unable to determine size of file at')) {
+                    console.error(e)
+                    const message =
+                      err.length > 100 ? `${err.substring(0, 99)}...` : err
+                    setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+                  }
+                }
+                // @ts-expect-error
+                inputRef.current.value = null
+              }}
             >
               Submit
             </Button>

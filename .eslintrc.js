@@ -26,13 +26,18 @@ module.exports = {
     },
   },
   rules: {
-    '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/ban-ts-comment': 0,
+    '@typescript-eslint/no-unsafe-member-access': 0,
+    '@typescript-eslint/no-unsafe-argument': 0,
+    '@typescript-eslint/no-unsafe-assignment': 0,
+    '@typescript-eslint/no-unsafe-return': 0,
+    '@typescript-eslint/no-unsafe-call': 0,
+    '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/require-await': 0,
     '@typescript-eslint/no-unused-vars': [
       'warn',
-      {
-        args: 'after-used',
-        ignoreRestSiblings: true,
-      },
+      { argsIgnorePattern: '^_', ignoreRestSiblings: true },
     ],
   },
 }

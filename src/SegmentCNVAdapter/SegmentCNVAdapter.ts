@@ -7,9 +7,6 @@ import { openLocation } from '@jbrowse/core/util/io'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import SimpleFeature, { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 
 export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
@@ -52,15 +49,15 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    const segment: any = {}
+    const segment: Record<string, unknown> = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
         if (i === 0) {
           segment.id = property
         } else {
-          /* some SEG files have different data, this logic is to ensure that we don't need special
-             colouring functions to accomodate for those differences...mean and copy number indicate
-             the track colouring */
+          // some SEG files have different data, this logic is to ensure that
+          // we don't need special colouring functions to accomodate for those
+          // differences...mean and copy number indicate the track colouring
           if (
             columns[i].toLowerCase() === 'segment_mean' ||
             columns[i].toLowerCase() === 'copy_number'
@@ -77,7 +74,7 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   private async getLines() {
     const { columns, lines } = await this.readSeg()
 
-    return lines.map((line, index) => {
+    return lines.map(line => {
       const segment = this.parseLine(line, columns)
       return new SimpleFeature({
         uniqueId: segment.id,

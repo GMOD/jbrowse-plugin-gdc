@@ -4,7 +4,7 @@ import { FileLocation } from '@jbrowse/core/util/types'
 
 import { types, Instance } from 'mobx-state-tree'
 
-export default function f(pluginManager: PluginManager) {
+export default function f(_pluginManager: PluginManager) {
   return types
     .model('GDCSearchWidget', {
       id: ElementId,
