@@ -8,30 +8,14 @@ import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import MbvFeature from './MbvFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 import pako from 'pako'
 
 export default class MbvAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
 
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-expect-error
-    super(config, getSubAdapter, pluginManager)
-    // super(config)
-    this.config = config
-  }
-
-  private async readMbv(fileContents: string) {
+  private readMbv(fileContents: string) {
     const lines = fileContents.split('\n')
     const refNames: string[] = []
     const rows: string[] = []
@@ -40,9 +24,9 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     lines.forEach(line => {
       if (columns.length === 0) {
         columns = line.split('\t')
-        const chromosome = (element: any) =>
-          element.toLowerCase() === 'chromosome'
-        refNameColumnIndex = columns.findIndex(chromosome)
+        refNameColumnIndex = columns.findIndex(
+          element => element.toLowerCase() === 'chromosome',
+        )
       } else {
         if (
           line.split('\t')[refNameColumnIndex] !== '*' &&
@@ -62,7 +46,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    const mutationObject: any = {}
+    const mutationObject: Record<string, unknown> = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
         mutationObject[columns[i].toLowerCase()] = property
@@ -77,12 +61,12 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
       'mbvLocation',
     ) as FileLocation
 
-    let fileContents = await openLocation(
+    const fileContents = await openLocation(
       mbvLocation,
-      // @ts-expect-error
       this.pluginManager,
     ).readFile()
 
+    let str: string
     if (
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
@@ -91,15 +75,12 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-expect-error
-      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
+      str = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-expect-error
-      fileContents = fileContents.toString()
+      str = fileContents.toString()
     }
 
-    // @ts-expect-error
-    return this.readMbv(fileContents)
+    return this.readMbv(str)
   }
 
   private async getLines() {

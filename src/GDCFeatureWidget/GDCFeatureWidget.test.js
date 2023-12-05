@@ -17,9 +17,12 @@ describe('GDCTrack widget', () => {
       configuration: ConfigurationSchema('test', {}),
       widget: stateModelFactory(pluginManager),
     })
-    const model = Session.create({
-      widget: { type: 'GDCFeatureWidget' },
-    })
+    const model = Session.create(
+      {
+        widget: { type: 'GDCFeatureWidget' },
+      },
+      { pluginManager },
+    )
 
     model.widget.setFeatureData({
       uniqueId: '0208efeb-f1e8-57e4-8447-299c5f050380',
@@ -84,9 +87,12 @@ describe('GDCTrack widget', () => {
       configuration: ConfigurationSchema('test', {}),
       widget: stateModelFactory(pluginManager),
     })
-    const model = Session.create({
-      widget: { type: 'GDCFeatureWidget' },
-    })
+    const model = Session.create(
+      {
+        widget: { type: 'GDCFeatureWidget' },
+      },
+      { pluginManager },
+    )
 
     model.widget.setFeatureData({
       uniqueId: 'ENSG00000134121',

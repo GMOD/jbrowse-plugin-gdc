@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { getSession } from '@jbrowse/core/util'
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
@@ -9,7 +9,6 @@ import {
   Typography,
   TextField,
   Chip,
-  useTheme,
 } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -20,6 +19,7 @@ import TipDialogue from './TipDialogue'
 import { makeStyles } from 'tss-react/mui'
 
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
+import { GDCSearchModel } from './model'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 const MAX_FILES = 25
@@ -126,7 +126,7 @@ const useStyles = makeStyles()(theme => ({
   },
 }))
 
-async function fetchFileInfo(query: any) {
+async function fetchFileInfo(query: string) {
   const response = await fetch(
     `http://localhost:8010/proxy/files/${query}?expand=index_files`,
     {
@@ -135,12 +135,14 @@ async function fetchFileInfo(query: any) {
   )
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch ${response.status} ${await response.text()}`,
+    )
   }
   return response.json()
 }
 
-const Panel = ({ model }: { model: any }) => {
+const Panel = ({ model }: { model: GDCSearchModel }) => {
   const [dragErrorMessage, setDragErrorMessage] = useState<string>()
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
@@ -162,7 +164,6 @@ const Panel = ({ model }: { model: any }) => {
   async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
     session.addView('SpreadsheetView', {})
     const xView = session.views.length - 1
-    // @ts-expect-error
     session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
     if (uri) {
       // @ts-expect-error
@@ -245,8 +246,10 @@ const Panel = ({ model }: { model: any }) => {
   }
 
   /**
-   * helper function to determine the file type of a dragged file. needed because files like BAM and VCF do not
-   * have inherent types to extract from the File object
+   * helper function to determine the file type of a dragged file. needed
+   * because files like BAM and VCF do not have inherent types to extract from
+   * the File object
+   *
    * @param fileName the name of the file to determine the extension
    * @returns an object of type fileInfo that contains the file format, type, and/or category of the file based on its name
    */
@@ -300,10 +303,8 @@ const Panel = ({ model }: { model: any }) => {
           const message = 'Only one session at a time may be imported'
           console.error(message)
           setDragErrorMessage(message)
-          //@ts-expect-error
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
-            //@ts-expect-error
             rejectedFiles[0].file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
@@ -375,6 +376,7 @@ const Panel = ({ model }: { model: any }) => {
                 setUploadInfoMessage('Please upload a corresponding BAI file.')
                 setFileChip(file.name)
               }
+              // @ts-expect-error
               model.setTrackData(storeBlobLocation({ blob: file }))
             }
             if (/\.bai$/i.test(file.name)) {
@@ -382,6 +384,7 @@ const Panel = ({ model }: { model: any }) => {
                 setUploadInfoMessage('Please upload a corresponding BAM file.')
                 setFileChip(file.name)
               }
+              // @ts-expect-error
               model.setIndexTrackData(storeBlobLocation({ blob: file }))
             }
             if (
@@ -408,7 +411,8 @@ const Panel = ({ model }: { model: any }) => {
               addAndShowTrack(
                 typeAdapterObject,
                 trackId,
-                model.trackData.name,
+                // @ts-expect-error
+                model.trackData.name as string,
                 'drag',
               )
               model.setTrackData(undefined)
@@ -554,8 +558,7 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    // @ts-expect-error
-                    session.queueDialog((doneCallback: Function) => [
+                    session.queueDialog(doneCallback => [
                       TipDialogue,
                       {
                         handleClose: () => {

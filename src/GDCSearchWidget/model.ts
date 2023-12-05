@@ -15,10 +15,10 @@ export default function f(pluginManager: PluginManager) {
       indexTrackData: undefined as FileLocation | undefined,
     }))
     .actions(self => ({
-      setTrackData(obj: FileLocation) {
+      setTrackData(obj?: FileLocation) {
         self.trackData = obj
       },
-      setIndexTrackData(obj: FileLocation) {
+      setIndexTrackData(obj?: FileLocation) {
         self.indexTrackData = obj
       },
 
@@ -29,5 +29,5 @@ export default function f(pluginManager: PluginManager) {
     }))
 }
 
-export type ImportPanelStateModel = ReturnType<typeof f>
-export type ImportPanelModel = Instance<ImportPanelStateModel>
+export type GDCSearchStateModel = ReturnType<typeof f>
+export type GDCSearchModel = Instance<GDCSearchStateModel>

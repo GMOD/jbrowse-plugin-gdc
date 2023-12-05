@@ -18,19 +18,7 @@ import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 export default class IeqAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
-
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-expect-error
-    super(config, getSubAdapter, pluginManager)
-    this.config = config
-  }
 
   private async readIeq() {
     const ieqLocation = readConfObject(
@@ -39,7 +27,6 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
     ) as FileLocation
     const fileContents = await openLocation(
       ieqLocation,
-      // @ts-expect-error
       this.pluginManager,
     ).readFile('utf8')
 

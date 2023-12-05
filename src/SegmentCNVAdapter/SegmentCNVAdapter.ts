@@ -14,19 +14,7 @@ import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
-
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-expect-error
-    super(config, getSubAdapter, pluginManager)
-    this.config = config
-  }
 
   private async readSeg() {
     const segLocation = readConfObject(
@@ -35,7 +23,6 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     ) as FileLocation
     const fileContents = await openLocation(
       segLocation,
-      // @ts-expect-error
       this.pluginManager,
     ).readFile('utf8')
     const lines = fileContents.split('\n')
@@ -46,9 +33,9 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     lines.forEach(line => {
       if (columns.length === 0) {
         columns = line.split('\t')
-        const chromosome = (element: any) =>
-          element.toLowerCase() === 'chromosome'
-        refNameColumnIndex = columns.findIndex(chromosome)
+        refNameColumnIndex = columns.findIndex(
+          element => element.toLowerCase() === 'chromosome',
+        )
       } else {
         if (line.split('\t')[refNameColumnIndex] !== undefined) {
           rows.push(line)

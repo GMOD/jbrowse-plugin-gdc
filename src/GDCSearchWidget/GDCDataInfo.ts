@@ -201,6 +201,5 @@ export function mapGDCExploreConfig(
     }
   }
 
-  // @ts-expect-error
   return configObject
 }

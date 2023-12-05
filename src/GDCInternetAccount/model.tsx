@@ -66,11 +66,9 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           input: RequestInfo,
           init?: RequestInit,
         ): Promise<Response> => {
-          // @ts-expect-error
           const authToken = await self.getToken(location)
           let newInit = init
           if (authToken !== 'none') {
-            // @ts-expect-error
             newInit = self.addAuthHeaderToInit(init, authToken)
           }
           let query = String(input)
@@ -82,7 +80,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
       },
     }))
     .actions(self => {
-      // @ts-expect-error
+      // @typescript-eslint/unbound-method
       const superGetToken = self.getToken
       const needsToken = new Map()
       return {

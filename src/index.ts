@@ -10,11 +10,8 @@ import {
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 import { FileLocation } from '@jbrowse/core/util/types'
 import {
-  // @ts-expect-error
   AdapterGuesser,
-  // @ts-expect-error
   getFileName,
-  // @ts-expect-error
   TrackTypeGuesser,
 } from '@jbrowse/core/util/tracks'
 import { DataExploration } from './UI/Icons'
@@ -27,8 +24,8 @@ import {
 } from './GDCFeatureWidget'
 import GDCFeatureWidgetComponent from './GDCFeatureWidget/GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
-import LinearGDCDisplay from './LinearGDCDisplay'
-import LinearIEQDisplay from './LinearIEQDisplay'
+import LinearGDCDisplayF from './LinearGDCDisplay'
+import LinearIEQDisplayF from './LinearIEQDisplay'
 import LinearMAFDisplay from './LinearMAFDisplay'
 
 import GDCAdapterConfigSchema from './GDCAdapter/configSchema'
@@ -53,22 +50,19 @@ import {
   configSchema as sjqConfigSchema,
   AdapterClass as SjqAdapter,
 } from './SJQAdapter'
-
+import AdapterType from '@jbrowse/core/pluggableElementTypes/AdapterType'
+import TrackType from '@jbrowse/core/pluggableElementTypes/TrackType'
+import WidgetType from '@jbrowse/core/pluggableElementTypes/WidgetType'
 import {
   configSchema as GDCInternetAccountConfigSchema,
   modelFactory as GDCInternetAccountModelFactory,
 } from './GDCInternetAccount'
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
-  version = version
+
+  version = version as string
 
   install(pluginManager: PluginManager) {
-    const AdapterType =
-      pluginManager.lib['@jbrowse/core/pluggableElementTypes/AdapterType']
-    const TrackType =
-      pluginManager.lib['@jbrowse/core/pluggableElementTypes/TrackType']
-    const WidgetType =
-      pluginManager.lib['@jbrowse/core/pluggableElementTypes/WidgetType']
     const LGVPlugin = pluginManager.getPlugin(
       'LinearGenomeViewPlugin',
     ) as import('@jbrowse/plugin-linear-genome-view').default
@@ -81,7 +75,6 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: null,
             hiddenFromGUI: true,
@@ -97,14 +90,12 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SjqAdapter',
           configSchema: sjqConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Splice Junction Quantification Adapter',
             description: '',
           },
-          // @ts-expect-error
           AdapterClass: SjqAdapter,
         }),
     )
@@ -135,14 +126,12 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MbvAdapter',
           configSchema: mbvConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Methylation Beta Value Adapter',
             description: '',
           },
-          // @ts-expect-error
           AdapterClass: MbvAdapter,
         }),
     )
@@ -173,7 +162,6 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
@@ -224,14 +212,12 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Isoform Expression Quantification Adapter',
             description: '',
           },
-          // @ts-expect-error
           AdapterClass: IeqAdapter,
         }),
     )
@@ -274,7 +260,6 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SegmentCNVAdapter',
           configSchema: segmentCnvConfigSchema,
-          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
@@ -341,7 +326,7 @@ export default class GDCPlugin extends Plugin {
     })
 
     pluginManager.addDisplayType(() => {
-      const { configSchema, stateModel } = pluginManager.load(LinearGDCDisplay)
+      const { configSchema, stateModel } = LinearGDCDisplayF(pluginManager)
       return new DisplayType({
         name: 'LinearGDCDisplay',
         configSchema,
@@ -373,7 +358,7 @@ export default class GDCPlugin extends Plugin {
     })
 
     pluginManager.addDisplayType(() => {
-      const { configSchema, stateModel } = pluginManager.load(LinearIEQDisplay)
+      const { configSchema, stateModel } = LinearIEQDisplayF(pluginManager)
       return new DisplayType({
         name: 'LinearIEQDisplay',
         configSchema,
@@ -456,7 +441,6 @@ export default class GDCPlugin extends Plugin {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
       pluginManager.rootModel.appendToMenu('Tools', {
         label: 'GDC Data Import',
-        // @ts-expect-error
         icon: DataExploration,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(

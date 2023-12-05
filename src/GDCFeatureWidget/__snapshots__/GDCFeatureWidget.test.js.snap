@@ -29,7 +29,7 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
       >
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium tss-rb1zhf-expandIcon css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium tss-5xjg5v-expandIcon css-i4bv87-MuiSvgIcon-root"
           data-testid="ExpandMoreIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -66,80 +66,78 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Position
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
-                    3:196,596..409,417 
-                  </div>
+                  3:196,596..409,417 
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Description
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Name
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     cell adhesion molecule L1-like
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Length
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     212,822
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Type
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     protein_coding
-                  </div>
+                  </span>
                 </div>
               </div>
               <hr
@@ -154,7 +152,7 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   biotype
@@ -162,16 +160,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     protein_coding
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   geneChromosome
@@ -179,16 +177,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     3
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   geneEnd
@@ -196,16 +194,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     409417
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   geneStart
@@ -213,16 +211,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     196596
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   geneStrand
@@ -230,16 +228,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     1
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   id
@@ -247,16 +245,16 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 128px;"
                 >
                   symbol
@@ -264,62 +262,100 @@ exports[`GDCTrack widget renders gene with just the required model elements 1`] 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     CHL1
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   synonyms
                 </div>
                 <div
-                  class="tss-1pxsuda-fieldSubvalue"
+                  class="tss-16oc29p-fieldSubvalue"
                 >
                   <div
                     class="tss-1omt041-fieldValue"
                   >
-                    <div>
+                    <span>
                       CALL
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div
-                  class="tss-1pxsuda-fieldSubvalue"
+                  class="tss-16oc29p-fieldSubvalue"
                 >
                   <div
                     class="tss-1omt041-fieldValue"
                   >
-                    <div>
+                    <span>
                       FLJ44930
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div
-                  class="tss-1pxsuda-fieldSubvalue"
+                  class="tss-16oc29p-fieldSubvalue"
                 >
                   <div
                     class="tss-1omt041-fieldValue"
                   >
-                    <div>
+                    <span>
                       L1CAM2
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div
-                  class="tss-1pxsuda-fieldSubvalue"
+                  class="tss-16oc29p-fieldSubvalue"
                 >
                   <div
                     class="tss-1omt041-fieldValue"
                   >
-                    <div>
+                    <span>
                       MGC132578
-                    </div>
+                    </span>
                   </div>
+                </div>
+              </div>
+              <div
+                class="tss-1lttu3w-container"
+              >
+                <button
+                  class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium css-sghohy-MuiButtonBase-root-MuiButton-root"
+                  tabindex="0"
+                  type="button"
+                >
+                  Show feature sequence
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+                <div
+                  class="MuiFormControl-root tss-1x17dzq-formControl css-1nrlq1o-MuiFormControl-root"
+                >
+                  <button
+                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-78trlr-MuiButtonBase-root-MuiIconButton-root"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      data-testid="HelpIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
+                      />
+                    </svg>
+                    <span
+                      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -369,7 +405,7 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
       >
         <svg
           aria-hidden="true"
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium tss-rb1zhf-expandIcon css-i4bv87-MuiSvgIcon-root"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium tss-5xjg5v-expandIcon css-i4bv87-MuiSvgIcon-root"
           data-testid="ExpandMoreIcon"
           focusable="false"
           viewBox="0 0 24 24"
@@ -406,48 +442,46 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Position
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
-                    chr3:377,918..377,918 
-                  </div>
+                  chr3:377,918 
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Length
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     1
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                 >
                   Type
                 </div>
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     Simple Somatic Mutation
-                  </div>
+                  </span>
                 </div>
               </div>
               <hr
@@ -462,7 +496,7 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   chromosome
@@ -470,16 +504,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     chr3
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   endPosition
@@ -487,16 +521,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     377918
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   genomicDnaChange
@@ -504,16 +538,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     chr3:g.377918G&gt;A
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   mutationSubtype
@@ -521,16 +555,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     Single base substitution
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   mutationType
@@ -538,16 +572,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     Simple Somatic Mutation
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   ncbiBuild
@@ -555,16 +589,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     GRCh38
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   referenceAllele
@@ -572,16 +606,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     G
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   score
@@ -589,16 +623,16 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     3
-                  </div>
+                  </span>
                 </div>
               </div>
               <div
                 class="tss-1m8nxnb-field"
               >
                 <div
-                  class="tss-1y9c7n2-fieldName"
+                  class="tss-1q83rf3-fieldName"
                   style="width: 120px;"
                 >
                   startPosition
@@ -606,9 +640,47 @@ exports[`GDCTrack widget renders mutation with just the required model elements 
                 <div
                   class="tss-1omt041-fieldValue"
                 >
-                  <div>
+                  <span>
                     377918
-                  </div>
+                  </span>
+                </div>
+              </div>
+              <div
+                class="tss-1lttu3w-container"
+              >
+                <button
+                  class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium css-sghohy-MuiButtonBase-root-MuiButton-root"
+                  tabindex="0"
+                  type="button"
+                >
+                  Show feature sequence
+                  <span
+                    class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                  />
+                </button>
+                <div
+                  class="MuiFormControl-root tss-1x17dzq-formControl css-1nrlq1o-MuiFormControl-root"
+                >
+                  <button
+                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-78trlr-MuiButtonBase-root-MuiIconButton-root"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-i4bv87-MuiSvgIcon-root"
+                      data-testid="HelpIcon"
+                      focusable="false"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"
+                      />
+                    </svg>
+                    <span
+                      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
