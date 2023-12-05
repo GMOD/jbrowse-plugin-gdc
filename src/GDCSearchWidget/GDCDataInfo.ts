@@ -7,7 +7,7 @@ export interface FileInfo {
   format: string
 }
 
-const mapToAdapter: Map<string, Object> = new Map([
+const mapToAdapter = new Map<string, Object>([
   [
     'bam',
     {
@@ -112,22 +112,20 @@ export function mapDataInfo(
   const configObject = mapToAdapter.get(getPriorityProperty(fileInfo))
 
   if (configObject) {
-    //@ts-ignore
+    //@ts-expect-error
     if (configObject.config.displays) {
       const datenow = Date.now()
-      //@ts-ignore
-      configObject.config.displays[0][
-        'displayId'
-      ] = `gdc_plugin_track_linear_basic-${datenow}`
+      //@ts-expect-error
+      configObject.config.displays[0].displayId = `gdc_plugin_track_linear_basic-${datenow}`
     }
     if (fileBlob) {
-      //@ts-ignore
+      //@ts-expect-error
       configObject.config.adapter[
-        //@ts-ignore
+        //@ts-expect-error
         `${configObject.prefix}Location`
       ] = storeBlobLocation({ blob: fileBlob })
     } else {
-      //@ts-ignore
+      //@ts-expect-error
       configObject.config.adapter[`${configObject.prefix}Location`] = {
         uri: uri,
         authHeader: 'X-Auth-Token',
@@ -135,8 +133,8 @@ export function mapDataInfo(
         internetAccountId: 'GDCExternalToken',
       }
       if (indexFileId) {
-        //@ts-ignore
-        configObject.config.adapter['index'] = {
+        //@ts-expect-error
+        configObject.config.adapter.index = {
           location: {
             uri: `http://localhost:8010/proxy/data/${indexFileId}`,
             authHeader: 'X-Auth-Token',
@@ -175,10 +173,10 @@ export function mapGDCExploreConfig(
       featureType == 'mutation'
         ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'green', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
         : "jexl:cast('goldenrod')"
-    // @ts-ignore
+    // @ts-expect-error
     configObject.config = {
       adapter: {
-        // @ts-ignore
+        // @ts-expect-error
         ...configObject.config.adapter,
         GDCAdapterId: trackId,
         [adapterProperty]: adapterPropertyValue,
@@ -198,11 +196,11 @@ export function mapGDCExploreConfig(
           type: 'LinearGDCDisplay',
         },
       ],
-      // @ts-ignore
+      // @ts-expect-error
       type: configObject.config.type,
     }
   }
 
-  // @ts-ignore
+  // @ts-expect-error
   return configObject
 }

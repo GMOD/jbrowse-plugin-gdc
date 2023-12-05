@@ -23,7 +23,7 @@ import UndoIcon from '@mui/icons-material/Undo'
 
 import { observer } from 'mobx-react'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     margin: theme.spacing(1),
   },
@@ -122,7 +122,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
       ]
 
       let matchingKeys = true
-      expectedAttributes.forEach((key) => {
+      expectedAttributes.forEach(key => {
         if (!(key in colourBy)) {
           matchingKeys = false
         }

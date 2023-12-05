@@ -24,7 +24,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
     getSubAdapter?: getSubAdapterType,
     pluginManager?: PluginManager,
   ) {
-    // @ts-ignore
+    // @ts-expect-error
     super(config, getSubAdapter, pluginManager)
     this.config = config
   }
@@ -61,7 +61,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    let mutationObject: any = {}
+    const mutationObject: any = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
         mutationObject[columns[i].toLowerCase()] = property
@@ -78,7 +78,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
 
     let fileContents = await openLocation(
       mafLocation,
-      // @ts-ignore
+      // @ts-expect-error
       this.pluginManager,
     ).readFile()
 
@@ -90,14 +90,14 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = fileContents.toString()
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     return this.readMaf(fileContents)
   }
 

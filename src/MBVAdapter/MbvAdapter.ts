@@ -25,7 +25,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     getSubAdapter?: getSubAdapterType,
     pluginManager?: PluginManager,
   ) {
-    // @ts-ignore
+    // @ts-expect-error
     super(config, getSubAdapter, pluginManager)
     // super(config)
     this.config = config
@@ -37,7 +37,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     const rows: string[] = []
     let columns: string[] = []
     let refNameColumnIndex = 0
-    lines.forEach((line) => {
+    lines.forEach(line => {
       if (columns.length === 0) {
         columns = line.split('\t')
         const chromosome = (element: any) =>
@@ -62,7 +62,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    let mutationObject: any = {}
+    const mutationObject: any = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
         mutationObject[columns[i].toLowerCase()] = property
@@ -79,7 +79,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
 
     let fileContents = await openLocation(
       mbvLocation,
-      // @ts-ignore
+      // @ts-expect-error
       this.pluginManager,
     ).readFile()
 
@@ -91,14 +91,14 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = fileContents.toString()
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     return this.readMbv(fileContents)
   }
 
@@ -126,9 +126,9 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
   }
 
   public getFeatures(region: Region, opts: BaseOptions = {}) {
-    return ObservableCreate<Feature>(async (observer) => {
+    return ObservableCreate<Feature>(async observer => {
       const feats = await this.setup()
-      feats.forEach((f) => {
+      feats.forEach(f => {
         if (
           f.get('refName') === region.refName &&
           f.get('end') > region.start &&

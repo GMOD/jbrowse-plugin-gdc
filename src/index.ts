@@ -10,11 +10,11 @@ import {
 import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
 import { FileLocation } from '@jbrowse/core/util/types'
 import {
-  // @ts-ignore
+  // @ts-expect-error
   AdapterGuesser,
-  // @ts-ignore
+  // @ts-expect-error
   getFileName,
-  // @ts-ignore
+  // @ts-expect-error
   TrackTypeGuesser,
 } from '@jbrowse/core/util/tracks'
 import { DataExploration } from './UI/Icons'
@@ -81,7 +81,7 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: null,
             hiddenFromGUI: true,
@@ -97,14 +97,14 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SjqAdapter',
           configSchema: sjqConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Splice Junction Quantification Adapter',
             description: '',
           },
-          // @ts-ignore
+          // @ts-expect-error
           AdapterClass: SjqAdapter,
         }),
     )
@@ -135,14 +135,14 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MbvAdapter',
           configSchema: mbvConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Methylation Beta Value Adapter',
             description: '',
           },
-          // @ts-ignore
+          // @ts-expect-error
           AdapterClass: MbvAdapter,
         }),
     )
@@ -173,7 +173,7 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MafAdapter',
           configSchema: mafConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
@@ -224,14 +224,14 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
             displayName: 'Isoform Expression Quantification Adapter',
             description: '',
           },
-          // @ts-ignore
+          // @ts-expect-error
           AdapterClass: IeqAdapter,
         }),
     )
@@ -274,7 +274,7 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SegmentCNVAdapter',
           configSchema: segmentCnvConfigSchema,
-          // @ts-ignore
+          // @ts-expect-error
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
@@ -456,7 +456,7 @@ export default class GDCPlugin extends Plugin {
     if (isAbstractMenuManager(pluginManager.rootModel)) {
       pluginManager.rootModel.appendToMenu('Tools', {
         label: 'GDC Data Import',
-        // @ts-ignore
+        // @ts-expect-error
         icon: DataExploration,
         onClick: (session: SessionWithWidgets) => {
           session.showWidget(

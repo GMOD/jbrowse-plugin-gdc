@@ -28,7 +28,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
     getSubAdapter?: getSubAdapterType,
     pluginManager?: PluginManager,
   ) {
-    // @ts-ignore
+    // @ts-expect-error
     super(config, getSubAdapter, pluginManager)
     this.config = config
   }
@@ -61,7 +61,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
 
     let fileContents = await openLocation(
       sjqLocation,
-      // @ts-ignore
+      // @ts-expect-error
       this.pluginManager,
     ).readFile()
 
@@ -73,19 +73,19 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-ignore
+      // @ts-expect-error
       fileContents = fileContents.toString()
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     return this.readSjq(fileContents)
   }
 
   private parseLine(line: string, columns: string[]) {
-    let sjq: any = {}
+    const sjq: any = {}
     line.split('\t').forEach((property: string, i: number) => {
       // Source: https://stackoverflow.com/questions/4374822/remove-all-special-characters-with-regexp
       columns[i] = columns[i].toLowerCase().replace(/[^\w\s]/gi, '')

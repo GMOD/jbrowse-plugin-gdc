@@ -26,13 +26,13 @@ const MAX_FILES = 25
 const THEME_SPACING_A = 8 // theme.spacing(2)
 const THEME_SPACING_B = 10 // theme.spacing(4)
 
-//@ts-ignore
+//@ts-expect-error
 function styledBy(property, mapping) {
-  // @ts-ignore
-  return (props) => mapping[props[property]]
+  // @ts-expect-error
+  return props => mapping[props[property]]
 }
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   container: {
     margin: THEME_SPACING_A,
   },
@@ -141,14 +141,14 @@ async function fetchFileInfo(query: any) {
 }
 
 const Panel = ({ model }: { model: any }) => {
-  const [dragErrorMessage, setDragErrorMessage] = useState<String>()
+  const [dragErrorMessage, setDragErrorMessage] = useState<string>()
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
   const [exploreSuccess, setExploreSuccess] = useState(false)
-  const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
-  const [trackInfoMessage, setTrackInfoMessage] = useState<String>()
-  const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
-  const [fileChip, setFileChip] = useState<String>()
+  const [trackErrorMessage, setTrackErrorMessage] = useState<string>()
+  const [trackInfoMessage, setTrackInfoMessage] = useState<string>()
+  const [uploadInfoMessage, setUploadInfoMessage] = useState<string>()
+  const [fileChip, setFileChip] = useState<string>()
 
   const session = getSession(model)
   const inputRef = useRef()
@@ -162,10 +162,10 @@ const Panel = ({ model }: { model: any }) => {
   async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
     session.addView('SpreadsheetView', {})
     const xView = session.views.length - 1
-    // @ts-ignore
+    // @ts-expect-error
     session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
     if (uri) {
-      // @ts-ignore
+      // @ts-expect-error
       session.views[xView].importWizard.setFileSource({
         uri,
         locationType: 'UriLocation',
@@ -174,16 +174,16 @@ const Panel = ({ model }: { model: any }) => {
       })
     }
     if (fileBlob) {
-      // @ts-ignore
+      // @ts-expect-error
       session.views[xView].importWizard.setFileSource(
         storeBlobLocation({ blob: fileBlob }),
       )
     }
-    // @ts-ignore
+    // @ts-expect-error
     session.views[xView].importWizard.setFileType('BEDPE')
-    // @ts-ignore
+    // @ts-expect-error
     session.views[xView].importWizard.setSelectedAssemblyName('hg38')
-    // @ts-ignore
+    // @ts-expect-error
     await session.views[xView].importWizard.import('hg38')
   }
 
@@ -201,20 +201,20 @@ const Panel = ({ model }: { model: any }) => {
     paper?: string,
   ) {
     if (typeAdapterObject) {
-      let conf = {
+      const conf = {
         ...typeAdapterObject.config,
         trackId,
         name,
         assemblyNames: ['hg38'],
       }
-      //@ts-ignore
+      //@ts-expect-error
       session.addTrackConf({
         ...conf,
       })
       if (session.views.length === 0) {
         session.addView('LinearGenomeView', {})
       }
-      //@ts-ignore
+      //@ts-expect-error
       session.views[0].showTrack(
         trackId,
         {},
@@ -300,10 +300,10 @@ const Panel = ({ model }: { model: any }) => {
           const message = 'Only one session at a time may be imported'
           console.error(message)
           setDragErrorMessage(message)
-          //@ts-ignore
+          //@ts-expect-error
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
-            //@ts-ignore
+            //@ts-expect-error
             rejectedFiles[0].file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
@@ -324,22 +324,22 @@ const Panel = ({ model }: { model: any }) => {
            * JSON files are for bulk import of files from the GDC site
            */
           if (fileInfo.format == 'json') {
-            const res = await new Promise((resolve) => {
+            const res = await new Promise(resolve => {
               const reader = new FileReader()
-              reader.addEventListener('load', (event) =>
+              reader.addEventListener('load', event =>
                 resolve(JSON.parse(event.target?.result as string)),
               )
               reader.readAsText(file)
             })
             // if the file is json we need to look at the properties to determine how to process it
-            let propertyArray = []
-            //@ts-ignore
+            const propertyArray = []
+            //@ts-expect-error
             for (const property in res.slice(0, 1)[0]) {
               propertyArray.push(property)
             }
             // key properties dictate how a file should be processed and displayed, i.e. the file_id
             if (propertyArray.includes('file_id')) {
-              //@ts-ignore
+              //@ts-expect-error
               const ele = res.slice(0, MAX_FILES) //TODO: it only gets the first 25 files
               ele.map(
                 (file: {
@@ -431,7 +431,7 @@ const Panel = ({ model }: { model: any }) => {
         } catch (e) {
           console.error(e)
           const message =
-            // @ts-ignore
+            // @ts-expect-error
             e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
           setDragErrorMessage(`Failed to add track.\n ${message}.`)
         }
@@ -447,13 +447,13 @@ const Panel = ({ model }: { model: any }) => {
     const featureType =
       queryParams.get('searchTableTab') === 'genes' ||
       queryParams.get('searchTableTab') === 'mutations'
-        ? // @ts-ignore
+        ? // @ts-expect-error
           queryParams.get('searchTableTab').slice(0, -1)
         : 'mutation'
     const filterString = queryParams.get('filters')
       ? queryParams.get('filters')
       : '{}'
-    // @ts-ignore
+    // @ts-expect-error
     const filters = decodeURIComponent(filterString)
 
     const datenow = Date.now()
@@ -473,7 +473,7 @@ const Panel = ({ model }: { model: any }) => {
     resetErrorMessages()
 
     try {
-      // @ts-ignore
+      // @ts-expect-error
       let query = inputRef ? inputRef.current.value : undefined
 
       if (query.includes('exploration')) {
@@ -508,16 +508,16 @@ const Panel = ({ model }: { model: any }) => {
         }
       }
     } catch (e) {
-      // @ts-ignore
+      // @ts-expect-error
       if (!e.message.includes('unable to determine size of file at')) {
         console.error(e)
         const message =
-          // @ts-ignore
+          // @ts-expect-error
           e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
         setTrackErrorMessage(`Failed to add track.\n ${message}.`)
       }
     }
-    // @ts-ignore
+    // @ts-expect-error
     inputRef.current.value = null
   }
 
@@ -554,7 +554,7 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    // @ts-ignore
+                    // @ts-expect-error
                     session.queueDialog((doneCallback: Function) => [
                       TipDialogue,
                       {

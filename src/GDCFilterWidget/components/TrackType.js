@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,13 +24,13 @@ const useStyles = makeStyles()((theme) => ({
 /**
  * A component for changing the track type
  */
-export default observer((schema) => {
+export default observer(schema => {
   const { classes } = useStyles()
   const [trackType, setTrackType] = React.useState(
     schema.schema.target.adapter.featureType.value,
   )
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setTrackType(event.target.value)
     schema.schema.target.adapter.featureType.set(event.target.value)
 

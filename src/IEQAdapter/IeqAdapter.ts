@@ -27,7 +27,7 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
     getSubAdapter?: getSubAdapterType,
     pluginManager?: PluginManager,
   ) {
-    // @ts-ignore
+    // @ts-expect-error
     super(config, getSubAdapter, pluginManager)
     this.config = config
   }
@@ -37,11 +37,11 @@ export default class IeqAdapter extends BaseFeatureDataAdapter {
       this.config,
       'ieqLocation',
     ) as FileLocation
-    const fileContents = (await openLocation(
+    const fileContents = await openLocation(
       ieqLocation,
-      // @ts-ignore
+      // @ts-expect-error
       this.pluginManager,
-    ).readFile('utf8')) as string
+    ).readFile('utf8')
 
     const lines = fileContents.split('\n')
     const rows: string[] = []

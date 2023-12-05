@@ -18,7 +18,7 @@ import {
 import { makeStyles } from 'tss-react/mui'
 import { mutationHighlightFeatures, geneHighlightFeatures } from './Utility'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     padding: theme.spacing(1, 3, 1, 1),
     background: theme.palette.background.default,
@@ -51,7 +51,7 @@ const HighlightFeature = observer(({ schema, type }) => {
   const highlightFeatures =
     type === 'mutation' ? mutationHighlightFeatures : geneHighlightFeatures
 
-  const handleChangeHighlightBy = (event) => {
+  const handleChangeHighlightBy = event => {
     const hlBy = event.target.value
     setColourBy(hlBy)
     let colourFunction = ''
@@ -85,9 +85,9 @@ const HighlightFeature = observer(({ schema, type }) => {
             id="track-type-select"
             value={colourBy}
             onChange={handleChangeHighlightBy}
-            renderValue={(selected) => selected.name}
+            renderValue={selected => selected.name}
           >
-            {highlightFeatures.map((element) => {
+            {highlightFeatures.map(element => {
               return (
                 <MenuItem value={element} key={element.name}>
                   {element.name}
@@ -100,7 +100,7 @@ const HighlightFeature = observer(({ schema, type }) => {
             attributes.
           </FormHelperText>
         </FormControl>
-        {colourBy && colourBy.values && (
+        {colourBy?.values && (
           <div>
             <Typography variant="subtitle2" className={classes.text}>
               {colourBy.symbol}
@@ -114,25 +114,24 @@ const HighlightFeature = observer(({ schema, type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values &&
-                    colourBy.values.map((value) => {
-                      return (
-                        <TableRow key={value.name}>
-                          <TableCell>
-                            {value.name !== '' ? value.name : 'n/a'}
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour}
-                              style={{
-                                backgroundColor: value.colour,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
+                  {colourBy.values?.map(value => {
+                    return (
+                      <TableRow key={value.name}>
+                        <TableCell>
+                          {value.name !== '' ? value.name : 'n/a'}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour}
+                            style={{
+                              backgroundColor: value.colour,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -148,35 +147,34 @@ const HighlightFeature = observer(({ schema, type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values &&
-                    colourBy.values.map((value) => {
-                      return (
-                        <TableRow key={value.name}>
-                          <TableCell>
-                            {value.name !== '' ? value.name : 'n/a'}
-                          </TableCell>
-                          <TableCell>{value.threshold}</TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour2}
-                              style={{
-                                backgroundColor: value.colour2,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour1}
-                              style={{
-                                backgroundColor: value.colour1,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
+                  {colourBy.values?.map(value => {
+                    return (
+                      <TableRow key={value.name}>
+                        <TableCell>
+                          {value.name !== '' ? value.name : 'n/a'}
+                        </TableCell>
+                        <TableCell>{value.threshold}</TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour2}
+                            style={{
+                              backgroundColor: value.colour2,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour1}
+                            style={{
+                              backgroundColor: value.colour1,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -191,34 +189,33 @@ const HighlightFeature = observer(({ schema, type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values &&
-                    colourBy.values.map((value) => {
-                      return (
-                        <TableRow key={value.name}>
-                          <TableCell>
-                            {value.name !== '' ? value.name : 'n/a'}
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour1}
-                              style={{
-                                backgroundColor: value.colour1,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour2}
-                              style={{
-                                backgroundColor: value.colour2,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
+                  {colourBy.values?.map(value => {
+                    return (
+                      <TableRow key={value.name}>
+                        <TableCell>
+                          {value.name !== '' ? value.name : 'n/a'}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour1}
+                            style={{
+                              backgroundColor: value.colour1,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour2}
+                            style={{
+                              backgroundColor: value.colour2,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -232,34 +229,33 @@ const HighlightFeature = observer(({ schema, type }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values &&
-                    colourBy.values.map((value) => {
-                      return (
-                        <TableRow key={value.name}>
-                          <TableCell>
-                            {value.name !== '' ? value.name : 'n/a'}
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour1}
-                              style={{
-                                backgroundColor: value.colour1,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={value.colour2}
-                              style={{
-                                backgroundColor: value.colour2,
-                                color: 'white',
-                              }}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      )
-                    })}
+                  {colourBy.values?.map(value => {
+                    return (
+                      <TableRow key={value.name}>
+                        <TableCell>
+                          {value.name !== '' ? value.name : 'n/a'}
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour1}
+                            style={{
+                              backgroundColor: value.colour1,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={value.colour2}
+                            style={{
+                              backgroundColor: value.colour2,
+                              color: 'white',
+                            }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
                 </TableBody>
               </Table>
             )}

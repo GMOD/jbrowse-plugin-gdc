@@ -85,7 +85,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
   private constructMutation(obj: any) {
     const consequence = obj.consequence
 
-    let edges = []
+    const edges = []
     for (const transcript of consequence) {
       edges.push({
         node: {
@@ -105,10 +105,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
       .split('>')[0]
       .slice(-1)
     gdcObject.startPosition = parseInt(
-      genomicDnaChange
-        .split('.')[1]
-        .split('>')[0]
-        .slice(0, -1),
+      genomicDnaChange.split('.')[1].split('>')[0].slice(0, -1),
     )
     gdcObject.endPosition = gdcObject.startPosition
     // constant properties for mutations
@@ -139,7 +136,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
    */
   private async constructGene(obj: any, opts: BaseOptions) {
     let gdcObject = this.convertPropertyCaseToCamel(obj)
-    const query = this.createGeneQueryById(gdcObject['geneId'])
+    const query = this.createGeneQueryById(gdcObject.geneId)
     try {
       const result = await this.featureCache.get(
         JSON.stringify(query),
@@ -193,7 +190,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
    * @returns a list of features created from the parsed data
    */
   private async getConstructedFeatures(parsed: any, opts: BaseOptions) {
-    let features = []
+    const features = []
     const idField = this.featureType === 'mutation' ? 'ssmId' : 'geneId'
 
     for (const entity of parsed) {

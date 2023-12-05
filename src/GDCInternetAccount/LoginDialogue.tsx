@@ -12,7 +12,7 @@ import { makeStyles } from 'tss-react/mui'
 
 import CloseIcon from '@mui/icons-material/Close'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   closeButton: {
     position: 'absolute',
     top: '10px',
@@ -97,7 +97,7 @@ export default function LoginDialogue({
                 color="primary"
                 variant="outlined"
                 label="Enter token"
-                onChange={(event) => {
+                onChange={event => {
                   setToken(event.target.value)
                 }}
               />

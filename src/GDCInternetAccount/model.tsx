@@ -19,7 +19,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
     .volatile(() => ({
       needsToken: false,
     }))
-    .views((self) => ({
+    .views(self => ({
       get authHeader(): string {
         return getConf(self, 'authHeader')
       },
@@ -30,12 +30,12 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         return 'GDCInternetAccount'
       },
     }))
-    .actions((self) => ({
+    .actions(self => ({
       setNeedsToken(bool: boolean) {
         self.needsToken = bool
       },
     }))
-    .actions((self) => ({
+    .actions(self => ({
       getTokenFromUser(
         resolve: (token: string) => void,
         reject: (error: Error) => void,
@@ -66,11 +66,11 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
           input: RequestInfo,
           init?: RequestInit,
         ): Promise<Response> => {
-          // @ts-ignore
+          // @ts-expect-error
           const authToken = await self.getToken(location)
           let newInit = init
           if (authToken !== 'none') {
-            // @ts-ignore
+            // @ts-expect-error
             newInit = self.addAuthHeaderToInit(init, authToken)
           }
           let query = String(input)
@@ -81,8 +81,8 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         }
       },
     }))
-    .actions((self) => {
-      // @ts-ignore
+    .actions(self => {
+      // @ts-expect-error
       const superGetToken = self.getToken
       const needsToken = new Map()
       return {

@@ -12,7 +12,7 @@ export function stateModelFactory(pluginManager: PluginManager) {
       type: types.literal('GDCFeatureWidget'),
       featureData: types.frozen({}),
     })
-    .actions((self) => ({
+    .actions(self => ({
       setFeatureData(data: any) {
         self.featureData = data
       },
