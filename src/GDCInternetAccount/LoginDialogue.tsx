@@ -1,24 +1,9 @@
 import React, { useState } from 'react'
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, DialogContent, TextField, Typography } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
+import { Dialog } from '@jbrowse/core/ui'
 
-import CloseIcon from '@mui/icons-material/Close'
-
-const useStyles = makeStyles()((theme) => ({
-  closeButton: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    color: theme.palette.grey[500],
-  },
+const useStyles = makeStyles()(theme => ({
   root: {
     margin: theme.spacing(1),
   },
@@ -63,16 +48,12 @@ export default function LoginDialogue({
   const { classes } = useStyles()
 
   return (
-    <Dialog open onClose={() => handleClose()} maxWidth="sm">
-      <DialogTitle>
-        Login to access controlled GDC data
-        <IconButton
-          className={classes.closeButton}
-          onClick={() => handleClose()}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
+    <Dialog
+      open
+      onClose={() => handleClose()}
+      maxWidth="sm"
+      title="Login to access controlled GDC data"
+    >
       <DialogContent>
         <div className={classes.root}>
           <div className={classes.paper}>
@@ -97,7 +78,7 @@ export default function LoginDialogue({
                 color="primary"
                 variant="outlined"
                 label="Enter token"
-                onChange={(event) => {
+                onChange={event => {
                   setToken(event.target.value)
                 }}
               />

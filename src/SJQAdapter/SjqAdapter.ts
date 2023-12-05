@@ -8,9 +8,6 @@ import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import SjqFeature from './SjqFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 import pako from 'pako'
 
 /**
@@ -19,21 +16,9 @@ import pako from 'pako'
 export default class SjqAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
 
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-ignore
-    super(config, getSubAdapter, pluginManager)
-    this.config = config
-  }
-
-  private async readSjq(fileContents: string) {
+  private readSjq(fileContents: string) {
     const lines = fileContents.split('\n')
     const rows: string[] = []
     let columns: string[] = []
@@ -59,12 +44,12 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       'sjqLocation',
     ) as FileLocation
 
-    let fileContents = await openLocation(
+    const fileContents = await openLocation(
       sjqLocation,
-      // @ts-ignore
       this.pluginManager,
     ).readFile()
 
+    let str: string
     if (
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
@@ -73,19 +58,16 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-ignore
-      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
+      str = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-ignore
-      fileContents = fileContents.toString()
+      str = fileContents.toString()
     }
 
-    // @ts-ignore
-    return this.readSjq(fileContents)
+    return this.readSjq(str)
   }
 
   private parseLine(line: string, columns: string[]) {
-    let sjq: any = {}
+    const sjq = {} as Record<string, unknown>
     line.split('\t').forEach((property: string, i: number) => {
       // Source: https://stackoverflow.com/questions/4374822/remove-all-special-characters-with-regexp
       columns[i] = columns[i].toLowerCase().replace(/[^\w\s]/gi, '')

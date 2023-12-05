@@ -13,8 +13,8 @@ export default ConfigurationSchema(
     data: {
       type: 'string',
       defaultValue: '',
-      description: 'JSON string of the GDC data from the file'
-    }
+      description: 'JSON string of the GDC data from the file',
+    },
   },
   { explicitlyTyped: true },
 )

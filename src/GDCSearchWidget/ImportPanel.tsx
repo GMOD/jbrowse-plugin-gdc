@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { observer } from 'mobx-react'
 import { getSession } from '@jbrowse/core/util'
 import { storeBlobLocation } from '@jbrowse/core/util/tracks'
@@ -9,30 +9,27 @@ import {
   Typography,
   TextField,
   Chip,
-  useTheme,
 } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
+import { makeStyles } from 'tss-react/mui'
+
+// icons
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
 import AddIcon from '@mui/icons-material/Add'
 import InfoIcon from '@mui/icons-material/Info'
-import TipDialogue from './TipDialogue'
-import { makeStyles } from 'tss-react/mui'
 
+// locals
+import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
+import { GDCSearchModel } from './model'
 
 const MAX_FILE_SIZE = 512 * 1024 ** 2 // 512 MiB
 const MAX_FILES = 25
 const THEME_SPACING_A = 8 // theme.spacing(2)
 const THEME_SPACING_B = 10 // theme.spacing(4)
 
-//@ts-ignore
-function styledBy(property, mapping) {
-  // @ts-ignore
-  return (props) => mapping[props[property]]
-}
-
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   container: {
     margin: THEME_SPACING_A,
   },
@@ -126,7 +123,7 @@ const useStyles = makeStyles()((theme) => ({
   },
 }))
 
-async function fetchFileInfo(query: any) {
+async function fetchFileInfo(query: string) {
   const response = await fetch(
     `http://localhost:8010/proxy/files/${query}?expand=index_files`,
     {
@@ -135,20 +132,22 @@ async function fetchFileInfo(query: any) {
   )
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch ${response.status} ${response.statusText}`)
+    throw new Error(
+      `Failed to fetch ${response.status} ${await response.text()}`,
+    )
   }
   return response.json()
 }
 
-const Panel = ({ model }: { model: any }) => {
-  const [dragErrorMessage, setDragErrorMessage] = useState<String>()
+const Panel = ({ model }: { model: GDCSearchModel }) => {
+  const [dragErrorMessage, setDragErrorMessage] = useState<string>()
   const [success, setSuccess] = useState(false)
   const [dragSuccess, setDragSuccess] = useState(false)
   const [exploreSuccess, setExploreSuccess] = useState(false)
-  const [trackErrorMessage, setTrackErrorMessage] = useState<String>()
-  const [trackInfoMessage, setTrackInfoMessage] = useState<String>()
-  const [uploadInfoMessage, setUploadInfoMessage] = useState<String>()
-  const [fileChip, setFileChip] = useState<String>()
+  const [trackErrorMessage, setTrackErrorMessage] = useState<string>()
+  const [trackInfoMessage, setTrackInfoMessage] = useState<string>()
+  const [uploadInfoMessage, setUploadInfoMessage] = useState<string>()
+  const [fileChip, setFileChip] = useState<string>()
 
   const session = getSession(model)
   const inputRef = useRef()
@@ -162,10 +161,9 @@ const Panel = ({ model }: { model: any }) => {
   async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
     session.addView('SpreadsheetView', {})
     const xView = session.views.length - 1
-    // @ts-ignore
     session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
     if (uri) {
-      // @ts-ignore
+      // @ts-expect-error
       session.views[xView].importWizard.setFileSource({
         uri,
         locationType: 'UriLocation',
@@ -174,16 +172,16 @@ const Panel = ({ model }: { model: any }) => {
       })
     }
     if (fileBlob) {
-      // @ts-ignore
+      // @ts-expect-error
       session.views[xView].importWizard.setFileSource(
         storeBlobLocation({ blob: fileBlob }),
       )
     }
-    // @ts-ignore
+    // @ts-expect-error
     session.views[xView].importWizard.setFileType('BEDPE')
-    // @ts-ignore
+    // @ts-expect-error
     session.views[xView].importWizard.setSelectedAssemblyName('hg38')
-    // @ts-ignore
+    // @ts-expect-error
     await session.views[xView].importWizard.import('hg38')
   }
 
@@ -201,20 +199,20 @@ const Panel = ({ model }: { model: any }) => {
     paper?: string,
   ) {
     if (typeAdapterObject) {
-      let conf = {
+      const conf = {
         ...typeAdapterObject.config,
         trackId,
         name,
         assemblyNames: ['hg38'],
       }
-      //@ts-ignore
+      //@ts-expect-error
       session.addTrackConf({
         ...conf,
       })
       if (session.views.length === 0) {
         session.addView('LinearGenomeView', {})
       }
-      //@ts-ignore
+      //@ts-expect-error
       session.views[0].showTrack(
         trackId,
         {},
@@ -245,10 +243,13 @@ const Panel = ({ model }: { model: any }) => {
   }
 
   /**
-   * helper function to determine the file type of a dragged file. needed because files like BAM and VCF do not
-   * have inherent types to extract from the File object
+   * helper function to determine the file type of a dragged file. needed
+   * because files like BAM and VCF do not have inherent types to extract from
+   * the File object
+   *
    * @param fileName the name of the file to determine the extension
-   * @returns an object of type fileInfo that contains the file format, type, and/or category of the file based on its name
+   * @returns an object of type fileInfo that contains the file format, type,
+   * and/or category of the file based on its name
    */
   function determineFileInfo(fileName: string) {
     const format = fileName.split('.')[-1]
@@ -289,9 +290,10 @@ const Panel = ({ model }: { model: any }) => {
     setUploadInfoMessage(undefined)
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     maxSize: MAX_FILE_SIZE,
     multiple: false,
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     onDrop: async (acceptedFiles, rejectedFiles) => {
       resetErrorMessages()
 
@@ -300,10 +302,8 @@ const Panel = ({ model }: { model: any }) => {
           const message = 'Only one session at a time may be imported'
           console.error(message)
           setDragErrorMessage(message)
-          //@ts-ignore
         } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
-            //@ts-ignore
             rejectedFiles[0].file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
@@ -313,7 +313,6 @@ const Panel = ({ model }: { model: any }) => {
           console.error(message)
           setDragErrorMessage(message)
         }
-        return
       }
 
       const [file] = acceptedFiles
@@ -324,22 +323,22 @@ const Panel = ({ model }: { model: any }) => {
            * JSON files are for bulk import of files from the GDC site
            */
           if (fileInfo.format == 'json') {
-            const res = await new Promise((resolve) => {
+            const res = await new Promise(resolve => {
               const reader = new FileReader()
-              reader.addEventListener('load', (event) =>
+              reader.addEventListener('load', event =>
                 resolve(JSON.parse(event.target?.result as string)),
               )
               reader.readAsText(file)
             })
             // if the file is json we need to look at the properties to determine how to process it
-            let propertyArray = []
-            //@ts-ignore
+            const propertyArray = []
+            //@ts-expect-error
             for (const property in res.slice(0, 1)[0]) {
               propertyArray.push(property)
             }
             // key properties dictate how a file should be processed and displayed, i.e. the file_id
             if (propertyArray.includes('file_id')) {
-              //@ts-ignore
+              //@ts-expect-error
               const ele = res.slice(0, MAX_FILES) //TODO: it only gets the first 25 files
               ele.map(
                 (file: {
@@ -375,6 +374,7 @@ const Panel = ({ model }: { model: any }) => {
                 setUploadInfoMessage('Please upload a corresponding BAI file.')
                 setFileChip(file.name)
               }
+              // @ts-expect-error
               model.setTrackData(storeBlobLocation({ blob: file }))
             }
             if (/\.bai$/i.test(file.name)) {
@@ -382,6 +382,7 @@ const Panel = ({ model }: { model: any }) => {
                 setUploadInfoMessage('Please upload a corresponding BAM file.')
                 setFileChip(file.name)
               }
+              // @ts-expect-error
               model.setIndexTrackData(storeBlobLocation({ blob: file }))
             }
             if (
@@ -408,7 +409,8 @@ const Panel = ({ model }: { model: any }) => {
               addAndShowTrack(
                 typeAdapterObject,
                 trackId,
-                model.trackData.name,
+                // @ts-expect-error
+                model.trackData.name as string,
                 'drag',
               )
               model.setTrackData(undefined)
@@ -431,9 +433,9 @@ const Panel = ({ model }: { model: any }) => {
         } catch (e) {
           console.error(e)
           const message =
-            // @ts-ignore
+            // @ts-expect-error
             e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-          setDragErrorMessage(`Failed to add track.\n ${message}.`)
+          setDragErrorMessage(`Failed to add track.\n ${message as string}.`)
         }
       }
     },
@@ -447,13 +449,13 @@ const Panel = ({ model }: { model: any }) => {
     const featureType =
       queryParams.get('searchTableTab') === 'genes' ||
       queryParams.get('searchTableTab') === 'mutations'
-        ? // @ts-ignore
+        ? // @ts-expect-error
           queryParams.get('searchTableTab').slice(0, -1)
         : 'mutation'
     const filterString = queryParams.get('filters')
       ? queryParams.get('filters')
       : '{}'
-    // @ts-ignore
+    // @ts-expect-error
     const filters = decodeURIComponent(filterString)
 
     const datenow = Date.now()
@@ -467,58 +469,6 @@ const Panel = ({ model }: { model: any }) => {
     )
 
     addAndShowTrack(typeAdapterObject, trackId, trackName, source)
-  }
-
-  const handleSubmit = async () => {
-    resetErrorMessages()
-
-    try {
-      // @ts-ignore
-      let query = inputRef ? inputRef.current.value : undefined
-
-      if (query.includes('exploration')) {
-        processExplorationURI(query)
-      } else if (!query) {
-        setTrackErrorMessage(
-          'Failed to add track.\nUUID or URL must be provided.',
-        )
-      } else {
-        if (query.includes('files/')) {
-          query = query.split('/')[4]
-        }
-        const response = await fetchFileInfo(query)
-        const fileInfo = {
-          category: response.data.data_category,
-          format: response.data.data_format.toLowerCase(),
-          type: response.data.data_type,
-        }
-        // BAM files require an index file, if the response contains index_files, then we want to utilize it
-        const indexFileId = response.data.index_files
-          ? response.data.index_files[0].file_id
-          : undefined
-        const uri = `http://localhost:8010/proxy/data/${query}`
-        const trackId = `${response.data.file_id}`
-        const trackName = `${response.data.file_name}`
-        if (fileInfo.type !== 'bedpe') {
-          const typeAdapterObject = mapDataInfo(fileInfo, uri, indexFileId)
-          addAndShowTrack(typeAdapterObject, trackId, trackName)
-        } else {
-          await addBEDPEView(response.data.file_id, uri)
-          setSuccess(true)
-        }
-      }
-    } catch (e) {
-      // @ts-ignore
-      if (!e.message.includes('unable to determine size of file at')) {
-        console.error(e)
-        const message =
-          // @ts-ignore
-          e.message.length > 100 ? `${e.message.substring(0, 99)}...` : e
-        setTrackErrorMessage(`Failed to add track.\n ${message}.`)
-      }
-    }
-    // @ts-ignore
-    inputRef.current.value = null
   }
 
   const { classes } = useStyles()
@@ -554,8 +504,7 @@ const Panel = ({ model }: { model: any }) => {
                 <Button
                   variant="text"
                   onClick={() => {
-                    // @ts-ignore
-                    session.queueDialog((doneCallback: Function) => [
+                    session.queueDialog(doneCallback => [
                       TipDialogue,
                       {
                         handleClose: () => {
@@ -619,7 +568,63 @@ const Panel = ({ model }: { model: any }) => {
               color="primary"
               variant="contained"
               size="large"
-              onClick={handleSubmit}
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onClick={async () => {
+                resetErrorMessages()
+
+                try {
+                  // @ts-expect-error
+                  let query = inputRef ? inputRef.current.value : undefined
+
+                  if (query.includes('exploration')) {
+                    processExplorationURI(query)
+                  } else if (!query) {
+                    setTrackErrorMessage(
+                      'Failed to add track.\nUUID or URL must be provided.',
+                    )
+                  } else {
+                    if (query.includes('files/')) {
+                      query = query.split('/')[4]
+                    }
+                    const response = await fetchFileInfo(query)
+                    const fileInfo = {
+                      category: response.data.data_category,
+                      format: response.data.data_format.toLowerCase(),
+                      type: response.data.data_type,
+                    }
+                    // BAM files require an index file, if the response
+                    // contains index_files, then we want to utilize it
+                    const indexFileId = response.data.index_files
+                      ? response.data.index_files[0].file_id
+                      : undefined
+                    const uri = `http://localhost:8010/proxy/data/${query}`
+                    const trackId = `${response.data.file_id}`
+                    const trackName = `${response.data.file_name}`
+                    if (fileInfo.type !== 'bedpe') {
+                      const typeAdapterObject = mapDataInfo(
+                        fileInfo,
+                        uri,
+                        indexFileId,
+                      )
+                      addAndShowTrack(typeAdapterObject, trackId, trackName)
+                    } else {
+                      await addBEDPEView(response.data.file_id, uri)
+                      setSuccess(true)
+                    }
+                  }
+                } catch (e) {
+                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                  const err = `${e}`
+                  if (!err.includes('unable to determine size of file at')) {
+                    console.error(e)
+                    const message =
+                      err.length > 100 ? `${err.substring(0, 99)}...` : err
+                    setTrackErrorMessage(`Failed to add track.\n ${message}.`)
+                  }
+                }
+                // @ts-expect-error
+                inputRef.current.value = null
+              }}
             >
               Submit
             </Button>

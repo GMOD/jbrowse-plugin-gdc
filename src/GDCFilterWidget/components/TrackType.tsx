@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
@@ -24,25 +24,11 @@ const useStyles = makeStyles()((theme) => ({
 /**
  * A component for changing the track type
  */
-export default observer((schema) => {
+export default observer((schema: any) => {
   const { classes } = useStyles()
   const [trackType, setTrackType] = React.useState(
     schema.schema.target.adapter.featureType.value,
   )
-
-  const handleChange = (event) => {
-    setTrackType(event.target.value)
-    schema.schema.target.adapter.featureType.set(event.target.value)
-
-    // Set to function
-    schema.schema.target.displays[0].renderer.color1.set(
-      `jexl:cast('goldenrod')`,
-    )
-
-    // Set to colour array element
-    schema.schema.setColourBy('{}')
-    schema.schema.target.adapter.colourBy.set('{}')
-  }
 
   return (
     <div className={classes.root}>
@@ -53,7 +39,19 @@ export default observer((schema) => {
             labelId="track-type-select-label"
             id="track-type-select"
             value={trackType}
-            onChange={handleChange}
+            onChange={event => {
+              setTrackType(event.target.value)
+              schema.schema.target.adapter.featureType.set(event.target.value)
+
+              // Set to function
+              schema.schema.target.displays[0].renderer.color1.set(
+                `jexl:cast('goldenrod')`,
+              )
+
+              // Set to colour array element
+              schema.schema.setColourBy('{}')
+              schema.schema.target.adapter.colourBy.set('{}')
+            }}
           >
             <MenuItem value="mutation">Mutation</MenuItem>
             <MenuItem value="gene">Gene</MenuItem>

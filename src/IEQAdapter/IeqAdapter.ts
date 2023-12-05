@@ -5,12 +5,11 @@ import {
 import { FileLocation, Region } from '@jbrowse/core/util/types'
 import { openLocation } from '@jbrowse/core/util/io'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
-import IeqFeature from './IeqFeature'
-import { Feature } from '@jbrowse/core/util/simpleFeature'
+import { Feature } from '@jbrowse/core/util'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
+
+// locals
+import IeqFeature from './IeqFeature'
 
 /**
  * Isoform Expression Quantification Adapter
@@ -18,30 +17,17 @@ import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 export default class IeqAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
-
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-ignore
-    super(config, getSubAdapter, pluginManager)
-    this.config = config
-  }
 
   private async readIeq() {
     const ieqLocation = readConfObject(
       this.config,
       'ieqLocation',
     ) as FileLocation
-    const fileContents = (await openLocation(
+    const fileContents = await openLocation(
       ieqLocation,
-      // @ts-ignore
       this.pluginManager,
-    ).readFile('utf8')) as string
+    ).readFile('utf8')
 
     const lines = fileContents.split('\n')
     const rows: string[] = []

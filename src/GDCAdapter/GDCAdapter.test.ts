@@ -3,6 +3,7 @@ import GDCAdapter from './GDCAdapter'
 import configSchema from './configSchema'
 import { gdcFilters, gdcResponse } from './test_data/gdc_test_data.js'
 import fetchMock from 'jest-fetch-mock'
+import { firstValueFrom } from 'rxjs'
 
 fetchMock.enableMocks()
 
@@ -26,6 +27,6 @@ test('adapter can fetch features from the gdc', async () => {
   const names = await adapter.getRefNames()
   expect(names).toMatchSnapshot()
 
-  const featuresArray = await features.pipe(toArray()).toPromise()
+  const featuresArray = await firstValueFrom(features.pipe(toArray()))
   expect(featuresArray.slice(0, 3)).toMatchSnapshot()
 })

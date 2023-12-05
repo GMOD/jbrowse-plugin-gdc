@@ -18,53 +18,40 @@ import {
   ListItem,
   Tooltip,
 } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme) => ({
-  root: {
-    padding: theme.spacing(1, 3, 1, 1),
-    background: theme.palette.background.default,
-  },
-}))
 
 /**
- * An element representing an individual filter with a category and set of applied values
+ * An element representing an individual filter with a category and set of
+ * applied values
  */
-const Filter = observer((props) => {
+const Filter = observer((props: any) => {
   const { schema, filterModel, facets } = props
 
   const [categoryValue, setCategoryValue] = useState(
     filterModel.category
-      ? facets.find((f) => f.name === filterModel.category)
+      ? facets.find((f: { name: string }) => f.name === filterModel.category)
       : facets[0],
   )
   const [filterValue, setFilterValue] = useState(
     filterModel.filter ? filterModel.filter.split(',') : [],
   )
 
-  const handleChangeCategory = (event) => {
-    setCategoryValue(event.target.value)
-    setFilterValue([])
-    filterModel.setCategory(event.target.value.name)
-  }
-
-  const handleChangeFilter = (event) => {
-    setFilterValue(event.target.value)
-    filterModel.setFilter(event.target.value.join(','))
-    updateTrack(schema.filters, schema.target)
-  }
-
   /**
    * Converts filter model objects to a GDC filter query and updates the track
    * @param {*} filters Array of filter model objects
    * @param {*} target Track target
    */
-  function updateTrack(filters, target) {
-    let gdcFilters = { op: 'and', content: [] }
+  function updateTrack(
+    filters: { filter: string; type: string; category: string }[],
+    target: any,
+  ) {
+    let gdcFilters: { op?: string; content?: any[] } = {
+      op: 'and',
+      content: [],
+    }
     if (filters.length > 0) {
       for (const filter of filters) {
         if (filter.filter !== '') {
-          gdcFilters.content.push({
+          gdcFilters.content?.push({
             op: 'in',
             content: {
               field: `${filter.type}s.${filter.category}`,
@@ -93,16 +80,18 @@ const Filter = observer((props) => {
               labelId="category-select-label"
               id="category-select"
               value={categoryValue}
-              onChange={handleChangeCategory}
+              onChange={event => {
+                setCategoryValue(event.target.value)
+                setFilterValue([])
+                filterModel.setCategory(event.target.value.name)
+              }}
               label="Category"
             >
-              {facets.map((filterOption) => {
-                return (
-                  <MenuItem value={filterOption} key={filterOption.name}>
-                    {filterOption.prettyName}
-                  </MenuItem>
-                )
-              })}
+              {facets.map((filterOption: any) => (
+                <MenuItem value={filterOption} key={filterOption.name}>
+                  {filterOption.prettyName}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth size="small">
@@ -111,10 +100,14 @@ const Filter = observer((props) => {
               id="demo-mutiple-checkbox"
               multiple
               value={filterValue}
-              onChange={handleChangeFilter}
+              onChange={event => {
+                setFilterValue(event.target.value)
+                filterModel.setFilter(event.target.value.join(','))
+                updateTrack(schema.filters, schema.target)
+              }}
               input={<Input />}
               displayEmpty
-              renderValue={(selected) => {
+              renderValue={selected => {
                 if (selected.length === 0) {
                   return <em>Filters</em>
                 }
@@ -125,7 +118,7 @@ const Filter = observer((props) => {
               <MenuItem disabled value="">
                 <em>Filters</em>
               </MenuItem>
-              {categoryValue.values.map((name) => (
+              {categoryValue.values.map((name: string) => (
                 <MenuItem key={name} value={name}>
                   <Checkbox checked={filterValue.indexOf(name) > -1} />
                   <ListItemText primary={name} />
@@ -148,7 +141,7 @@ const Filter = observer((props) => {
 /**
  * A collection of filters along with a button to add new filters
  */
-const FilterList = observer(({ schema, type, facets }) => {
+const FilterList = observer(({ schema, type, facets }: Record<string, any>) => {
   const initialFilterSelection = facets[0].name
 
   const handleClick = () => {
@@ -157,7 +150,7 @@ const FilterList = observer(({ schema, type, facets }) => {
 
   return (
     <>
-      {schema.filters.map((filterModel) => {
+      {schema.filters.map((filterModel: any) => {
         if (filterModel.type === type) {
           return (
             <Filter

@@ -8,28 +8,13 @@ import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import MafFeature from './MafFeature'
 import { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { getSubAdapterType } from '@jbrowse/core/data_adapters/dataAdapterCache'
 import pako from 'pako'
 export default class MafAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
-  public config: any
-
   private setupP?: Promise<Feature[]>
 
-  public constructor(
-    config: AnyConfigurationModel,
-    getSubAdapter?: getSubAdapterType,
-    pluginManager?: PluginManager,
-  ) {
-    // @ts-ignore
-    super(config, getSubAdapter, pluginManager)
-    this.config = config
-  }
-
-  private async readMaf(fileContents: string) {
+  private readMaf(fileContents: string) {
     const lines = fileContents.split('\n')
     const header: string[] = []
     const refNames: string[] = []
@@ -42,9 +27,9 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       } else if (line) {
         if (columns.length === 0) {
           columns = line.split('\t')
-          const chromosome = (element: any) =>
-            element.toLowerCase() === 'chromosome'
-          refNameColumnIndex = columns.findIndex(chromosome)
+          refNameColumnIndex = columns.findIndex(
+            element => element.toLowerCase() === 'chromosome',
+          )
         } else {
           rows.push(line)
           refNames.push(line.split('\t')[refNameColumnIndex])
@@ -61,7 +46,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
   }
 
   private parseLine(line: string, columns: string[]) {
-    let mutationObject: any = {}
+    const mutationObject: Record<string, unknown> = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
         mutationObject[columns[i].toLowerCase()] = property
@@ -76,12 +61,12 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       'mafLocation',
     ) as FileLocation
 
-    let fileContents = await openLocation(
+    const fileContents = await openLocation(
       mafLocation,
-      // @ts-ignore
       this.pluginManager,
     ).readFile()
 
+    let str: string
     if (
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
@@ -90,15 +75,12 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
     ) {
-      // @ts-ignore
-      fileContents = new TextDecoder().decode(pako.inflate(fileContents))
+      str = new TextDecoder().decode(pako.inflate(fileContents))
     } else {
-      // @ts-ignore
-      fileContents = fileContents.toString()
+      str = fileContents.toString()
     }
 
-    // @ts-ignore
-    return this.readMaf(fileContents)
+    return this.readMaf(str)
   }
 
   private async getLines() {

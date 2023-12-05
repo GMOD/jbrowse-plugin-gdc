@@ -23,7 +23,7 @@ import UndoIcon from '@mui/icons-material/Undo'
 
 import { observer } from 'mobx-react'
 
-const useStyles = makeStyles()((theme) => ({
+const useStyles = makeStyles()(theme => ({
   root: {
     margin: theme.spacing(1),
   },
@@ -47,7 +47,11 @@ const useStyles = makeStyles()((theme) => ({
   },
 }))
 
-function TabPanel(props) {
+function TabPanel(props: {
+  children: React.ReactNode
+  value: number
+  index: number
+}) {
   const { children, value, index, ...other } = props
 
   return (
@@ -66,7 +70,7 @@ function TabPanel(props) {
 /**
  * Creates the form for interacting with the track filters
  */
-const GDCQueryBuilder = observer(({ schema }) => {
+const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
   const [isValidGDCFilter, setIsValidGDCFilter] = useState(true)
   const [isValidColourBy, setIsValidColourBy] = useState(true)
   const [validationMessage, setFilterValidationMessage] = useState('')
@@ -122,7 +126,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
       ]
 
       let matchingKeys = true
-      expectedAttributes.forEach((key) => {
+      expectedAttributes.forEach(key => {
         if (!(key in colourBy)) {
           matchingKeys = false
         }
@@ -143,15 +147,6 @@ const GDCQueryBuilder = observer(({ schema }) => {
     }
   }, [schema])
 
-  const handleChangeTab = (event, val) => {
-    setValue(val)
-  }
-
-  const handleFilterClear = () => {
-    schema.clearFilters()
-    schema.target.adapter.filters.set('{}')
-  }
-
   const { classes } = useStyles()
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -163,7 +158,10 @@ const GDCQueryBuilder = observer(({ schema }) => {
           <Tooltip
             title="Clear all filters"
             aria-label="clear all filters"
-            onClick={handleFilterClear}
+            onClick={() => {
+              schema.clearFilters()
+              schema.target.adapter.filters.set('{}')
+            }}
           >
             <IconButton
               size="small"
@@ -177,7 +175,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
         <Box>
           <Tabs
             value={value}
-            onChange={handleChangeTab}
+            onChange={(_, val) => setValue(val)}
             aria-label="filtering tabs"
           >
             <Tab classes={{ root: classes.tabRoot }} label="Cases" />
@@ -209,7 +207,7 @@ const GDCQueryBuilder = observer(({ schema }) => {
   )
 })
 
-const ConfigurationEditor = observer(({ model }) => {
+const ConfigurationEditor = observer(({ model }: { model: any }) => {
   const { classes } = useStyles()
   return (
     <div className={classes.root} data-testid="configEditor">

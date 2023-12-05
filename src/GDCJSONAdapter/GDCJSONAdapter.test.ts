@@ -7,6 +7,7 @@ import {
   gdcResponse,
 } from './test_data/json_test_data.js'
 import fetchMock from 'jest-fetch-mock'
+import { firstValueFrom } from 'rxjs'
 
 fetchMock.enableMocks()
 
@@ -28,7 +29,7 @@ test('adapter can fetch features from a mutations explore json file', async () =
   const names = await adapter.getRefNames()
   expect(names).toMatchSnapshot()
 
-  const featuresArray = await features.pipe(toArray()).toPromise()
+  const featuresArray = await firstValueFrom(features.pipe(toArray()))
   expect(featuresArray.slice(0, 3)).toMatchSnapshot()
 })
 
@@ -49,6 +50,6 @@ test('adapter can fetch featues from a genes explore json file', async () => {
 
   fetchMock.mockResponseOnce(JSON.stringify(gdcResponse))
 
-  const featuresArray = await features.pipe(toArray()).toPromise()
-  expect(featuresArray.slice(0, 0)).toMatchSnapshot()
+  const featuresArray = await firstValueFrom(features.pipe(toArray()))
+  expect(featuresArray.slice(0, 3)).toMatchSnapshot()
 })

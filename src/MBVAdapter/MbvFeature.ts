@@ -49,7 +49,7 @@ export default class MbvFeature implements Feature {
       start: +value.start - 1,
       end: +value.end,
       name: `${value['composite element ref']}`,
-      note: value['beta_value'],
+      note: value.beta_value,
     }
 
     return featureData
