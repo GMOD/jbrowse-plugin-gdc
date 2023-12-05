@@ -68,7 +68,12 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
         }
       }
     })
-    return segment
+    return segment as {
+      [key: string]: unknown
+      start: string
+      end: string
+      score: string
+    }
   }
 
   private async getLines() {
@@ -77,13 +82,13 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
     return lines.map(line => {
       const segment = this.parseLine(line, columns)
       return new SimpleFeature({
-        uniqueId: segment.id,
+        ...segment,
+        uniqueId: segment.id as string,
         id: segment.id,
         start: +segment.start,
         end: +segment.end,
         refName: segment.chromosome,
         score: +segment.score,
-        ...segment,
       })
     })
   }

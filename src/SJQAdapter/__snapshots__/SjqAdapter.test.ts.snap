@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`adapter can fetch features from sjq_test_data.txt 1`] = `
-Array [
+[
   "chr1",
   "chr2",
   "chr3",
@@ -30,8 +30,8 @@ Array [
 `;
 
 exports[`adapter can fetch features from sjq_test_data.txt 2`] = `
-Array [
-  Object {
+[
+  {
     "annotation": "1",
     "chromosome": "chr9",
     "end": 94175981,

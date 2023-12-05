@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`adapter can fetch features from the gdc 1`] = `
-Array [
+[
   "chr1",
   "chr10",
   "chr11",
@@ -30,10 +30,10 @@ Array [
 `;
 
 exports[`adapter can fetch features from the gdc 2`] = `
-Array [
-  Object {
+[
+  {
     "chromosome": "chr3",
-    "consequence": Object {},
+    "consequence": {},
     "cosmicId": null,
     "end": 124908333,
     "endPosition": 124908333,
@@ -53,9 +53,9 @@ Array [
     "type": "Simple Somatic Mutation",
     "uniqueId": "fe913ae3-e63e-585c-84cf-f47fcf51b639",
   },
-  Object {
+  {
     "chromosome": "chr3",
-    "consequence": Object {},
+    "consequence": {},
     "cosmicId": null,
     "end": 124908160,
     "endPosition": 124908160,
@@ -75,9 +75,9 @@ Array [
     "type": "Simple Somatic Mutation",
     "uniqueId": "68e512b9-511f-58e3-8f41-137c6c0291af",
   },
-  Object {
+  {
     "chromosome": "chr3",
-    "consequence": Object {},
+    "consequence": {},
     "cosmicId": null,
     "end": 124908195,
     "endPosition": 124908195,

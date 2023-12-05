@@ -76,10 +76,7 @@ export default class GDCPlugin extends Plugin {
           name: 'GDCAdapter',
           configSchema: GDCAdapterConfigSchema,
           adapterMetadata: {
-            category: null,
             hiddenFromGUI: true,
-            displayName: null,
-            description: null,
           },
           AdapterClass: GDCAdapterClass,
         }),
@@ -90,10 +87,10 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SjqAdapter',
           configSchema: sjqConfigSchema,
+          displayName: 'Splice Junction Quantification Adapter',
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
-            displayName: 'Splice Junction Quantification Adapter',
             description: '',
           },
           AdapterClass: SjqAdapter,
@@ -126,10 +123,10 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'MbvAdapter',
           configSchema: mbvConfigSchema,
+          displayName: 'Methylation Beta Value Adapter',
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
-            displayName: 'Methylation Beta Value Adapter',
             description: '',
           },
           AdapterClass: MbvAdapter,
@@ -165,7 +162,6 @@ export default class GDCPlugin extends Plugin {
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
-            displayName: null,
             description: '',
           },
           AdapterClass: MafAdapter,
@@ -212,10 +208,10 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'IeqAdapter',
           configSchema: ieqConfigSchema,
+          displayName: 'Isoform Expression Quantification Adapter',
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
-            displayName: 'Isoform Expression Quantification Adapter',
             description: '',
           },
           AdapterClass: IeqAdapter,
@@ -260,10 +256,10 @@ export default class GDCPlugin extends Plugin {
         new AdapterType({
           name: 'SegmentCNVAdapter',
           configSchema: segmentCnvConfigSchema,
+          displayName: 'Segment Copy Number Variation Adapter',
           adapterMetadata: {
             category: adapterCategoryHeader,
             hiddenFromGUI: false,
-            displayName: 'Segment Copy Number Variation Adapter',
             description: '',
           },
           AdapterClass: SegmentCNVAdapter,

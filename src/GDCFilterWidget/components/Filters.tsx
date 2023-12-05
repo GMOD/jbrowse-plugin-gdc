@@ -28,7 +28,7 @@ const Filter = observer((props: any) => {
 
   const [categoryValue, setCategoryValue] = useState(
     filterModel.category
-      ? facets.find(f => f.name === filterModel.category)
+      ? facets.find((f: { name: string }) => f.name === filterModel.category)
       : facets[0],
   )
   const [filterValue, setFilterValue] = useState(
@@ -40,12 +40,18 @@ const Filter = observer((props: any) => {
    * @param {*} filters Array of filter model objects
    * @param {*} target Track target
    */
-  function updateTrack(filters, target) {
-    let gdcFilters: Record<string, unknown> = { op: 'and', content: [] }
+  function updateTrack(
+    filters: { filter: string; type: string; category: string }[],
+    target: any,
+  ) {
+    let gdcFilters: { op?: string; content?: any[] } = {
+      op: 'and',
+      content: [],
+    }
     if (filters.length > 0) {
       for (const filter of filters) {
         if (filter.filter !== '') {
-          gdcFilters.content.push({
+          gdcFilters.content?.push({
             op: 'in',
             content: {
               field: `${filter.type}s.${filter.category}`,
@@ -81,13 +87,11 @@ const Filter = observer((props: any) => {
               }}
               label="Category"
             >
-              {facets.map(filterOption => {
-                return (
-                  <MenuItem value={filterOption} key={filterOption.name}>
-                    {filterOption.prettyName}
-                  </MenuItem>
-                )
-              })}
+              {facets.map((filterOption: any) => (
+                <MenuItem value={filterOption} key={filterOption.name}>
+                  {filterOption.prettyName}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <FormControl fullWidth size="small">
@@ -114,7 +118,7 @@ const Filter = observer((props: any) => {
               <MenuItem disabled value="">
                 <em>Filters</em>
               </MenuItem>
-              {categoryValue.values.map(name => (
+              {categoryValue.values.map((name: string) => (
                 <MenuItem key={name} value={name}>
                   <Checkbox checked={filterValue.indexOf(name) > -1} />
                   <ListItemText primary={name} />
@@ -146,7 +150,7 @@ const FilterList = observer(({ schema, type, facets }: Record<string, any>) => {
 
   return (
     <>
-      {schema.filters.map(filterModel => {
+      {schema.filters.map((filterModel: any) => {
         if (filterModel.type === type) {
           return (
             <Filter

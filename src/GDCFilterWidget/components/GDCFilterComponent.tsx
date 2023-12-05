@@ -147,15 +147,6 @@ const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
     }
   }, [schema])
 
-  const handleChangeTab = (event, val) => {
-    setValue(val)
-  }
-
-  const handleFilterClear = () => {
-    schema.clearFilters()
-    schema.target.adapter.filters.set('{}')
-  }
-
   const { classes } = useStyles()
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -167,7 +158,10 @@ const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
           <Tooltip
             title="Clear all filters"
             aria-label="clear all filters"
-            onClick={handleFilterClear}
+            onClick={() => {
+              schema.clearFilters()
+              schema.target.adapter.filters.set('{}')
+            }}
           >
             <IconButton
               size="small"
@@ -181,7 +175,7 @@ const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
         <Box>
           <Tabs
             value={value}
-            onChange={handleChangeTab}
+            onChange={(_, val) => setValue(val)}
             aria-label="filtering tabs"
           >
             <Tab classes={{ root: classes.tabRoot }} label="Cases" />

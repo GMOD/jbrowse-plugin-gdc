@@ -2,7 +2,7 @@
  * Query the GDC API for project information related to the given gene
  * @param {String} featureId Gene ID
  */
-export async function getGeneProjectsAsync(featureId) {
+export async function getGeneProjectsAsync(featureId: string) {
   const query = {
     query: `query ProjectTable( $caseAggsFilters: FiltersArgument $ssmTested: FiltersArgument $cnvGain: FiltersArgument $cnvLoss: FiltersArgument $cnvTested: FiltersArgument $projectCount: Int ) { viewer { explore { cases { gain: aggregations(filters: $cnvGain) { project__project_id { buckets { docCount: doc_count projectId: key } } } loss: aggregations(filters: $cnvLoss) { project__project_id { buckets { docCount: doc_count projectId: key } } } cnvTotal: aggregations(filters: $cnvTested) { project__project_id { buckets { docCount: doc_count projectId: key } } } filtered: aggregations(filters: $caseAggsFilters) { project__project_id { buckets { docCount: doc_count projectId: key } } } total: aggregations(filters: $ssmTested) { project__project_id { buckets { docCount: doc_count projectId: key } } } } } } projects { hits(first: $projectCount) { edges { node { primary_site disease_type project_id id } } } } }`,
     variables: {
@@ -100,7 +100,7 @@ export async function getGeneProjectsAsync(featureId) {
  * Query the GDC API for project information related to the given mutation
  * @param {String} featureId Mutation ID
  */
-export async function getMutationProjectsAsync(featureId) {
+export async function getMutationProjectsAsync(featureId: string) {
   const query = {
     query: `query projectsTable($ssmTested: FiltersArgument, $caseAggsFilter: FiltersArgument, $projectCount: Int) { viewer { explore { cases { filtered: aggregations(filters: $caseAggsFilter) { project__project_id { buckets { docCount: doc_count projectId: key } } } total: aggregations(filters: $ssmTested) { project__project_id { buckets { docCount: doc_count projectId: key } } } } } } projects { hits(first: $projectCount) { edges { node { primary_site disease_type project_id id } } } } }`,
     variables: {

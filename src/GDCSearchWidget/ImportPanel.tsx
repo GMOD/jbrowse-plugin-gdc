@@ -11,13 +11,16 @@ import {
   Chip,
 } from '@mui/material'
 import { useDropzone } from 'react-dropzone'
+import { makeStyles } from 'tss-react/mui'
+
+// icons
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import InsertDriveFile from '@mui/icons-material/InsertDriveFile'
 import AddIcon from '@mui/icons-material/Add'
 import InfoIcon from '@mui/icons-material/Info'
-import TipDialogue from './TipDialogue'
-import { makeStyles } from 'tss-react/mui'
 
+// locals
+import TipDialogue from './TipDialogue'
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 import { GDCSearchModel } from './model'
 

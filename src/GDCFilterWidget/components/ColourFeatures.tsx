@@ -43,7 +43,7 @@ const useStyles = makeStyles()(theme => ({
 const HighlightFeature = observer(({ schema, type }: Record<string, any>) => {
   const { classes } = useStyles()
 
-  const [colourBy, setColourBy] = useState(
+  const [colourBy, setColourBy] = useState<any>(
     Object.keys(schema.getColourBy()).length !== 0
       ? JSON.parse(schema.getColourBy())
       : '',
@@ -112,7 +112,7 @@ const HighlightFeature = observer(({ schema, type }: Record<string, any>) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values?.map(value => (
+                  {colourBy.values?.map((value: any) => (
                     <TableRow key={value.name}>
                       <TableCell>
                         {value.name !== '' ? value.name : 'n/a'}
@@ -143,7 +143,7 @@ const HighlightFeature = observer(({ schema, type }: Record<string, any>) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values?.map(value => (
+                  {colourBy.values?.map((value: any) => (
                     <TableRow key={value.name}>
                       <TableCell>
                         {value.name !== '' ? value.name : 'n/a'}
@@ -183,7 +183,7 @@ const HighlightFeature = observer(({ schema, type }: Record<string, any>) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values?.map(value => (
+                  {colourBy.values?.map((value: any) => (
                     <TableRow key={value.name}>
                       <TableCell>
                         {value.name !== '' ? value.name : 'n/a'}
@@ -221,7 +221,7 @@ const HighlightFeature = observer(({ schema, type }: Record<string, any>) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {colourBy.values?.map(value => (
+                  {colourBy.values?.map((value: any) => (
                     <TableRow key={value.name}>
                       <TableCell>
                         {value.name !== '' ? value.name : 'n/a'}

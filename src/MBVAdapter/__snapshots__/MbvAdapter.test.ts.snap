@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`adapter can fetch features from mbv_test_data.txt 1`] = `
-Array [
+[
   "chr16",
   "chr3",
   "chr7",
@@ -30,8 +30,8 @@ Array [
 `;
 
 exports[`adapter can fetch features from mbv_test_data.txt 2`] = `
-Array [
-  Object {
+[
+  {
     "beta_value": "0.854812485786774",
     "cgi_coordinate": "CGI:chr3:196708-198323",
     "chromosome": "chr3",

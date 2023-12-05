@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`adapter can fetch features from ieq_test_data.txt 1`] = `
-Array [
+[
   "chr1",
   "chr2",
   "chr3",
@@ -30,8 +30,8 @@ Array [
 `;
 
 exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
-Array [
-  Object {
+[
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175977,
@@ -45,7 +45,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-0",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175981,
@@ -59,7 +59,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-1",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175982,
@@ -73,7 +73,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-2",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -87,7 +87,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-3",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175984,
@@ -101,7 +101,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-4",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175980,
@@ -115,7 +115,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-5",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175981,
@@ -129,7 +129,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-6",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175982,
@@ -143,7 +143,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-7",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -157,7 +157,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-8",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175984,
@@ -171,7 +171,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-9",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175985,
@@ -185,7 +185,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-10",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175991,
@@ -199,7 +199,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-11",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175980,
@@ -213,7 +213,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-12",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175981,
@@ -227,7 +227,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-13",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175982,
@@ -241,7 +241,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-14",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -255,7 +255,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-15",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175984,
@@ -269,7 +269,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-16",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175985,
@@ -283,7 +283,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-17",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175981,
@@ -297,7 +297,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-18",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175982,
@@ -311,7 +311,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-19",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -325,7 +325,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-20",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175984,
@@ -339,7 +339,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-21",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175985,
@@ -353,7 +353,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-22",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175981,
@@ -367,7 +367,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-23",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175982,
@@ -381,7 +381,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-24",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -395,7 +395,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-25",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175984,
@@ -409,7 +409,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-26",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,
@@ -423,7 +423,7 @@ Array [
     "strand": 1,
     "uniqueId": "test-ieq-27",
   },
-  Object {
+  {
     "chromosome": "chr9",
     "cross-mapped": "N",
     "end": 94175983,

@@ -46,7 +46,7 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
         getSession(self).queueDialog(doneCallback => [
           LoginDialogue,
           {
-            handleClose: (token: string) => {
+            handleClose: (token?: string) => {
               if (token) {
                 resolve(token)
               } else {

@@ -59,7 +59,7 @@ function Consequence(props: { feature: any }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.entries(consequences).map(([key, value]) =>
+            {Object.entries(consequences).map(([key, value]: [string, any]) =>
               value ? (
                 <TableRow key={key}>
                   <TableCell>
@@ -363,10 +363,14 @@ function SSMProject(props: Record<string, any>) {
 function SSMProjects(props: Record<string, any>) {
   const { classes } = useStyles()
   const { featureId } = props
-
-  const [mutationProjectsCounts, setMutationProjectsCounts] = useState([]) // Case counts for projects associated with the given mutation
-  const [projectsInformation, setProjectsInformation] = useState([]) // General information regarding all projects
-  const [gdcProjectsCounts, setGdcProjectsCounts] = useState([]) // Case counts for projects across the GDC
+  // Case counts for projects associated with the given mutation
+  const [mutationProjectsCounts, setMutationProjectsCounts] = useState<any[]>(
+    [],
+  )
+  // General information regarding all projects
+  const [projectsInformation, setProjectsInformation] = useState<any[]>([])
+  // Case counts for projects across the GDC
+  const [gdcProjectsCounts, setGdcProjectsCounts] = useState<any[]>([])
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -421,19 +425,19 @@ function GeneProject(props: Record<string, any>) {
   const { projectId, docCount, projectsInformation, cases } = props
 
   const projectInfo = projectsInformation.find(
-    x => x.node.project_id === projectId,
+    (x: any) => x.node.project_id === projectId,
   )
   const totalProjectCaseCount = cases.total.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x: any) => x.projectId === projectId,
   )
   const cnvGainCaseCount = cases.gain.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x: any) => x.projectId === projectId,
   )
   const cnvLossCaseCount = cases.loss.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x: any) => x.projectId === projectId,
   )
   const cnvTotalCaseCount = cases.cnvTotal.project__project_id.buckets.find(
-    x => x.projectId === projectId,
+    (x: any) => x.projectId === projectId,
   )
 
   return (
@@ -474,9 +478,9 @@ function GeneProjects(props: Record<string, any>) {
   const { classes } = useStyles()
   const { featureId } = props
 
-  const [projectsInformation, setProjectsInformation] = useState([]) // General information regarding all projects
-  const [geneProjectsCounts, setGeneProjectsCounts] = useState([]) // Case counts for projects associated with the given gene
-  const [cases, setCases] = useState([]) // Case counts for various projects and filters
+  const [projectsInformation, setProjectsInformation] = useState<any[]>([]) // General information regarding all projects
+  const [geneProjectsCounts, setGeneProjectsCounts] = useState<any[]>([]) // Case counts for projects associated with the given gene
+  const [cases, setCases] = useState<any[]>([]) // Case counts for various projects and filters
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises

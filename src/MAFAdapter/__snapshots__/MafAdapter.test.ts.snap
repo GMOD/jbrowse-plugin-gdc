@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`adapter can fetch features from maf_test_data.maf 1`] = `
-Array [
+[
   "chr1",
   "chr2",
   "chr3",
@@ -29,8 +29,8 @@ Array [
 `;
 
 exports[`adapter can fetch features from maf_test_data.maf 2`] = `
-Array [
-  Object {
+[
+  {
     "afr_maf": "0.1808",
     "all_effects": "MXD1,3_prime_UTR_variant,,ENST00000264444,NM_002357.3&NM_001202513.1,c.*3579_*3580delTA,MODIFIER,YES,,,1;MXD1,3_prime_UTR_variant,,ENST00000540449,NM_001202514.1,c.*3579_*3580delTA,MODIFIER,,,,1;MXD1,downstream_gene_variant,,ENST00000435990,,,MODIFIER,,,,1;MXD1,intron_variant,,ENST00000465446,,n.189-778_189-777delTA,MODIFIER,,,,1;MXD1,downstream_gene_variant,,ENST00000409442,,,MODIFIER,,,,1",
     "allele": "-",
@@ -104,7 +104,7 @@ Array [
     "variant_classification": "3'UTR",
     "variant_type": "DEL",
   },
-  Object {
+  {
     "all_effects": "USP39,synonymous_variant,p.T560T,ENST00000323701,NM_006590.3,c.1680C>G,LOW,YES,,,1;USP39,synonymous_variant,p.T482T,ENST00000613444,NM_001256727.1,c.1446C>G,LOW,,,,1;USP39,synonymous_variant,p.T457T,ENST00000450066,NM_001256728.1,c.1371C>G,LOW,,,,1;USP39,synonymous_variant,p.T560T,ENST00000409470,NM_001256725.1,c.1680C>G,LOW,,,,1;USP39,synonymous_variant,p.T531T,ENST00000409025,,c.1593C>G,LOW,,,,1;USP39,3_prime_UTR_variant,,ENST00000409766,NM_001256726.1,c.*77C>G,MODIFIER,,,,1;USP39,non_coding_transcript_exon_variant,,ENST00000459775,,n.1658C>G,MODIFIER,,,,1;USP39,non_coding_transcript_exon_variant,,ENST00000490193,,n.611C>G,MODIFIER,,,,1;USP39,non_coding_transcript_exon_variant,,ENST00000465514,,n.339C>G,MODIFIER,,,,1;USP39,downstream_gene_variant,,ENST00000496047,,,MODIFIER,,,,1;USP39,downstream_gene_variant,,ENST00000493829,,,MODIFIER,,,,1",
     "allele": "G",
     "amino_acids": "T",
@@ -173,7 +173,7 @@ Array [
     "variant_classification": "Silent",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "IGKV4-1,missense_variant,p.Y51D,ENST00000390243,,c.151T>G,MODERATE,YES,tolerated(0.17),benign(0.003),1;IGKC,intron_variant,,ENST00000610638,,c.45-24385A>C,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614252,,c.374-28258A>C,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000430694,,c.345-24683A>C,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614656,,c.352-25019A>C,MODIFIER,YES,,,-1;IGKV1-8,intron_variant,,ENST00000377423,,c.348-24021A>C,MODIFIER,YES,,,-1;IGKV3-11,intron_variant,,ENST00000611170,,c.342-24018A>C,MODIFIER,YES,,,-1",
     "allele": "G",
     "amino_acids": "Y/D",
@@ -262,7 +262,7 @@ Array [
     "variant_classification": "Missense_Mutation",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "aa_maf": "0.0",
     "all_effects": "IGKV4-1,synonymous_variant,p.K71K,ENST00000390243,,c.213G>A,LOW,YES,,,1;IGKC,intron_variant,,ENST00000610638,,c.45-24447C>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614252,,c.374-28320C>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000430694,,c.345-24745C>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614656,,c.352-25081C>T,MODIFIER,YES,,,-1;IGKV1-8,intron_variant,,ENST00000377423,,c.348-24083C>T,MODIFIER,YES,,,-1;IGKV3-11,intron_variant,,ENST00000611170,,c.342-24080C>T,MODIFIER,YES,,,-1",
     "allele": "A",
@@ -352,7 +352,7 @@ Array [
     "variant_classification": "Silent",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "IGKV4-1,missense_variant,p.L73I,ENST00000390243,,c.217C>A,MODERATE,YES,deleterious(0.02),possibly_damaging(0.582),1;IGKC,intron_variant,,ENST00000610638,,c.45-24451G>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614252,,c.374-28324G>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000430694,,c.345-24749G>T,MODIFIER,,,,-1;IGKC,intron_variant,,ENST00000614656,,c.352-25085G>T,MODIFIER,YES,,,-1;IGKV1-8,intron_variant,,ENST00000377423,,c.348-24087G>T,MODIFIER,YES,,,-1;IGKV3-11,intron_variant,,ENST00000611170,,c.342-24084G>T,MODIFIER,YES,,,-1",
     "allele": "A",
     "amino_acids": "L/I",
@@ -441,7 +441,7 @@ Array [
     "variant_classification": "Missense_Mutation",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "TFCP2L1,synonymous_variant,p.P426P,ENST00000263707,NM_014553.2,c.1278C>A,LOW,YES,,,-1;TFCP2L1,non_coding_transcript_exon_variant,,ENST00000464621,,n.264C>A,MODIFIER,,,,-1",
     "allele": "T",
     "amino_acids": "P",
@@ -530,7 +530,7 @@ Array [
     "variant_classification": "Silent",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "TISP43,3_prime_UTR_variant,,ENST00000623376,,c.*903A>T,MODIFIER,,,,1;TISP43,intron_variant,,ENST00000440359,,c.376-729A>T,MODIFIER,,,,1;TISP43,intron_variant,,ENST00000409793,,c.200-726A>T,MODIFIER,,,,1;TISP43,downstream_gene_variant,,ENST00000409982,,,MODIFIER,YES,,,1;AC140481.4,downstream_gene_variant,,ENST00000457169,,,MODIFIER,YES,,,-1;TISP43,intron_variant,,ENST00000419965,,n.318-729A>T,MODIFIER,,,,1;TISP43,intron_variant,,ENST00000414595,,n.133-726A>T,MODIFIER,,,,1",
     "allele": "T",
     "biotype": "protein_coding",
@@ -590,7 +590,7 @@ Array [
     "variant_classification": "3'Flank",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "RBMS1,5_prime_UTR_variant,,ENST00000348849,NM_002897.4&NM_016836.3,c.-394T>C,MODIFIER,YES,,,-1;RBMS1,upstream_gene_variant,,ENST00000474820,,,MODIFIER,,,,-1;RBMS1,upstream_gene_variant,,ENST00000491781,,,MODIFIER,,,,-1;RBMS1,upstream_gene_variant,,ENST00000477486,,,MODIFIER,,,,-1",
     "allele": "G",
     "biotype": "protein_coding",
@@ -655,7 +655,7 @@ Array [
     "variant_classification": "5'UTR",
     "variant_type": "SNP",
   },
-  Object {
+  {
     "all_effects": "GIGYF2,missense_variant,p.R809Q,ENST00000629305,,c.2426G>A,MODERATE,,,unknown(0),1;GIGYF2,missense_variant,p.R787Q,ENST00000409547,NM_015575.3,c.2360G>A,MODERATE,,,unknown(0),1;GIGYF2,missense_variant,p.R809Q,ENST00000409480,,c.2426G>A,MODERATE,,,unknown(0),1;GIGYF2,missense_variant,p.R808Q,ENST00000409451,NM_001103147.1,c.2423G>A,MODERATE,YES,,unknown(0),1;GIGYF2,missense_variant,p.R787Q,ENST00000373563,NM_001103146.1,c.2360G>A,MODERATE,,,unknown(0),1;GIGYF2,missense_variant,p.R781Q,ENST00000409196,NM_001103148.1,c.2342G>A,MODERATE,,,unknown(0),1;GIGYF2,missense_variant,p.R781Q,ENST00000440945,,c.2342G>A,MODERATE,,deleterious(0.05),unknown(0),1;GIGYF2,downstream_gene_variant,,ENST00000423659,,,MODIFIER,,,,1;GIGYF2,non_coding_transcript_exon_variant,,ENST00000474312,,n.1395G>A,MODIFIER,,,,1;GIGYF2,downstream_gene_variant,,ENST00000482952,,,MODIFIER,,,,1",
     "allele": "A",
     "amino_acids": "R/Q",

@@ -2,6 +2,7 @@ import { toArray } from 'rxjs/operators'
 import SegmentCNVAdapter from './SegmentCNVAdapter'
 import configSchema from './configSchema'
 import fetchMock from 'jest-fetch-mock'
+import { firstValueFrom } from 'rxjs'
 
 fetchMock.enableMocks()
 
@@ -26,7 +27,7 @@ test('adapter can fetch features from segments.txt', async () => {
   const names = await adapter.getRefNames()
   expect(names).toMatchSnapshot()
 
-  const featuresArray = await features.pipe(toArray()).toPromise()
+  const featuresArray = await firstValueFrom(features.pipe(toArray()))
   const featuresJsonArray = featuresArray.map(f => f.toJSON())
   expect(featuresJsonArray).toMatchSnapshot()
 })
