@@ -1,16 +1,30 @@
-import { ConfigurationReference } from '@jbrowse/core/configuration'
-import { getParentRenderProps } from '@jbrowse/core/util/tracks'
-import { getSession } from '@jbrowse/core/util'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import configSchemaF from './configSchema'
 import { types } from 'mobx-state-tree'
+import {
+  AnyConfigurationSchemaType,
+  ConfigurationReference,
+} from '@jbrowse/core/configuration'
+import { getParentRenderProps } from '@jbrowse/core/util/tracks'
+import {
+  getSession,
+  isSessionModelWithWidgets,
+  Feature,
+} from '@jbrowse/core/util'
+// icons
+import FilterListIcon from '@mui/icons-material/FilterList'
 
-export default jbrowse => {
-  const configSchema = jbrowse.jbrequire(configSchemaF)
+// locals
+import configSchemaF from './configSchema'
+import PluginManager from '@jbrowse/core/PluginManager'
 
-  const { BaseLinearDisplay } = jbrowse.getPlugin(
-    'LinearGenomeViewPlugin',
-  ).exports
+import LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
+
+export default (
+  pluginManager: PluginManager,
+  configSchema: AnyConfigurationSchemaType,
+) => {
+  const { BaseLinearDisplay } = (
+    pluginManager.getPlugin('LinearGenomeViewPlugin') as LinearGenomeViewPlugin
+  )?.exports
 
   return types
     .compose(
@@ -25,15 +39,17 @@ export default jbrowse => {
     .actions(self => ({
       openFilterConfig() {
         const session = getSession(self)
-        const editor = session.addWidget('GDCFilterWidget', 'gdcFilter', {
-          target: self.parentTrack.configuration,
-        })
-        session.showWidget(editor)
+        if (isSessionModelWithWidgets(session)) {
+          const editor = session.addWidget('GDCFilterWidget', 'gdcFilter', {
+            target: self.parentTrack.configuration,
+          })
+          session.showWidget(editor)
+        }
       },
 
-      selectFeature(feature) {
-        if (feature) {
-          const session = getSession(self)
+      selectFeature(feature: Feature) {
+        const session = getSession(self)
+        if (feature && isSessionModelWithWidgets(session)) {
           const featureWidget = session.addWidget(
             'GDCFeatureWidget',
             'gdcFeature',
@@ -69,7 +85,7 @@ export default jbrowse => {
             ...superTrackMenuItems(),
             {
               label: 'Filter',
-              onClick: self.openFilterConfig,
+              onClick: () => self.openFilterConfig(),
               icon: FilterListIcon,
             },
           ]
