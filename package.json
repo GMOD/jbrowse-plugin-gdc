@@ -37,7 +37,7 @@
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
-    "@mui/icons-material": "^9.0.0",
+    "@mui/icons-material": "^7.0.0",
     "abortable-promise-cache": "^1.5.0",
     "pako": "^2.1.0",
     "react-dropzone": "^15.0.0",
@@ -56,7 +56,7 @@
     "@jbrowse/core": "^4.2.0",
     "@jbrowse/mobx-state-tree": "^5.6.0",
     "@jbrowse/plugin-linear-genome-view": "^4.2.0",
-    "@mui/material": "^9.0.0",
+    "@mui/material": "^7.0.0",
     "@mui/x-data-grid": "^9.0.4",
     "@schemastore/package": "^1.0.4",
     "@testing-library/react": "^16.3.2",
