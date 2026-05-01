@@ -150,7 +150,7 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
   const [fileChip, setFileChip] = useState<string>()
 
   const session = getSession(model)
-  const inputRef = useRef()
+  const inputRef = useRef(null)
 
   /**
    * uses information about the BEDPE file to display the contents in a spreadsheet view

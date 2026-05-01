@@ -1,4 +1,4 @@
-import { types } from '@jbrowse/mobx-state-tree'
+import { types, IAnyModelType } from '@jbrowse/mobx-state-tree'
 import {
   AnyConfigurationSchemaType,
   ConfigurationReference,
@@ -17,7 +17,7 @@ import LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
 export default (
   pluginManager: PluginManager,
   configSchema: AnyConfigurationSchemaType,
-) => {
+): IAnyModelType => {
   const { BaseLinearDisplay } = (
     pluginManager.getPlugin('LinearGenomeViewPlugin') as LinearGenomeViewPlugin
   )?.exports

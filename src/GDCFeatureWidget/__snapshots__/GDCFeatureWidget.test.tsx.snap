@@ -61,24 +61,24 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
               style="width: 100%; max-height: 600px; overflow: auto;"
             >
               <table
-                class="MuiTable-root css-1gn90aw-table css-1eezdpb-MuiTable-root"
+                class="MuiTable-root css-1anakm7-MuiTable-root-table"
               >
                 <tbody
-                  class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+                  class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
                 >
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       GDC
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="https://portal.gdc.cancer.gov/genes/ENSG00000134121"
                         rel="noopener"
                         target="_blank"
@@ -88,18 +88,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       ENSEMBL
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="http://www.ensembl.org/id/ENSG00000134121"
                         rel="noopener"
                         target="_blank"
@@ -109,18 +109,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       Canonical Transcript ID
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="http://www.ensembl.org/id/ENST00000256509"
                         rel="noopener"
                         target="_blank"
@@ -130,18 +130,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       HGNC
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:1939"
                         rel="noopener"
                         target="_blank"
@@ -151,18 +151,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       UniProtKB Swiss-Prot
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="http://www.uniprot.org/uniprot/O00533"
                         rel="noopener"
                         target="_blank"
@@ -172,18 +172,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       NCBI
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="http://www.ncbi.nlm.nih.gov/gene/10752"
                         rel="noopener"
                         target="_blank"
@@ -193,18 +193,18 @@ exports[`GDCTrack widget > renders gene extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       OMIM
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="https://www.omim.org/entry/607416"
                         rel="noopener"
                         target="_blank"
@@ -285,24 +285,24 @@ exports[`GDCTrack widget > renders mutation extra panel 1`] = `
               style="width: 100%; max-height: 600px; overflow: auto;"
             >
               <table
-                class="MuiTable-root css-1gn90aw-table css-1eezdpb-MuiTable-root"
+                class="MuiTable-root css-1anakm7-MuiTable-root-table"
               >
                 <tbody
-                  class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
+                  class="MuiTableBody-root css-gmh7jj-MuiTableBody-root"
                 >
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       GDC
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="https://portal.gdc.cancer.gov/ssms/0208efeb-f1e8-57e4-8447-299c5f050380"
                         rel="noopener"
                         target="_blank"
@@ -312,18 +312,18 @@ exports[`GDCTrack widget > renders mutation extra panel 1`] = `
                     </td>
                   </tr>
                   <tr
-                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                    class="MuiTableRow-root css-1w1gqi5-MuiTableRow-root"
                   >
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       Cosmic
                     </td>
                     <td
-                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1dvck71-MuiTableCell-root"
                     >
                       <a
-                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-gb9nks-MuiTypography-root-MuiLink-root-link"
                         href="https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=1044638"
                         rel="noopener"
                         target="_blank"
