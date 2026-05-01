@@ -34,9 +34,10 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
           element => element.toLowerCase() === 'chromosome',
         )
       } else {
-        if (line.split('\t')[refNameColumnIndex] !== undefined) {
+        const refName = line.split('\t')[refNameColumnIndex]
+        if (refName !== undefined) {
           rows.push(line)
-          refNames.push(line.split('\t')[refNameColumnIndex])
+          refNames.push(refName)
         }
       }
     })
@@ -55,16 +56,17 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
         if (i === 0) {
           segment.id = property
         } else {
-          // some SEG files have different data, this logic is to ensure that
-          // we don't need special colouring functions to accomodate for those
-          // differences...mean and copy number indicate the track colouring
-          if (
-            columns[i].toLowerCase() === 'segment_mean' ||
-            columns[i].toLowerCase() === 'copy_number'
-          ) {
-            segment.score = +property
+          const col = columns[i]
+          if (col !== undefined) {
+            // some SEG files have different data, this logic is to ensure that
+            // we don't need special colouring functions to accomodate for those
+            // differences...mean and copy number indicate the track colouring
+            const colLower = col.toLowerCase()
+            if (colLower === 'segment_mean' || colLower === 'copy_number') {
+              segment.score = +property
+            }
+            segment[colLower] = property
           }
-          segment[columns[i].toLowerCase()] = property
         }
       }
     })
@@ -73,6 +75,7 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
       start: string
       end: string
       score: string
+      chromosome: string
     }
   }
 
@@ -118,7 +121,7 @@ export default class SegmentCNVAdapter extends BaseFeatureDataAdapter {
         }
       })
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

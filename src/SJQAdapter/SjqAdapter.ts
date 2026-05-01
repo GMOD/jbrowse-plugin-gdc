@@ -69,10 +69,14 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
   private parseLine(line: string, columns: string[]) {
     const sjq = {} as Record<string, unknown>
     line.split('\t').forEach((property: string, i: number) => {
-      // Source: https://stackoverflow.com/questions/4374822/remove-all-special-characters-with-regexp
-      columns[i] = columns[i].toLowerCase().replace(/[^\w\s]/gi, '')
-      if (property) {
-        sjq[columns[i].toLowerCase()] = property
+      const col = columns[i]
+      if (col !== undefined) {
+        // Source: https://stackoverflow.com/questions/4374822/remove-all-special-characters-with-regexp
+        const normalizedCol = col.toLowerCase().replace(/[^\w\s]/gi, '')
+        columns[i] = normalizedCol
+        if (property) {
+          sjq[normalizedCol] = property
+        }
       }
     })
     return sjq
@@ -138,7 +142,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
         }
       })
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

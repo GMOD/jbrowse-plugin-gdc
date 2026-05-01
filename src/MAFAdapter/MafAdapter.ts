@@ -32,7 +32,10 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
           )
         } else {
           rows.push(line)
-          refNames.push(line.split('\t')[refNameColumnIndex])
+          const refName = line.split('\t')[refNameColumnIndex]
+          if (refName !== undefined) {
+            refNames.push(refName)
+          }
         }
       }
     })
@@ -49,7 +52,10 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
     const mutationObject: Record<string, unknown> = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
-        mutationObject[columns[i].toLowerCase()] = property
+        const col = columns[i]
+        if (col !== undefined) {
+          mutationObject[col.toLowerCase()] = property
+        }
       }
     })
     return mutationObject
@@ -119,7 +125,7 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
         }
       })
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

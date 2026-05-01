@@ -28,12 +28,10 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
           element => element.toLowerCase() === 'chromosome',
         )
       } else {
-        if (
-          line.split('\t')[refNameColumnIndex] !== '*' &&
-          line.split('\t')[refNameColumnIndex] !== undefined
-        ) {
+        const refName = line.split('\t')[refNameColumnIndex]
+        if (refName !== '*' && refName !== undefined) {
           rows.push(line)
-          refNames.push(line.split('\t')[refNameColumnIndex])
+          refNames.push(refName)
         }
       }
     })
@@ -49,7 +47,10 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
     const mutationObject: Record<string, unknown> = {}
     line.split('\t').forEach((property: string, i: number) => {
       if (property) {
-        mutationObject[columns[i].toLowerCase()] = property
+        const col = columns[i]
+        if (col !== undefined) {
+          mutationObject[col.toLowerCase()] = property
+        }
       }
     })
     return mutationObject
@@ -119,7 +120,7 @@ export default class MbvAdapter extends BaseFeatureDataAdapter {
         }
       })
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

@@ -23,7 +23,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
   private setupP?: Promise<GDCFeature[]>
 
   private featureCache = new AbortablePromiseCache({
-    cache: new LRU({ maxSize: 200 }),
+    cache: new LRU<string, any>({ maxSize: 200 }),
     fill: async (query: any, abortSignal?: AbortSignal) => {
       return this.fetchFeatures(query, abortSignal)
     },
@@ -271,7 +271,7 @@ export default class GDCJSONAdapter extends BaseFeatureDataAdapter {
         observer.error(e)
       }
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

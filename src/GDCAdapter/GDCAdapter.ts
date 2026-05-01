@@ -22,7 +22,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
   public static capabilities = ['getFeatures', 'getRefNames']
 
   private featureCache = new AbortablePromiseCache({
-    cache: new LRU({ maxSize: 200 }),
+    cache: new LRU<string, any>({ maxSize: 200 }),
     fill: async (query: any, abortSignal?: AbortSignal) => {
       return this.fetchFeatures(query, abortSignal)
     },
@@ -152,7 +152,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
         observer.error(e)
       }
       observer.complete()
-    }, opts.signal)
+    }, opts.stopToken)
   }
 
   public freeResources(): void {}

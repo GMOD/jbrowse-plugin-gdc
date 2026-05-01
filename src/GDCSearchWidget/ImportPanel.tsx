@@ -161,7 +161,10 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
   async function addBEDPEView(fileUUID: string, uri?: string, fileBlob?: any) {
     session.addView('SpreadsheetView', {})
     const xView = session.views.length - 1
-    session.views[xView].setDisplayName(`GDC BEDPE ${fileUUID}`)
+    const view = session.views[xView]
+    if (view) {
+      view.setDisplayName(`GDC BEDPE ${fileUUID}`)
+    }
     if (uri) {
       // @ts-expect-error
       session.views[xView].importWizard.setFileSource({
@@ -252,7 +255,7 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
    * and/or category of the file based on its name
    */
   function determineFileInfo(fileName: string) {
-    const format = fileName.split('.')[-1]
+    const format = fileName.split('.').at(-1) ?? ''
 
     if (fileName.includes('Methylation')) {
       return {
@@ -298,13 +301,14 @@ const Panel = ({ model }: { model: GDCSearchModel }) => {
       resetErrorMessages()
 
       if (rejectedFiles.length) {
+        const firstRejected = rejectedFiles[0]
         if (acceptedFiles.length || rejectedFiles.length > 1) {
           const message = 'Only one session at a time may be imported'
           console.error(message)
           setDragErrorMessage(message)
-        } else if (rejectedFiles[0].file.size > MAX_FILE_SIZE) {
+        } else if (firstRejected && firstRejected.file.size > MAX_FILE_SIZE) {
           const message = `File size is too large (${Math.round(
-            rejectedFiles[0].file.size / 1024 ** 2,
+            firstRejected.file.size / 1024 ** 2,
           )} MiB), max size is ${MAX_FILE_SIZE / 1024 ** 2} MiB`
           console.error(message)
           setDragErrorMessage(message)
