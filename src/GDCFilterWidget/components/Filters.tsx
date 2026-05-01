@@ -120,7 +120,7 @@ const Filter = observer((props: any) => {
               </MenuItem>
               {categoryValue.values.map((name: string) => (
                 <MenuItem key={name} value={name}>
-                  <Checkbox checked={filterValue.indexOf(name) > -1} />
+                  <Checkbox checked={filterValue.includes(name)} />
                   <ListItemText primary={name} />
                 </MenuItem>
               ))}

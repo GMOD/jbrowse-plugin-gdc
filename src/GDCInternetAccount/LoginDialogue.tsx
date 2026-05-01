@@ -50,7 +50,9 @@ export default function LoginDialogue({
   return (
     <Dialog
       open
-      onClose={() => handleClose()}
+      onClose={() => {
+        handleClose()
+      }}
       maxWidth="sm"
       title="Login to access controlled GDC data"
     >

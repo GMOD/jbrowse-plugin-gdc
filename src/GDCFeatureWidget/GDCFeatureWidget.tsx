@@ -153,7 +153,15 @@ function Consequence(props: { feature: any }) {
   )
 }
 
-const ExternalLink = observer(function ExternalLink({ id, name, link }: { id: string; name: string; link: string }) {
+const ExternalLink = observer(function ExternalLink({
+  id,
+  name,
+  link,
+}: {
+  id: string
+  name: string
+  link: string
+}) {
   const { classes } = useStyles()
   return (
     <TableRow>
@@ -234,7 +242,11 @@ function removeCosmicPrefix(cosmicId: string) {
   return cosmicId.replace('COSM', '').replace('COSN', '')
 }
 
-const CosmicLinks = observer(function CosmicLinks({ cosmicId }: { cosmicId: string[] }) {
+const CosmicLinks = observer(function CosmicLinks({
+  cosmicId,
+}: {
+  cosmicId: string[]
+}) {
   const { classes } = useStyles()
   return (
     <TableRow>
@@ -341,7 +353,9 @@ function SSMProjects(props: Record<string, any>) {
           data.data.viewer.explore.cases.filtered.project__project_id.buckets,
         )
       })
-      .catch((e: unknown) => console.error(e))
+      .catch((e: unknown) => {
+        console.error(e)
+      })
   }, [featureId])
 
   return (
@@ -439,7 +453,9 @@ function GeneProjects(props: Record<string, any>) {
           data.data.viewer.explore.cases.filtered.project__project_id.buckets,
         )
       })
-      .catch((e: unknown) => console.error(e))
+      .catch((e: unknown) => {
+        console.error(e)
+      })
   }, [featureId])
 
   return (
@@ -489,10 +505,10 @@ export const GDCExtraPanel = observer(function GDCExtraPanel({
       ) : null}
       {feature.ssmId !== undefined ? <Consequence feature={feature} /> : null}
       {feature.geneId !== undefined ? (
-        <GeneProjects featureId={feature.geneId as string} />
+        <GeneProjects featureId={feature.geneId} />
       ) : null}
       {feature.ssmId !== undefined ? (
-        <SSMProjects featureId={feature.ssmId as string} />
+        <SSMProjects featureId={feature.ssmId} />
       ) : null}
     </>
   )

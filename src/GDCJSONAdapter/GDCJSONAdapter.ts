@@ -1,12 +1,10 @@
-import {
-  BaseFeatureDataAdapter,
-  BaseOptions,
-} from '@jbrowse/core/data_adapters/BaseAdapter'
-import { Region } from '@jbrowse/core/util/types'
+import type { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
+import { BaseFeatureDataAdapter } from '@jbrowse/core/data_adapters/BaseAdapter'
+import type { Region } from '@jbrowse/core/util/types'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
-import { Feature } from '@jbrowse/core/util/simpleFeature'
+import type { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
+import type { AnyConfigurationModel } from '@jbrowse/core/configuration/configurationSchema'
 import GDCFeature from '../GDCAdapter/GDCFeature'
 import AbortablePromiseCache from 'abortable-promise-cache'
 import LRU from '@jbrowse/core/util/QuickLRU'

@@ -16,7 +16,7 @@ test('adapter can fetch features from the gdc', async () => {
 
   vi.stubGlobal(
     'fetch',
-    vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(gdcResponse))),
+    vi.fn().mockResolvedValueOnce(Response.json(gdcResponse)),
   )
 
   const features = adapter.getFeatures({

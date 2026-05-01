@@ -9,9 +9,8 @@ test('adapter can fetch features from segments.txt', async () => {
   const adapter = new SegmentCNVAdapter(
     configSchema.create({
       segLocation: {
-        localPath: require.resolve(
-          './test_data/8da2e4c4-e9e2-4af0-9352-3c54e7f4539c.grch38.seg.v2.txt',
-        ),
+        localPath:
+          require.resolve('./test_data/8da2e4c4-e9e2-4af0-9352-3c54e7f4539c.grch38.seg.v2.txt'),
       },
     }),
   )

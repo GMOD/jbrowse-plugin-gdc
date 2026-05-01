@@ -175,7 +175,9 @@ const GDCQueryBuilder = observer(({ schema }: { schema: any }) => {
         <Box>
           <Tabs
             value={value}
-            onChange={(_, val) => setValue(val)}
+            onChange={(_, val) => {
+              setValue(val)
+            }}
             aria-label="filtering tabs"
           >
             <Tab classes={{ root: classes.tabRoot }} label="Cases" />

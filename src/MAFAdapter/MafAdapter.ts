@@ -1,12 +1,10 @@
-import {
-  BaseFeatureDataAdapter,
-  BaseOptions,
-} from '@jbrowse/core/data_adapters/BaseAdapter'
-import { FileLocation, Region } from '@jbrowse/core/util/types'
+import type { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
+import { BaseFeatureDataAdapter } from '@jbrowse/core/data_adapters/BaseAdapter'
+import type { FileLocation, Region } from '@jbrowse/core/util/types'
 import { openLocation } from '@jbrowse/core/util/io'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
 import MafFeature from './MafFeature'
-import { Feature } from '@jbrowse/core/util/simpleFeature'
+import type { Feature } from '@jbrowse/core/util/simpleFeature'
 import { readConfObject } from '@jbrowse/core/configuration'
 import pako from 'pako'
 export default class MafAdapter extends BaseFeatureDataAdapter {
@@ -73,18 +71,15 @@ export default class MafAdapter extends BaseFeatureDataAdapter {
     ).readFile()
 
     let str: string
-    if (
+    str =
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
       typeof fileContents[1] === 'number' &&
       fileContents[1] === 139 &&
       typeof fileContents[2] === 'number' &&
       fileContents[2] === 8
-    ) {
-      str = new TextDecoder().decode(pako.inflate(fileContents))
-    } else {
-      str = fileContents.toString()
-    }
+        ? new TextDecoder().decode(pako.inflate(fileContents))
+        : fileContents.toString()
 
     return this.readMaf(str)
   }

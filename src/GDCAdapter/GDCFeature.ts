@@ -1,4 +1,4 @@
-import {
+import type {
   SimpleFeatureSerialized,
   Feature,
 } from '@jbrowse/core/util/simpleFeature'
@@ -12,7 +12,6 @@ interface FeatureData {
 }
 
 export default class GDCFeature implements Feature {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private gdcObject: any
 
   private data: FeatureData
@@ -21,12 +20,7 @@ export default class GDCFeature implements Feature {
 
   private featureType: string
 
-  constructor(args: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    gdcObject: any
-    id: string
-    featureType: string
-  }) {
+  constructor(args: { gdcObject: any; id: string; featureType: string }) {
     this.gdcObject = args.gdcObject
     this.featureType = args.featureType ? args.featureType : 'mutation'
     this.data = this.dataFromGDCObject(this.gdcObject, this.featureType)
@@ -56,7 +50,6 @@ export default class GDCFeature implements Feature {
     return this.uniqueId
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dataFromGDCObject(gdcObject: any, featureType: string): FeatureData {
     // Defaults to mutation values
     const featureData: FeatureData = {

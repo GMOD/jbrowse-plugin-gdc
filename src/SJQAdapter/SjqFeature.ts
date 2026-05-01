@@ -1,4 +1,4 @@
-import { Feature } from '@jbrowse/core/util/simpleFeature'
+import type { Feature } from '@jbrowse/core/util/simpleFeature'
 
 interface FeatureData {
   [key: string]: unknown

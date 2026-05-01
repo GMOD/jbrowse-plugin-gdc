@@ -1,5 +1,5 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
-import PluginManager from '@jbrowse/core/PluginManager'
+import type PluginManager from '@jbrowse/core/PluginManager'
 import Plugin from '@jbrowse/core/Plugin'
 import DisplayType from '@jbrowse/core/pluggableElementTypes/DisplayType'
 import InternetAccountType from '@jbrowse/core/pluggableElementTypes/InternetAccountType'
@@ -7,13 +7,14 @@ import {
   createBaseTrackConfig,
   createBaseTrackModel,
 } from '@jbrowse/core/pluggableElementTypes/models'
-import { SessionWithWidgets, isAbstractMenuManager } from '@jbrowse/core/util'
-import { FileLocation } from '@jbrowse/core/util/types'
-import {
+import type { SessionWithWidgets } from '@jbrowse/core/util'
+import { isAbstractMenuManager } from '@jbrowse/core/util'
+import type { FileLocation } from '@jbrowse/core/util/types'
+import type {
   AdapterGuesser,
-  getFileName,
   TrackTypeGuesser,
 } from '@jbrowse/core/util/tracks'
+import { getFileName } from '@jbrowse/core/util/tracks'
 import { DataExploration } from './UI/Icons'
 import { version } from '../package.json'
 
@@ -56,7 +57,7 @@ import {
 export default class GDCPlugin extends Plugin {
   name = 'GDCPlugin'
 
-  version = version as string
+  version = version
 
   install(pluginManager: PluginManager) {
     const LGVPlugin = pluginManager.getPlugin(
@@ -451,10 +452,8 @@ export default class GDCPlugin extends Plugin {
         HIGH: 'red',
       }
       const edges = feature.get('consequence')?.hits?.edges ?? []
-      const canonical = edges.filter(
-        (e: any) => e.node.transcript.is_canonical,
-      )
-      const impact = canonical[0]?.node?.transcript?.annotation?.vep_impact
+      const canonical = edges.find((e: any) => e.node.transcript.is_canonical)
+      const impact = canonical?.node?.transcript?.annotation?.vep_impact
       return impact ? (colourMap[impact] ?? 'lightgray') : 'lightgray'
     })
 
@@ -505,11 +504,11 @@ export default class GDCPlugin extends Plugin {
 
     pluginManager.jexl.addFunction('switch', (feature: any, hlBy: any) => {
       hlBy = JSON.parse(hlBy)
-      const filteredConsequences = feature
+      const filteredConsequence = feature
         .get('consequence')
-        .hits.edges.filter((cons: any) => cons.node.transcript.is_canonical)
+        .hits.edges.find((cons: any) => cons.node.transcript.is_canonical)
       const impact =
-        filteredConsequences[0].node.transcript.annotation[hlBy.attributeName]
+        filteredConsequence.node.transcript.annotation[hlBy.attributeName]
       const attrValue = feature.get(hlBy.attributeName)
       const target = impact ? impact : attrValue
       let colour = 'black'

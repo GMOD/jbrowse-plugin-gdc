@@ -1,4 +1,4 @@
-import { Feature } from '@jbrowse/core/util/simpleFeature'
+import type { Feature } from '@jbrowse/core/util/simpleFeature'
 
 interface FeatureData {
   [key: string]: unknown
@@ -58,7 +58,7 @@ export default class MafFeature implements Feature {
       end: +mutation.end_position,
       name: `${mutation.chromosome}:g.${mutation.start_position}${mutation.tumor_seq_allele1}>${mutation.tumor_seq_allele2}`,
       note: mutation.hgvsc,
-      //score: +mutation.score,
+      // score: +mutation.score,
     }
     return featureData
   }

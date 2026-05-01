@@ -1,5 +1,5 @@
 import eslint from '@eslint/js'
-import importPlugin from 'eslint-plugin-import'
+// import importPlugin from 'eslint-plugin-import'
 import eslintPluginReact from 'eslint-plugin-react'
 import eslintPluginReactHooks from 'eslint-plugin-react-hooks'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
@@ -18,7 +18,7 @@ export default tseslint.config(
     },
     settings: {
       react: {
-        version: 'detect',
+        version: 'v19.2.5',
       },
     },
   },
@@ -27,7 +27,7 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   ...tseslint.configs.stylisticTypeChecked,
   ...tseslint.configs.strictTypeChecked,
-  importPlugin.flatConfigs.recommended,
+  // importPlugin.flatConfigs.recommended,
   eslintPluginReact.configs.flat.recommended,
   {
     plugins: {
@@ -46,21 +46,21 @@ export default tseslint.config(
       semi: ['error', 'never'],
       'spaced-comment': ['error', 'always', { markers: ['/'] }],
 
-      'import/no-unresolved': 'off',
-      'import/order': [
-        'error',
-        {
-          named: true,
-          'newlines-between': 'always',
-          alphabetize: { order: 'asc' },
-          groups: [
-            'builtin',
-            ['external', 'internal'],
-            ['parent', 'sibling', 'index', 'object'],
-            'type',
-          ],
-        },
-      ],
+      // 'import/no-unresolved': 'off',
+      // 'import/order': [
+      //   'error',
+      //   {
+      //     named: true,
+      //     'newlines-between': 'always',
+      //     alphabetize: { order: 'asc' },
+      //     groups: [
+      //       'builtin',
+      //       ['external', 'internal'],
+      //       ['parent', 'sibling', 'index', 'object'],
+      //       'type',
+      //     ],
+      //   },
+      // ],
 
       'one-var': ['error', 'never'],
       'react/no-unescaped-entities': 'off',

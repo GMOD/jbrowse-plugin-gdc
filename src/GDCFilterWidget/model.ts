@@ -1,6 +1,7 @@
 import { ElementId } from '@jbrowse/core/util/types/mst'
-import PluginManager from '@jbrowse/core/PluginManager'
-import { types, IAnyStateTreeNode } from '@jbrowse/mobx-state-tree'
+import type PluginManager from '@jbrowse/core/PluginManager'
+import type { IAnyStateTreeNode } from '@jbrowse/mobx-state-tree'
+import { types } from '@jbrowse/mobx-state-tree'
 
 const Filter = types
   .model({

@@ -1,11 +1,12 @@
 import { ConfigurationReference, getConf } from '@jbrowse/core/configuration'
 import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
-import { UriLocation } from '@jbrowse/core/util/types'
-import { Instance, types } from '@jbrowse/mobx-state-tree'
+import type { UriLocation } from '@jbrowse/core/util/types'
+import type { Instance } from '@jbrowse/mobx-state-tree'
+import { types } from '@jbrowse/mobx-state-tree'
 import { getSession } from '@jbrowse/core/util'
 
 // locals
-import { GDCInternetAccountConfigModel } from './configSchema'
+import type { GDCInternetAccountConfigModel } from './configSchema'
 import LoginDialogue from './LoginDialogue'
 
 const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
@@ -82,7 +83,6 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
       },
     }))
     .actions(self => {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       const superGetToken = self.getToken
       const needsToken = new Map()
       return {
@@ -97,11 +97,9 @@ const stateModelFactory = (configSchema: GDCInternetAccountConfigModel) => {
          */
         async getToken(location?: UriLocation) {
           if (location && needsToken.has(location.uri)) {
-            if (needsToken.get(location.uri)) {
-              return superGetToken(location)
-            } else {
-              return 'none'
-            }
+            return needsToken.get(location.uri)
+              ? superGetToken(location)
+              : 'none'
           }
           // determine if the resource requires a token
           const query = location?.uri.split('/').pop()

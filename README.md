@@ -1,6 +1,7 @@
 # `jbrowse-plugin-gdc`
 
-> JBrowse 2 plugin for the NCI Genomic Data Commons ([GDC](https://gdc.cancer.gov/))
+> JBrowse 2 plugin for the NCI Genomic Data Commons
+> ([GDC](https://gdc.cancer.gov/))
 
 ## Install
 
@@ -50,7 +51,8 @@ Add to the "plugins" of your JBrowse Web config:
 }
 ```
 
-You must manually add to the "internetAccounts" of your JBrowse Web config, and run locally to access controlled resources:
+You must manually add to the "internetAccounts" of your JBrowse Web config, and
+run locally to access controlled resources:
 
 ```json
   "internetAccounts": [

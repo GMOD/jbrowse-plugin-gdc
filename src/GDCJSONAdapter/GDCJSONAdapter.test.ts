@@ -49,7 +49,7 @@ test('adapter can fetch featues from a genes explore json file', async () => {
 
   vi.stubGlobal(
     'fetch',
-    vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(gdcResponse))),
+    vi.fn().mockResolvedValueOnce(Response.json(gdcResponse)),
   )
 
   const featuresArray = await firstValueFrom(features.pipe(toArray()))

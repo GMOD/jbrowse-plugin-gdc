@@ -1,12 +1,12 @@
 import { BaseFeatureDataAdapter } from '@jbrowse/core/data_adapters/BaseAdapter'
 import { ObservableCreate } from '@jbrowse/core/util/rxjs'
-import { Region } from '@jbrowse/core/util/types'
-import { Feature } from '@jbrowse/core/util/simpleFeature'
-import { Instance } from '@jbrowse/mobx-state-tree'
+import type { Region } from '@jbrowse/core/util/types'
+import type { Feature } from '@jbrowse/core/util/simpleFeature'
+import type { Instance } from '@jbrowse/mobx-state-tree'
 import { readConfObject } from '@jbrowse/core/configuration'
-import { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
+import type { BaseOptions } from '@jbrowse/core/data_adapters/BaseAdapter'
 import GDCFeature from './GDCFeature'
-import MyConfigSchema from './configSchema'
+import type MyConfigSchema from './configSchema'
 import AbortablePromiseCache from 'abortable-promise-cache'
 import LRU from '@jbrowse/core/util/QuickLRU'
 
@@ -245,7 +245,6 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
     end: number,
     skipLocation: boolean,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let locationFilter: any
 
     if (!skipLocation) {

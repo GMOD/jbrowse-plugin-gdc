@@ -1,18 +1,14 @@
-import { types, IAnyModelType } from '@jbrowse/mobx-state-tree'
-import {
-  AnyConfigurationSchemaType,
-  ConfigurationReference,
-} from '@jbrowse/core/configuration'
+import type { IAnyModelType } from '@jbrowse/mobx-state-tree'
+import { types } from '@jbrowse/mobx-state-tree'
+import type { AnyConfigurationSchemaType } from '@jbrowse/core/configuration'
+import { ConfigurationReference } from '@jbrowse/core/configuration'
 import { getParentRenderProps } from '@jbrowse/core/util/tracks'
-import {
-  getSession,
-  isSessionModelWithWidgets,
-  Feature,
-} from '@jbrowse/core/util'
+import type { Feature } from '@jbrowse/core/util'
+import { getSession, isSessionModelWithWidgets } from '@jbrowse/core/util'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import PluginManager from '@jbrowse/core/PluginManager'
+import type PluginManager from '@jbrowse/core/PluginManager'
 
-import LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
+import type LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
 
 export default (
   pluginManager: PluginManager,
@@ -81,7 +77,9 @@ export default (
             ...superTrackMenuItems(),
             {
               label: 'Filter',
-              onClick: () => self.openFilterConfig(),
+              onClick: () => {
+                self.openFilterConfig()
+              },
               icon: FilterListIcon,
             },
           ]

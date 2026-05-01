@@ -1,4 +1,5 @@
-import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon'
+import type { SvgIconProps } from '@mui/material/SvgIcon'
+import SvgIcon from '@mui/material/SvgIcon'
 import React from 'react'
 
 // Icon below come from https://fonts.google.com/icons?selected=Material%20Icons%3Adata_exploration%3A

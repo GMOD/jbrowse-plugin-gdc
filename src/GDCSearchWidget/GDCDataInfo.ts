@@ -119,7 +119,7 @@ export function mapDataInfo(
   if (configObject) {
     if (configObject.config.displays) {
       const datenow = Date.now()
-      //@ts-expect-error
+      // @ts-expect-error
       configObject.config.displays[0].displayId = `gdc_plugin_track_linear_basic-${datenow}`
     }
     if (fileBlob) {
@@ -127,7 +127,7 @@ export function mapDataInfo(
       configObject.config.adapter[`${configObject.prefix}Location`] =
         storeBlobLocation({ blob: fileBlob })
     } else {
-      //@ts-expect-error
+      // @ts-expect-error
       configObject.config.adapter[`${configObject.prefix}Location`] = {
         uri: uri,
         authHeader: 'X-Auth-Token',
@@ -135,7 +135,7 @@ export function mapDataInfo(
         internetAccountId: 'GDCExternalToken',
       }
       if (indexFileId) {
-        //@ts-expect-error
+        // @ts-expect-error
         configObject.config.adapter.index = {
           location: {
             uri: `http://localhost:8010/proxy/data/${indexFileId}`,
