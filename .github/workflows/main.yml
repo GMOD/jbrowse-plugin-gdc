@@ -4,17 +4,17 @@ on: push
 
 jobs:
   test:
-    name: Test on node 20.x and ubuntu-latest
+    name: Test on node 24.x and ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
           version: 10
-      - name: Use Node.js 20.x
+      - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 24.x
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
