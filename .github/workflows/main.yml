@@ -19,6 +19,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Get latest JBrowse
-        run: mkdir .jbrowse && pnpm run jbrowse create --force .jbrowse
+        run: mkdir .jbrowse && pnpm exec jbrowse create --force .jbrowse
       - name: Run tests
         run: pnpm test
