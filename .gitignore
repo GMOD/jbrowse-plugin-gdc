@@ -121,3 +121,4 @@ dist
 # Cypress specific files
 cypress/videos
 cypress/screenshots
+meta.json

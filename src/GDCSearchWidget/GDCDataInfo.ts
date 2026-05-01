@@ -183,7 +183,7 @@ export function mapGDCExploreConfig(
     const datenow = Date.now()
     const color1 =
       featureType == 'mutation'
-        ? "jexl:cast({LOW: 'blue', MODIFIER: 'goldenrod', MODERATE: 'green', HIGH: 'red'})[get(feature,'consequence').hits.edges[.node.transcript.is_canonical == true][0].node.transcript.annotation.vep_impact] || 'lightgray'"
+        ? 'jexl:vepColouring(feature)'
         : "jexl:cast('goldenrod')"
     configObject.config = {
       adapter: {

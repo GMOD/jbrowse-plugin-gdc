@@ -18,11 +18,7 @@ import { DataExploration } from './UI/Icons'
 import { version } from '../package.json'
 
 import GDCFilterWidgetF from './GDCFilterWidget'
-import {
-  configSchema as gdcFeatureWidgetConfigSchema,
-  stateModelFactory as gdcFeatureWidgetStateModelFactory,
-} from './GDCFeatureWidget'
-import GDCFeatureWidgetComponent from './GDCFeatureWidget/GDCFeatureWidget'
+import { GDCExtraPanel } from './GDCFeatureWidget/GDCFeatureWidget'
 import GDCSearchWidgetF from './GDCSearchWidget'
 import LinearGDCDisplayF from './LinearGDCDisplay'
 import LinearIEQDisplayF from './LinearIEQDisplay'
@@ -404,15 +400,16 @@ export default class GDCPlugin extends Plugin {
       })
     })
 
-    pluginManager.addWidgetType(() => {
-      return new WidgetType({
-        name: 'GDCFeatureWidget',
-        heading: 'Feature Details',
-        configSchema: gdcFeatureWidgetConfigSchema,
-        stateModel: gdcFeatureWidgetStateModelFactory(pluginManager),
-        ReactComponent: GDCFeatureWidgetComponent,
-      })
-    })
+    pluginManager.addToExtensionPoint(
+      'Core-extraFeaturePanel',
+      (extendee: unknown, props: Record<string, unknown>) => {
+        const feature = props.feature as Record<string, unknown>
+        if (feature?.ssmId !== undefined || feature?.geneId !== undefined) {
+          return { name: 'GDC', Component: GDCExtraPanel }
+        }
+        return extendee
+      },
+    )
 
     pluginManager.addWidgetType(() => {
       return new WidgetType({
@@ -445,6 +442,21 @@ export default class GDCPlugin extends Plugin {
         },
       })
     }
+
+    pluginManager.jexl.addFunction('vepColouring', (feature: any) => {
+      const colourMap: Record<string, string> = {
+        LOW: 'blue',
+        MODIFIER: 'goldenrod',
+        MODERATE: 'green',
+        HIGH: 'red',
+      }
+      const edges = feature.get('consequence')?.hits?.edges ?? []
+      const canonical = edges.filter(
+        (e: any) => e.node.transcript.is_canonical,
+      )
+      const impact = canonical[0]?.node?.transcript?.annotation?.vep_impact
+      return impact ? (colourMap[impact] ?? 'lightgray') : 'lightgray'
+    })
 
     pluginManager.jexl.addFunction('mafColouring', (feature: any) => {
       const classification = feature.get('variant_classification')

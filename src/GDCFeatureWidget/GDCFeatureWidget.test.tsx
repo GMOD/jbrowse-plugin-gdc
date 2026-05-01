@@ -1,39 +1,23 @@
 import React from 'react'
 import { vi, describe, it, expect } from 'vitest'
-import { types } from '@jbrowse/mobx-state-tree'
 import { render } from '@testing-library/react'
 import { ThemeProvider } from '@mui/material'
 import { createJBrowseTheme } from '@jbrowse/core/ui/theme'
-import { ConfigurationSchema } from '@jbrowse/core/configuration'
-import PluginManager from '@jbrowse/core/PluginManager'
 
-import GDCFeatureDetails from './GDCFeatureWidget'
-import { stateModelFactory } from '.'
+import { GDCExtraPanel } from './GDCFeatureWidget'
 
 describe('GDCTrack widget', () => {
-  it('renders mutation with just the required model elements', () => {
+  it('renders mutation extra panel', () => {
     console.warn = vi.fn()
-    const pluginManager = new PluginManager([])
-    const Session = types.model({
-      pluginManager: types.optional(types.frozen(), {}),
-      rpcManager: types.optional(types.frozen(), {}),
-      configuration: ConfigurationSchema('test', {}),
-      widget: stateModelFactory(pluginManager),
-    })
-    const model = Session.create(
-      {
-        widget: { type: 'GDCFeatureWidget' },
-      },
-      { pluginManager },
-    )
 
-    model.widget.setFeatureData({
+    const feature = {
       uniqueId: '0208efeb-f1e8-57e4-8447-299c5f050380',
       refName: 'chr3',
       type: 'Simple Somatic Mutation',
       start: 377917,
       end: 377918,
       chromosome: 'chr3',
+      ssmId: '0208efeb-f1e8-57e4-8447-299c5f050380',
       consequence: {
         hits: {
           edges: [
@@ -65,70 +49,40 @@ describe('GDCTrack widget', () => {
         },
       },
       cosmicId: ['COSM1044638'],
-      endPosition: 377918,
       genomicDnaChange: 'chr3:g.377918G>A',
-      mutationSubtype: 'Single base substitution',
-      mutationType: 'Simple Somatic Mutation',
-      ncbiBuild: 'GRCh38',
-      referenceAllele: 'G',
-      score: 3,
-      startPosition: 377918,
-    })
+    }
 
     const { container } = render(
       <ThemeProvider theme={createJBrowseTheme()}>
-        <GDCFeatureDetails model={model.widget} />
+        <GDCExtraPanel feature={feature} />
       </ThemeProvider>,
     )
     expect(container.firstChild).toMatchSnapshot()
   })
 
-  it('renders gene with just the required model elements', () => {
+  it('renders gene extra panel', () => {
     console.warn = vi.fn()
-    const pluginManager = new PluginManager([])
-    const Session = types.model({
-      pluginManager: types.optional(types.frozen(), {}),
-      rpcManager: types.optional(types.frozen(), {}),
-      configuration: ConfigurationSchema('test', {}),
-      widget: stateModelFactory(pluginManager),
-    })
-    const model = Session.create(
-      {
-        widget: { type: 'GDCFeatureWidget' },
-      },
-      { pluginManager },
-    )
 
-    model.widget.setFeatureData({
+    const feature = {
       uniqueId: 'ENSG00000134121',
       refName: '3',
       type: 'protein_coding',
       start: 196595,
       end: 409417,
-      biotype: 'protein_coding',
+      geneId: 'ENSG00000134121',
       canonicalTranscriptId: 'ENST00000256509',
-      description:
-        'The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]',
       externalDbIds: {
         entrezGene: ['10752'],
         hgnc: ['HGNC:1939'],
         omimGene: ['607416'],
         uniprotkbSwissprot: ['O00533'],
       },
-      geneChromosome: '3',
-      geneEnd: 409417,
-      geneStart: 196596,
-      geneStrand: 1,
-      id: 'R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj',
-      isCancerGeneCensus: null,
-      name: 'cell adhesion molecule L1-like',
       symbol: 'CHL1',
-      synonyms: ['CALL', 'FLJ44930', 'L1CAM2', 'MGC132578'],
-    })
+    }
 
     const { container } = render(
       <ThemeProvider theme={createJBrowseTheme()}>
-        <GDCFeatureDetails model={model.widget} />
+        <GDCExtraPanel feature={feature} />
       </ThemeProvider>,
     )
     expect(container.firstChild).toMatchSnapshot()

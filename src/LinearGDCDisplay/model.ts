@@ -9,11 +9,7 @@ import {
   isSessionModelWithWidgets,
   Feature,
 } from '@jbrowse/core/util'
-// icons
 import FilterListIcon from '@mui/icons-material/FilterList'
-
-// locals
-import configSchemaF from './configSchema'
 import PluginManager from '@jbrowse/core/PluginManager'
 
 import LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
@@ -51,7 +47,7 @@ export default (
         const session = getSession(self)
         if (feature && isSessionModelWithWidgets(session)) {
           const featureWidget = session.addWidget(
-            'GDCFeatureWidget',
+            'VariantFeatureWidget',
             'gdcFeature',
             { featureData: feature.toJSON() },
           )

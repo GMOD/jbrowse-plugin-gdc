@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { observer } from 'mobx-react'
 import {
-  Divider,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -15,10 +13,7 @@ import {
 import { makeStyles } from 'tss-react/mui'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
-import {
-  FeatureDetails,
-  BaseCard,
-} from '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail'
+import BaseCard from '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail/BaseCard'
 import { getGeneProjectsAsync, getMutationProjectsAsync } from './Utility'
 
 const useStyles = makeStyles()({
@@ -30,10 +25,6 @@ const useStyles = makeStyles()({
   },
 })
 
-/**
- * Render the consequence table for a simple somatic mutation
- * @param {*} props
- */
 function Consequence(props: { feature: any }) {
   const { classes } = useStyles()
   const { feature } = props
@@ -59,9 +50,9 @@ function Consequence(props: { feature: any }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.entries(consequences).map(([key, value]: [string, any]) =>
+            {consequences.map((value: any, i: number) =>
               value ? (
-                <TableRow key={key}>
+                <TableRow key={i}>
                   <TableCell>
                     <Link
                       className={classes.link}
@@ -162,36 +153,26 @@ function Consequence(props: { feature: any }) {
   )
 }
 
-/**
- * Render a single table row for an external link
- */
-const ExternalLink = observer(
-  (props: { id: string; name: string; link: string }) => {
-    const { classes } = useStyles()
-    const { id, name, link } = props
-    return (
-      <TableRow key={`${id}-${name}`}>
-        <TableCell>{name}</TableCell>
-        <TableCell>
-          <Link
-            className={classes.link}
-            target="_blank"
-            rel="noopener"
-            href={`${link}${id}`}
-            underline="always"
-          >
-            {id}
-          </Link>
-        </TableCell>
-      </TableRow>
-    )
-  },
-)
+const ExternalLink = observer(function ExternalLink({ id, name, link }: { id: string; name: string; link: string }) {
+  const { classes } = useStyles()
+  return (
+    <TableRow>
+      <TableCell>{name}</TableCell>
+      <TableCell>
+        <Link
+          className={classes.link}
+          target="_blank"
+          rel="noopener"
+          href={`${link}${id}`}
+          underline="always"
+        >
+          {id}
+        </Link>
+      </TableCell>
+    </TableRow>
+  )
+})
 
-/**
- * Render a section for external gene links
- * @param {*} props
- */
 function GeneExternalLinks(props: { feature: any }) {
   const { classes } = useStyles()
   const { feature } = props
@@ -249,22 +230,14 @@ function GeneExternalLinks(props: { feature: any }) {
   )
 }
 
-/**
- * Removes prefix from cosmic ID
- * @param {*} cosmicId Cosmic ID for a mutation
- */
 function removeCosmicPrefix(cosmicId: string) {
   return cosmicId.replace('COSM', '').replace('COSN', '')
 }
 
-/**
- * Render a row with cosmic links for a mutation
- */
-const CosmicLinks = observer((props: { cosmicId: string[] }) => {
+const CosmicLinks = observer(function CosmicLinks({ cosmicId }: { cosmicId: string[] }) {
   const { classes } = useStyles()
-  const { cosmicId } = props
   return (
-    <TableRow key="0">
+    <TableRow>
       <TableCell>Cosmic</TableCell>
       <TableCell>
         {cosmicId?.map(value => (
@@ -286,10 +259,6 @@ const CosmicLinks = observer((props: { cosmicId: string[] }) => {
   )
 })
 
-/**
- * Render a section for external mutation links
- * @param {*} props
- */
 function SSMExternalLinks(props: { feature: any }) {
   const { classes } = useStyles()
   const { feature } = props
@@ -320,10 +289,6 @@ function SSMExternalLinks(props: { feature: any }) {
   )
 }
 
-/**
- * Render a table row for a project related to the mutation
- * @param {*} props
- */
 function SSMProject(props: Record<string, any>) {
   const { classes } = useStyles()
   const { projectId, docCount, projectsInformation, gdcProjectsCounts } = props
@@ -356,33 +321,27 @@ function SSMProject(props: Record<string, any>) {
   )
 }
 
-/**
- * Render a table of projects based on the selected mutation feature
- * @param {*} props
- */
 function SSMProjects(props: Record<string, any>) {
   const { classes } = useStyles()
   const { featureId } = props
-  // Case counts for projects associated with the given mutation
   const [mutationProjectsCounts, setMutationProjectsCounts] = useState<any[]>(
     [],
   )
-  // General information regarding all projects
   const [projectsInformation, setProjectsInformation] = useState<any[]>([])
-  // Case counts for projects across the GDC
   const [gdcProjectsCounts, setGdcProjectsCounts] = useState<any[]>([])
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getMutationProjectsAsync(featureId).then(data => {
-      setProjectsInformation(data.data.projects.hits.edges)
-      setGdcProjectsCounts(
-        data.data.viewer.explore.cases.total.project__project_id.buckets,
-      )
-      setMutationProjectsCounts(
-        data.data.viewer.explore.cases.filtered.project__project_id.buckets,
-      )
-    })
+    getMutationProjectsAsync(featureId)
+      .then(data => {
+        setProjectsInformation(data.data.projects.hits.edges)
+        setGdcProjectsCounts(
+          data.data.viewer.explore.cases.total.project__project_id.buckets,
+        )
+        setMutationProjectsCounts(
+          data.data.viewer.explore.cases.filtered.project__project_id.buckets,
+        )
+      })
+      .catch((e: unknown) => console.error(e))
   }, [featureId])
 
   return (
@@ -398,17 +357,14 @@ function SSMProjects(props: Record<string, any>) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mutationProjectsCounts &&
-              projectsInformation &&
-              gdcProjectsCounts &&
-              mutationProjectsCounts.map((project, key) => (
-                <SSMProject
-                  projectsInformation={projectsInformation}
-                  gdcProjectsCounts={gdcProjectsCounts}
-                  key={`${key}-${project.projectId}`}
-                  {...project}
-                />
-              ))}
+            {mutationProjectsCounts.map((project, key) => (
+              <SSMProject
+                projectsInformation={projectsInformation}
+                gdcProjectsCounts={gdcProjectsCounts}
+                key={`${key}-${project.projectId}`}
+                {...project}
+              />
+            ))}
           </TableBody>
         </Table>
       </div>
@@ -416,10 +372,6 @@ function SSMProjects(props: Record<string, any>) {
   )
 }
 
-/**
- * Render a table row for a project related to the gene
- * @param {*} props
- */
 function GeneProject(props: Record<string, any>) {
   const { classes } = useStyles()
   const { projectId, docCount, projectsInformation, cases } = props
@@ -470,31 +422,28 @@ function GeneProject(props: Record<string, any>) {
   )
 }
 
-/**
- * Render a table of projects based on the selected gene feature
- * @param {*} props
- */
 function GeneProjects(props: Record<string, any>) {
   const { classes } = useStyles()
   const { featureId } = props
 
-  const [projectsInformation, setProjectsInformation] = useState<any[]>([]) // General information regarding all projects
-  const [geneProjectsCounts, setGeneProjectsCounts] = useState<any[]>([]) // Case counts for projects associated with the given gene
-  const [cases, setCases] = useState<any[]>([]) // Case counts for various projects and filters
+  const [projectsInformation, setProjectsInformation] = useState<any[]>([])
+  const [geneProjectsCounts, setGeneProjectsCounts] = useState<any[]>([])
+  const [cases, setCases] = useState<any[]>([])
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    getGeneProjectsAsync(featureId).then(data => {
-      setProjectsInformation(data.data.projects.hits.edges)
-      setCases(data.data.viewer.explore.cases)
-      setGeneProjectsCounts(
-        data.data.viewer.explore.cases.filtered.project__project_id.buckets,
-      )
-    })
+    getGeneProjectsAsync(featureId)
+      .then(data => {
+        setProjectsInformation(data.data.projects.hits.edges)
+        setCases(data.data.viewer.explore.cases)
+        setGeneProjectsCounts(
+          data.data.viewer.explore.cases.filtered.project__project_id.buckets,
+        )
+      })
+      .catch((e: unknown) => console.error(e))
   }, [featureId])
 
   return (
-    <BaseCard {...props} title="Projects">
+    <BaseCard title="Projects">
       <div style={{ width: '100%', maxHeight: 600, overflow: 'auto' }}>
         <Table className={classes.table}>
           <TableHead>
@@ -525,39 +474,26 @@ function GeneProjects(props: Record<string, any>) {
   )
 }
 
-/**
- * Extended feature detail widget for GDC features
- * @param {*} props
- */
-function GDCFeatureDetails(props: Record<string, any>) {
-  const { model } = props
-  const feat = JSON.parse(JSON.stringify(model.featureData))
-  const {
-    consequence,
-    geneId,
-    ssmId,
-    cosmicId,
-    canonicalTranscriptId,
-    externalDbIds,
-    percentage,
-    numOfCasesInCohort,
-    ...rest
-  } = feat
+export const GDCExtraPanel = observer(function GDCExtraPanel({
+  feature,
+}: {
+  feature: Record<string, unknown>
+}) {
   return (
-    <Paper data-testid="variant-widget">
-      <FeatureDetails feature={rest} model={model} {...props} />
-      <Divider />
-      {feat.geneId !== undefined ? <GeneExternalLinks feature={feat} /> : null}
-      {feat.ssmId !== undefined ? <SSMExternalLinks feature={feat} /> : null}
-      <Divider />
-      {feat.ssmId !== undefined ? <Consequence feature={feat} /> : null}
-      <Divider />
-      {feat.geneId !== undefined ? (
-        <GeneProjects featureId={feat.geneId} />
+    <>
+      {feature.geneId !== undefined ? (
+        <GeneExternalLinks feature={feature} />
       ) : null}
-      {feat.ssmId !== undefined ? <SSMProjects featureId={feat.ssmId} /> : null}
-    </Paper>
+      {feature.ssmId !== undefined ? (
+        <SSMExternalLinks feature={feature} />
+      ) : null}
+      {feature.ssmId !== undefined ? <Consequence feature={feature} /> : null}
+      {feature.geneId !== undefined ? (
+        <GeneProjects featureId={feature.geneId as string} />
+      ) : null}
+      {feature.ssmId !== undefined ? (
+        <SSMProjects featureId={feature.ssmId as string} />
+      ) : null}
+    </>
   )
-}
-
-export default observer(GDCFeatureDetails)
+})

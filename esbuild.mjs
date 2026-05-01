@@ -21,6 +21,14 @@ function createGlobalMap(jbrowseGlobals) {
     varName: `JBrowseExports["mobx-state-tree"]`,
     type: 'cjs',
   }
+  // Expose BaseFeatureDetail sub-components from jbrowse's lazyMap
+  const baseDetail = '@jbrowse/core/BaseFeatureWidget/BaseFeatureDetail'
+  for (const name of ['BaseCard', 'FeatureDetails']) {
+    globalMap[`${baseDetail}/${name}`] = {
+      varName: `JBrowseExports["${baseDetail}"]["${baseDetail}/${name}"]`,
+      type: 'cjs',
+    }
+  }
   return globalMap
 }
 

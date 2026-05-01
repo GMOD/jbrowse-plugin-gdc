@@ -1,698 +1,344 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`GDCTrack widget > renders gene with just the required model elements 1`] = `
+exports[`GDCTrack widget > renders gene extra panel 1`] = `
 <div
-  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1ps6pg7-MuiPaper-root"
-  data-testid="variant-widget"
+  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded MuiAccordion-gutters css-1808mag-MuiPaper-root-MuiAccordion-root"
+  style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
 >
-  <div
-    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded MuiAccordion-gutters css-1808mag-MuiPaper-root-MuiAccordion-root"
-    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  <h3
+    class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
   >
-    <h3
-      class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
+    <button
+      aria-expanded="true"
+      class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded MuiAccordionSummary-gutters css-5l1z4b-MuiButtonBase-root-MuiAccordionSummary-root"
+      tabindex="0"
+      type="button"
     >
-      <button
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded MuiAccordionSummary-gutters css-5l1z4b-MuiButtonBase-root-MuiAccordionSummary-root"
-        tabindex="0"
-        type="button"
+      <span
+        class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-ja37vy-MuiAccordionSummary-content"
       >
         <span
-          class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-ja37vy-MuiAccordionSummary-content"
+          class="MuiTypography-root MuiTypography-button css-l5w3u1-MuiTypography-root"
         >
-          <span
-            class="MuiTypography-root MuiTypography-button css-l5w3u1-MuiTypography-root"
-          >
-            cell adhesion molecu... - protein_coding
-          </span>
+          External Links
         </span>
-        <span
-          class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-1wqf3nl-MuiAccordionSummary-expandIconWrapper"
+      </span>
+      <span
+        class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-1wqf3nl-MuiAccordionSummary-expandIconWrapper"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-ctmwhn-MuiSvgIcon-root"
+          data-testid="ExpandMoreIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
         >
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-ctmwhn-MuiSvgIcon-root"
-            data-testid="ExpandMoreIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
-            />
-          </svg>
-        </span>
-      </button>
-    </h3>
+          <path
+            d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
+          />
+        </svg>
+      </span>
+    </button>
+  </h3>
+  <div
+    class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
+    style="min-height: 0px;"
+  >
     <div
-      class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
-      style="min-height: 0px;"
+      class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
     >
       <div
-        class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
+        class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
       >
         <div
-          class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
+          class="MuiAccordion-region css-at4ued-MuiAccordion-region"
+          role="region"
         >
           <div
-            class="MuiAccordion-region css-at4ued-MuiAccordion-region"
-            role="region"
+            class="MuiAccordionDetails-root css-1mmb7mj-MuiAccordionDetails-root"
           >
             <div
-              class="MuiAccordionDetails-root css-1mmb7mj-MuiAccordionDetails-root"
+              style="width: 100%; max-height: 600px; overflow: auto;"
             >
-              <p
-                class="MuiTypography-root MuiTypography-body1 css-1xfjy4j-MuiTypography-root"
+              <table
+                class="MuiTable-root css-1gn90aw-table css-1eezdpb-MuiTable-root"
               >
-                Core details
-              </p>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
+                <tbody
+                  class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
                 >
-                  Position
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  3:196,596..409,417 
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Description
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    The protein encoded by this gene is a member of the L1 gene family of neural cell adhesion molecules. It is a neural recognition molecule that may be involved in signal transduction pathways. The deletion of one copy of this gene may be responsible for mental defects in patients with 3p- syndrome. This protein may also play a role in the growth of certain cancers. Alternate splicing results in both coding and non-coding variants. [provided by RefSeq, Nov 2011]
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Name
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    cell adhesion molecule L1-like
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Length
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    212,822
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Type
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    protein_coding
-                  </span>
-                </div>
-              </div>
-              <hr
-                class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
-              />
-              <p
-                class="MuiTypography-root MuiTypography-body1 css-1xfjy4j-MuiTypography-root"
-              >
-                Attributes
-              </p>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  biotype
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    protein_coding
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  geneChromosome
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    3
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  geneEnd
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    409417
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  geneStart
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    196596
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  geneStrand
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    1
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  id
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 109px;"
-                >
-                  symbol
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    CHL1
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  synonyms
-                </div>
-                <div
-                  class="css-9x6q5r"
-                >
-                  <div
-                    class="css-1rdet1e"
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <span>
-                      CALL
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="css-9x6q5r"
-                >
-                  <div
-                    class="css-1rdet1e"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      GDC
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="https://portal.gdc.cancer.gov/genes/ENSG00000134121"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        ENSG00000134121
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <span>
-                      FLJ44930
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="css-9x6q5r"
-                >
-                  <div
-                    class="css-1rdet1e"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      ENSEMBL
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="http://www.ensembl.org/id/ENSG00000134121"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        ENSG00000134121
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <span>
-                      L1CAM2
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="css-9x6q5r"
-                >
-                  <div
-                    class="css-1rdet1e"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      Canonical Transcript ID
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="http://www.ensembl.org/id/ENST00000256509"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        ENST00000256509
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <span>
-                      MGC132578
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="css-1ebprri"
-              >
-                <div
-                  class="MuiFormControl-root css-19uekgn-MuiFormControl-root"
-                >
-                  <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-kabin6-MuiButtonBase-root-MuiButton-root"
-                    tabindex="0"
-                    type="button"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      HGNC
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:1939"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        HGNC:1939
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    Show feature sequence
-                  </button>
-                </div>
-                <button
-                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-11vm3dp-MuiButtonBase-root-MuiIconButton-root"
-                  tabindex="0"
-                  type="button"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-14500qs-MuiSvgIcon-root"
-                    data-testid="HelpIcon"
-                    focusable="false"
-                    viewBox="0 0 24 24"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      UniProtKB Swiss-Prot
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="http://www.uniprot.org/uniprot/O00533"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        O00533
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <path
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"
-                    />
-                  </svg>
-                </button>
-              </div>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      NCBI
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="http://www.ncbi.nlm.nih.gov/gene/10752"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        10752
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
+                  >
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      OMIM
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="https://www.omim.org/entry/607416"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        607416
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
 </div>
 `;
 
-exports[`GDCTrack widget > renders mutation with just the required model elements 1`] = `
+exports[`GDCTrack widget > renders mutation extra panel 1`] = `
 <div
-  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 css-1ps6pg7-MuiPaper-root"
-  data-testid="variant-widget"
+  class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded MuiAccordion-gutters css-1808mag-MuiPaper-root-MuiAccordion-root"
+  style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
 >
-  <div
-    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded MuiAccordion-gutters css-1808mag-MuiPaper-root-MuiAccordion-root"
-    style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
+  <h3
+    class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
   >
-    <h3
-      class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
+    <button
+      aria-expanded="true"
+      class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded MuiAccordionSummary-gutters css-5l1z4b-MuiButtonBase-root-MuiAccordionSummary-root"
+      tabindex="0"
+      type="button"
     >
-      <button
-        aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded MuiAccordionSummary-gutters css-5l1z4b-MuiButtonBase-root-MuiAccordionSummary-root"
-        tabindex="0"
-        type="button"
+      <span
+        class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-ja37vy-MuiAccordionSummary-content"
       >
         <span
-          class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-ja37vy-MuiAccordionSummary-content"
+          class="MuiTypography-root MuiTypography-button css-l5w3u1-MuiTypography-root"
         >
-          <span
-            class="MuiTypography-root MuiTypography-button css-l5w3u1-MuiTypography-root"
-          >
-            Simple Somatic Mutation
-          </span>
+          External Links
         </span>
-        <span
-          class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-1wqf3nl-MuiAccordionSummary-expandIconWrapper"
+      </span>
+      <span
+        class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-1wqf3nl-MuiAccordionSummary-expandIconWrapper"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-ctmwhn-MuiSvgIcon-root"
+          data-testid="ExpandMoreIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
         >
-          <svg
-            aria-hidden="true"
-            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-ctmwhn-MuiSvgIcon-root"
-            data-testid="ExpandMoreIcon"
-            focusable="false"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
-            />
-          </svg>
-        </span>
-      </button>
-    </h3>
+          <path
+            d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
+          />
+        </svg>
+      </span>
+    </button>
+  </h3>
+  <div
+    class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
+    style="min-height: 0px;"
+  >
     <div
-      class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
-      style="min-height: 0px;"
+      class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
     >
       <div
-        class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
+        class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
       >
         <div
-          class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
+          class="MuiAccordion-region css-at4ued-MuiAccordion-region"
+          role="region"
         >
           <div
-            class="MuiAccordion-region css-at4ued-MuiAccordion-region"
-            role="region"
+            class="MuiAccordionDetails-root css-1mmb7mj-MuiAccordionDetails-root"
           >
             <div
-              class="MuiAccordionDetails-root css-1mmb7mj-MuiAccordionDetails-root"
+              style="width: 100%; max-height: 600px; overflow: auto;"
             >
-              <p
-                class="MuiTypography-root MuiTypography-body1 css-1xfjy4j-MuiTypography-root"
+              <table
+                class="MuiTable-root css-1gn90aw-table css-1eezdpb-MuiTable-root"
               >
-                Core details
-              </p>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
+                <tbody
+                  class="MuiTableBody-root css-apqrd9-MuiTableBody-root"
                 >
-                  Position
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  chr3:377,918 
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Length
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    1
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                >
-                  Type
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    Simple Somatic Mutation
-                  </span>
-                </div>
-              </div>
-              <hr
-                class="MuiDivider-root MuiDivider-fullWidth css-1jpc804-MuiDivider-root"
-              />
-              <p
-                class="MuiTypography-root MuiTypography-body1 css-1xfjy4j-MuiTypography-root"
-              >
-                Attributes
-              </p>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  chromosome
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    chr3
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  endPosition
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    377918
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  genomicDnaChange
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    chr3:g.377918G&gt;A
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  mutationSubtype
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    Single base substitution
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  mutationType
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    Simple Somatic Mutation
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  ncbiBuild
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    GRCh38
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  referenceAllele
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    G
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  score
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    3
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-2imjyh"
-              >
-                <div
-                  class="css-c392m0"
-                  style="width: 120px;"
-                >
-                  startPosition
-                </div>
-                <div
-                  class="css-1rdet1e"
-                >
-                  <span>
-                    377918
-                  </span>
-                </div>
-              </div>
-              <div
-                class="css-1ebprri"
-              >
-                <div
-                  class="MuiFormControl-root css-19uekgn-MuiFormControl-root"
-                >
-                  <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-kabin6-MuiButtonBase-root-MuiButton-root"
-                    tabindex="0"
-                    type="button"
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    Show feature sequence
-                  </button>
-                </div>
-                <button
-                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-11vm3dp-MuiButtonBase-root-MuiIconButton-root"
-                  tabindex="0"
-                  type="button"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-14500qs-MuiSvgIcon-root"
-                    data-testid="HelpIcon"
-                    focusable="false"
-                    viewBox="0 0 24 24"
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      GDC
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="https://portal.gdc.cancer.gov/ssms/0208efeb-f1e8-57e4-8447-299c5f050380"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        0208efeb-f1e8-57e4-8447-299c5f050380
+                      </a>
+                    </td>
+                  </tr>
+                  <tr
+                    class="MuiTableRow-root css-2bgjt6-MuiTableRow-root"
                   >
-                    <path
-                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 17h-2v-2h2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25"
-                    />
-                  </svg>
-                </button>
-              </div>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      Cosmic
+                    </td>
+                    <td
+                      class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall css-1e6u2lw-MuiTableCell-root"
+                    >
+                      <a
+                        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-ktjp3h-link css-6z5vhu-MuiTypography-root-MuiLink-root"
+                        href="https://cancer.sanger.ac.uk/cosmic/mutation/overview?id=1044638"
+                        rel="noopener"
+                        target="_blank"
+                      >
+                        COSM1044638
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
-  <hr
-    class="MuiDivider-root MuiDivider-fullWidth css-9mgopn-MuiDivider-root"
-  />
 </div>
 `;
