@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`adapter can fetch features from mbv_test_data.txt 1`] = `
 [
@@ -46,7 +46,7 @@ exports[`adapter can fetch features from mbv_test_data.txt 2`] = `
     "refName": "chr3",
     "start": 196477,
     "transcript_id": "ENST00000256509.5;ENST00000397491.5;ENST00000421198.4;ENST00000427688.4;ENST00000453040.4;ENST00000481167.4;ENST00000489224.4;ENST00000444879.4;ENST00000451839.4;ENST00000452919.1",
-    "uniqueId": "test-mbv-915",
+    "uniqueId": "adp-241256533-mbv-915",
   },
 ]
 `;

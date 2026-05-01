@@ -1,10 +1,9 @@
+import { test, expect } from 'vitest'
 import { toArray } from 'rxjs/operators'
-import MbvAdapter from './MbvAdapter'
-import configSchema from './configSchema'
-import fetchMock from 'jest-fetch-mock'
 import { firstValueFrom } from 'rxjs'
 
-fetchMock.enableMocks()
+import MbvAdapter from './MbvAdapter'
+import configSchema from './configSchema'
 
 test('adapter can fetch features from mbv_test_data.txt', async () => {
   const adapter = new MbvAdapter(

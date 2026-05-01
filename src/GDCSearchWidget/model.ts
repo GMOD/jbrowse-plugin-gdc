@@ -2,7 +2,7 @@ import { ElementId } from '@jbrowse/core/util/types/mst'
 import PluginManager from '@jbrowse/core/PluginManager'
 import { FileLocation } from '@jbrowse/core/util/types'
 
-import { types, Instance } from 'mobx-state-tree'
+import { types, Instance } from '@jbrowse/mobx-state-tree'
 
 export default function f(_pluginManager: PluginManager) {
   return types

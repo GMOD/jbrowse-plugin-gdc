@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`adapter can fetch features from sjq_test_data.txt 1`] = `
 [
@@ -46,7 +46,7 @@ exports[`adapter can fetch features from sjq_test_data.txt 2`] = `
     "score": 1,
     "start": 94175961,
     "strand": "1",
-    "uniqueId": "test-sjq-0",
+    "uniqueId": "adp-1299306780-sjq-0",
   },
 ]
 `;

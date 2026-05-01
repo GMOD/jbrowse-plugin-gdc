@@ -1,15 +1,18 @@
 import React from 'react'
-import { types } from 'mobx-state-tree'
+import { vi, describe, it, expect } from 'vitest'
+import { types } from '@jbrowse/mobx-state-tree'
 import { render } from '@testing-library/react'
+import { ThemeProvider } from '@mui/material'
+import { createJBrowseTheme } from '@jbrowse/core/ui/theme'
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import PluginManager from '@jbrowse/core/PluginManager'
-import { ConfigurationSchema } from '@jbrowse/core/configuration'
+
 import GDCFeatureDetails from './GDCFeatureWidget'
 import { stateModelFactory } from '.'
 
 describe('GDCTrack widget', () => {
   it('renders mutation with just the required model elements', () => {
-    console.warn = jest.fn()
+    console.warn = vi.fn()
     const pluginManager = new PluginManager([])
     const Session = types.model({
       pluginManager: types.optional(types.frozen(), {}),
@@ -69,17 +72,19 @@ describe('GDCTrack widget', () => {
       ncbiBuild: 'GRCh38',
       referenceAllele: 'G',
       score: 3,
-      // Prevent from trying project fetch
-      // ssmId: '0208efeb-f1e8-57e4-8447-299c5f050380',
       startPosition: 377918,
     })
 
-    const { container } = render(<GDCFeatureDetails model={model.widget} />)
+    const { container } = render(
+      <ThemeProvider theme={createJBrowseTheme()}>
+        <GDCFeatureDetails model={model.widget} />
+      </ThemeProvider>,
+    )
     expect(container.firstChild).toMatchSnapshot()
   })
 
   it('renders gene with just the required model elements', () => {
-    console.warn = jest.fn()
+    console.warn = vi.fn()
     const pluginManager = new PluginManager([])
     const Session = types.model({
       pluginManager: types.optional(types.frozen(), {}),
@@ -112,8 +117,6 @@ describe('GDCTrack widget', () => {
       },
       geneChromosome: '3',
       geneEnd: 409417,
-      // Prevent from trying project fetch
-      // geneId: 'ENSG00000134121',
       geneStart: 196596,
       geneStrand: 1,
       id: 'R2VuZTpFTlNHMDAwMDAxMzQxMjEjZTQ2MDk1NGM4MmZiMjczYjIwNTk1MDliODFkZTZmYjEj',
@@ -123,7 +126,11 @@ describe('GDCTrack widget', () => {
       synonyms: ['CALL', 'FLJ44930', 'L1CAM2', 'MGC132578'],
     })
 
-    const { container } = render(<GDCFeatureDetails model={model.widget} />)
+    const { container } = render(
+      <ThemeProvider theme={createJBrowseTheme()}>
+        <GDCFeatureDetails model={model.widget} />
+      </ThemeProvider>,
+    )
     expect(container.firstChild).toMatchSnapshot()
   })
 })

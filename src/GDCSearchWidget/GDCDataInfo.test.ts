@@ -1,3 +1,5 @@
+import { vi, test, expect } from 'vitest'
+
 import { mapDataInfo, mapGDCExploreConfig } from './GDCDataInfo'
 
 const uri = 'path/to/some.uri'
@@ -88,9 +90,9 @@ test('maps data information to SNV', async () => {
   })
 })
 
-test('maps data information to SNV', async () => {
+test('maps data information to MAF', async () => {
   const realDateNow = Date.now.bind(global.Date)
-  const dateNowStub = jest.fn(() => 1530518207007)
+  const dateNowStub = vi.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
   const result = mapDataInfo(
@@ -122,7 +124,7 @@ test('maps data information to SNV', async () => {
 
 test('maps data information to IEQ', async () => {
   const realDateNow = Date.now.bind(global.Date)
-  const dateNowStub = jest.fn(() => 1530518207007)
+  const dateNowStub = vi.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
   const result = mapDataInfo(
@@ -154,7 +156,7 @@ test('maps data information to IEQ', async () => {
 
 test('maps gdc explore to config', async () => {
   const realDateNow = Date.now.bind(global.Date)
-  const dateNowStub = jest.fn(() => 1530518207007)
+  const dateNowStub = vi.fn(() => 1530518207007)
   global.Date.now = dateNowStub
 
   const result = mapGDCExploreConfig(

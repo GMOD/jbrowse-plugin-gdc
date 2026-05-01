@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`adapter can fetch features from ieq_test_data.txt 1`] = `
 [
@@ -43,7 +43,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175960,
     "strand": 1,
-    "uniqueId": "test-ieq-0",
+    "uniqueId": "adp--25545727-ieq-0",
   },
   {
     "chromosome": "chr9",
@@ -57,7 +57,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175960,
     "strand": 1,
-    "uniqueId": "test-ieq-1",
+    "uniqueId": "adp--25545727-ieq-1",
   },
   {
     "chromosome": "chr9",
@@ -71,7 +71,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175960,
     "strand": 1,
-    "uniqueId": "test-ieq-2",
+    "uniqueId": "adp--25545727-ieq-2",
   },
   {
     "chromosome": "chr9",
@@ -85,7 +85,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175960,
     "strand": 1,
-    "uniqueId": "test-ieq-3",
+    "uniqueId": "adp--25545727-ieq-3",
   },
   {
     "chromosome": "chr9",
@@ -99,7 +99,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175960,
     "strand": 1,
-    "uniqueId": "test-ieq-4",
+    "uniqueId": "adp--25545727-ieq-4",
   },
   {
     "chromosome": "chr9",
@@ -113,7 +113,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-5",
+    "uniqueId": "adp--25545727-ieq-5",
   },
   {
     "chromosome": "chr9",
@@ -127,7 +127,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-6",
+    "uniqueId": "adp--25545727-ieq-6",
   },
   {
     "chromosome": "chr9",
@@ -141,7 +141,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-7",
+    "uniqueId": "adp--25545727-ieq-7",
   },
   {
     "chromosome": "chr9",
@@ -155,7 +155,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-8",
+    "uniqueId": "adp--25545727-ieq-8",
   },
   {
     "chromosome": "chr9",
@@ -169,7 +169,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-9",
+    "uniqueId": "adp--25545727-ieq-9",
   },
   {
     "chromosome": "chr9",
@@ -183,7 +183,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-10",
+    "uniqueId": "adp--25545727-ieq-10",
   },
   {
     "chromosome": "chr9",
@@ -197,7 +197,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175961,
     "strand": 1,
-    "uniqueId": "test-ieq-11",
+    "uniqueId": "adp--25545727-ieq-11",
   },
   {
     "chromosome": "chr9",
@@ -211,7 +211,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-12",
+    "uniqueId": "adp--25545727-ieq-12",
   },
   {
     "chromosome": "chr9",
@@ -225,7 +225,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-13",
+    "uniqueId": "adp--25545727-ieq-13",
   },
   {
     "chromosome": "chr9",
@@ -239,7 +239,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-14",
+    "uniqueId": "adp--25545727-ieq-14",
   },
   {
     "chromosome": "chr9",
@@ -253,7 +253,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-15",
+    "uniqueId": "adp--25545727-ieq-15",
   },
   {
     "chromosome": "chr9",
@@ -267,7 +267,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-16",
+    "uniqueId": "adp--25545727-ieq-16",
   },
   {
     "chromosome": "chr9",
@@ -281,7 +281,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175962,
     "strand": 1,
-    "uniqueId": "test-ieq-17",
+    "uniqueId": "adp--25545727-ieq-17",
   },
   {
     "chromosome": "chr9",
@@ -295,7 +295,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175963,
     "strand": 1,
-    "uniqueId": "test-ieq-18",
+    "uniqueId": "adp--25545727-ieq-18",
   },
   {
     "chromosome": "chr9",
@@ -309,7 +309,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175963,
     "strand": 1,
-    "uniqueId": "test-ieq-19",
+    "uniqueId": "adp--25545727-ieq-19",
   },
   {
     "chromosome": "chr9",
@@ -323,7 +323,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175963,
     "strand": 1,
-    "uniqueId": "test-ieq-20",
+    "uniqueId": "adp--25545727-ieq-20",
   },
   {
     "chromosome": "chr9",
@@ -337,7 +337,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175963,
     "strand": 1,
-    "uniqueId": "test-ieq-21",
+    "uniqueId": "adp--25545727-ieq-21",
   },
   {
     "chromosome": "chr9",
@@ -351,7 +351,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175963,
     "strand": 1,
-    "uniqueId": "test-ieq-22",
+    "uniqueId": "adp--25545727-ieq-22",
   },
   {
     "chromosome": "chr9",
@@ -365,7 +365,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175964,
     "strand": 1,
-    "uniqueId": "test-ieq-23",
+    "uniqueId": "adp--25545727-ieq-23",
   },
   {
     "chromosome": "chr9",
@@ -379,7 +379,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175964,
     "strand": 1,
-    "uniqueId": "test-ieq-24",
+    "uniqueId": "adp--25545727-ieq-24",
   },
   {
     "chromosome": "chr9",
@@ -393,7 +393,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175964,
     "strand": 1,
-    "uniqueId": "test-ieq-25",
+    "uniqueId": "adp--25545727-ieq-25",
   },
   {
     "chromosome": "chr9",
@@ -407,7 +407,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175964,
     "strand": 1,
-    "uniqueId": "test-ieq-26",
+    "uniqueId": "adp--25545727-ieq-26",
   },
   {
     "chromosome": "chr9",
@@ -421,7 +421,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175965,
     "strand": 1,
-    "uniqueId": "test-ieq-27",
+    "uniqueId": "adp--25545727-ieq-27",
   },
   {
     "chromosome": "chr9",
@@ -435,7 +435,7 @@ exports[`adapter can fetch features from ieq_test_data.txt 2`] = `
     "refName": "chr9",
     "start": 94175966,
     "strand": 1,
-    "uniqueId": "test-ieq-28",
+    "uniqueId": "adp--25545727-ieq-28",
   },
 ]
 `;

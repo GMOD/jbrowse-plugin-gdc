@@ -1,11 +1,10 @@
+import { vi, test, expect } from 'vitest'
 import { toArray } from 'rxjs/operators'
+import { firstValueFrom } from 'rxjs'
+
 import GDCAdapter from './GDCAdapter'
 import configSchema from './configSchema'
 import { gdcFilters, gdcResponse } from './test_data/gdc_test_data.js'
-import fetchMock from 'jest-fetch-mock'
-import { firstValueFrom } from 'rxjs'
-
-fetchMock.enableMocks()
 
 test('adapter can fetch features from the gdc', async () => {
   const adapter = new GDCAdapter(
@@ -15,7 +14,10 @@ test('adapter can fetch features from the gdc', async () => {
     }),
   )
 
-  fetchMock.mockResponseOnce(JSON.stringify(gdcResponse))
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(gdcResponse))),
+  )
 
   const features = adapter.getFeatures({
     assemblyName: 'volvox',

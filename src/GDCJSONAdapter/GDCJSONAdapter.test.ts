@@ -1,4 +1,7 @@
+import { vi, test, expect } from 'vitest'
 import { toArray } from 'rxjs/operators'
+import { firstValueFrom } from 'rxjs'
+
 import GDCJSONAdapter from './GDCJSONAdapter'
 import configSchema from './configSchema'
 import {
@@ -6,10 +9,6 @@ import {
   genesJSON,
   gdcResponse,
 } from './test_data/json_test_data.js'
-import fetchMock from 'jest-fetch-mock'
-import { firstValueFrom } from 'rxjs'
-
-fetchMock.enableMocks()
 
 test('adapter can fetch features from a mutations explore json file', async () => {
   const adapter = new GDCJSONAdapter(
@@ -48,7 +47,10 @@ test('adapter can fetch featues from a genes explore json file', async () => {
     end: 143229011,
   })
 
-  fetchMock.mockResponseOnce(JSON.stringify(gdcResponse))
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValueOnce(new Response(JSON.stringify(gdcResponse))),
+  )
 
   const featuresArray = await firstValueFrom(features.pipe(toArray()))
   expect(featuresArray.slice(0, 3)).toMatchSnapshot()

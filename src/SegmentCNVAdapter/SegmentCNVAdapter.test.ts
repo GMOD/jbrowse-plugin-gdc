@@ -1,10 +1,9 @@
+import { test, expect } from 'vitest'
 import { toArray } from 'rxjs/operators'
-import SegmentCNVAdapter from './SegmentCNVAdapter'
-import configSchema from './configSchema'
-import fetchMock from 'jest-fetch-mock'
 import { firstValueFrom } from 'rxjs'
 
-fetchMock.enableMocks()
+import SegmentCNVAdapter from './SegmentCNVAdapter'
+import configSchema from './configSchema'
 
 test('adapter can fetch features from segments.txt', async () => {
   const adapter = new SegmentCNVAdapter(

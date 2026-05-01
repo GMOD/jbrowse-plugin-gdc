@@ -1,7 +1,7 @@
 import { ConfigurationReference, getConf } from '@jbrowse/core/configuration'
 import { InternetAccount } from '@jbrowse/core/pluggableElementTypes/models'
 import { UriLocation } from '@jbrowse/core/util/types'
-import { Instance, types } from 'mobx-state-tree'
+import { Instance, types } from '@jbrowse/mobx-state-tree'
 import { getSession } from '@jbrowse/core/util'
 
 // locals

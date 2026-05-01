@@ -1,10 +1,9 @@
+import { test, expect } from 'vitest'
 import { toArray } from 'rxjs/operators'
-import MafAdapter from './MafAdapter'
-import configSchema from './configSchema'
-import fetchMock from 'jest-fetch-mock'
 import { firstValueFrom } from 'rxjs'
 
-fetchMock.enableMocks()
+import MafAdapter from './MafAdapter'
+import configSchema from './configSchema'
 
 test('adapter can fetch features from maf_test_data.maf', async () => {
   const adapter = new MafAdapter(
