@@ -4,7 +4,7 @@ import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import stateModel from './model'
 import ReactComponent from './components/GDCFilterComponent'
 
-export default (jbrowse: PluginManager) => {
+const GDCFilterWidgetPlugin = (jbrowse: PluginManager) => {
   return {
     configSchema: ConfigurationSchema('GDCFilterWidget', {}),
     ReactComponent,
@@ -12,3 +12,5 @@ export default (jbrowse: PluginManager) => {
     HeadingComponent: () => <>GDC Filters</>,
   }
 }
+
+export default GDCFilterWidgetPlugin

@@ -4,7 +4,7 @@ import type { IAnyModelType } from '@jbrowse/mobx-state-tree'
 import configSchemaF from './configSchema'
 import modelF from './model'
 
-export default (
+const linearGDCDisplayPlugin = (
   pluginManager: PluginManager,
 ): { configSchema: AnyConfigurationSchemaType; stateModel: IAnyModelType } => {
   const schema = configSchemaF(pluginManager)
@@ -13,3 +13,5 @@ export default (
     stateModel: modelF(pluginManager, schema),
   }
 }
+
+export default linearGDCDisplayPlugin

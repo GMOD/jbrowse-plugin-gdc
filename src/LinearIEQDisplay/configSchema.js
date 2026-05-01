@@ -1,6 +1,6 @@
 import { ConfigurationSchema } from '@jbrowse/core/configuration'
 
-export default pluginManager => {
+const linearIEQDisplayConfigSchema = pluginManager => {
   const { baseLinearDisplayConfigSchema } = pluginManager.getPlugin(
     'LinearGenomeViewPlugin',
   ).exports
@@ -10,3 +10,5 @@ export default pluginManager => {
     { baseConfiguration: baseLinearDisplayConfigSchema, explicitlyTyped: true },
   )
 }
+
+export default linearIEQDisplayConfigSchema

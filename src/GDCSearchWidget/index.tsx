@@ -4,7 +4,7 @@ import { ConfigurationSchema } from '@jbrowse/core/configuration'
 import ImportPanelModel from './model'
 import ReactComponent from './ImportPanel'
 
-export default (jbrowse: PluginManager) => {
+const GDCSearchWidgetPlugin = (jbrowse: PluginManager) => {
   return {
     configSchema: ConfigurationSchema('GDCSearchWidget', {}),
     ReactComponent,
@@ -12,3 +12,5 @@ export default (jbrowse: PluginManager) => {
     HeadingComponent: () => <>GDC Data Import</>,
   }
 }
+
+export default GDCSearchWidgetPlugin

@@ -1,9 +1,11 @@
 import configSchemaF from './configSchema'
 import modelF from './model'
 
-export default pluginManager => {
+const linearMAFDisplayPlugin = pluginManager => {
   return {
     configSchema: pluginManager.jbrequire(configSchemaF),
     stateModel: pluginManager.jbrequire(modelF),
   }
 }
+
+export default linearMAFDisplayPlugin

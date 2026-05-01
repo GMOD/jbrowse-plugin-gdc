@@ -4,7 +4,7 @@ import { getSession } from '@jbrowse/core/util'
 import configSchemaF from './configSchema'
 import { types, getEnv } from 'mobx-state-tree'
 
-export default jbrowse => {
+const linearIEQDisplayModel = jbrowse => {
   const configSchema = jbrowse.jbrequire(configSchemaF)
 
   const { BaseLinearDisplay } = jbrowse.getPlugin(
@@ -61,3 +61,5 @@ export default jbrowse => {
       }
     })
 }
+
+export default linearIEQDisplayModel

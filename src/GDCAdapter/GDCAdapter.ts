@@ -170,7 +170,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
     const body = {
       query: ssmQuery,
       variables: {
-        size: this.size ? this.size : 5000,
+        size: this.size || 5000,
         offset: 0,
         filters: combinedFilters,
         filtersWithoutLocation: filtersNoLocation,
@@ -197,7 +197,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
       query: geneQuery,
       variables: {
         filters: combinedFilters,
-        size: this.size ? this.size : 5000,
+        size: this.size || 5000,
         offset: 0,
         score: 'case.project.project_id',
       },
@@ -304,7 +304,7 @@ export default class GDCAdapter extends BaseFeatureDataAdapter {
       }
     }
 
-    if (this.cases && this.cases.length > 0) {
+    if (this.cases.length > 0) {
       const caseFilter = {
         op: 'in',
         content: { field: 'cases.case_id', value: this.cases },

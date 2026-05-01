@@ -10,13 +10,13 @@ import type PluginManager from '@jbrowse/core/PluginManager'
 
 import type LinearGenomeViewPlugin from '@jbrowse/plugin-linear-genome-view'
 
-export default (
+const linearGDCDisplayModel = (
   pluginManager: PluginManager,
   configSchema: AnyConfigurationSchemaType,
 ): IAnyModelType => {
   const { BaseLinearDisplay } = (
     pluginManager.getPlugin('LinearGenomeViewPlugin') as LinearGenomeViewPlugin
-  )?.exports
+  ).exports
 
   return types
     .compose(
@@ -41,7 +41,7 @@ export default (
 
       selectFeature(feature: Feature) {
         const session = getSession(self)
-        if (feature && isSessionModelWithWidgets(session)) {
+        if (isSessionModelWithWidgets(session)) {
           const featureWidget = session.addWidget(
             'VariantFeatureWidget',
             'gdcFeature',
@@ -87,3 +87,5 @@ export default (
       }
     })
 }
+
+export default linearGDCDisplayModel

@@ -47,8 +47,7 @@ export default class SjqAdapter extends BaseFeatureDataAdapter {
       this.pluginManager,
     ).readFile()
 
-    let str: string
-    str =
+    const str =
       typeof fileContents[0] === 'number' &&
       fileContents[0] === 31 &&
       typeof fileContents[1] === 'number' &&
